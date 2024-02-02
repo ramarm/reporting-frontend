@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom/client'
 import Reporting from './Reporting.jsx'
 import {App, ConfigProvider} from "antd";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {GoogleOAuthProvider} from "@react-oauth/google";
 
 const queryClient = new QueryClient()
 
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         }}>
         <App>
             <QueryClientProvider client={queryClient}>
-                <Reporting/>
+                <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+                    <Reporting/>
+                </GoogleOAuthProvider>
             </QueryClientProvider>
         </App>
     </ConfigProvider>

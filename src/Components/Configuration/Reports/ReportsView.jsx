@@ -1,6 +1,6 @@
 import {useState} from "react";
 import Loader from "../../Loader/Loader.jsx";
-import {Button, Collapse, Divider, Space, theme, Typography} from "antd";
+import {Button, Collapse, Divider, Space, Typography} from "antd";
 import ReportExtra from "./ReportExtra.jsx";
 import Report from "./Report.jsx";
 
@@ -27,7 +27,6 @@ const REPORTS = [
 ]
 
 export default function ReportsView() {
-    const {token} = theme.useToken();
     const [reports, setReports] = useState(REPORTS);
     const [activeKey, setActiveKey] = useState([]);
 
@@ -79,7 +78,7 @@ export default function ReportsView() {
                     onClick={createReport}>Create new report</Button>
         </div>
     }
-    console.log(token.colorBgContainer)
+
     return (
         <div style={{
             margin: "0 20px"

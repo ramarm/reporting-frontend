@@ -43,7 +43,6 @@ function Reporting() {
             await authorize();
             return true;
         } catch (error) {
-            console.log(error.error_code);
             if (error.error_code === "USER_NOT_FOUND") {
                 await createUser(user);
                 await installApp({
