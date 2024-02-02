@@ -6,9 +6,11 @@ import Loader from "./Components/Loader/Loader.jsx";
 import ResultPage from "./Components/ResultPage.jsx";
 import {getMe} from "./Queries/monday.js";
 import {authorize, createUser, getSubscription, installApp, updateUserInformation} from "./Queries/management.js";
-import {Button, Space, Typography, Tooltip} from "antd";
+import {Button, Space, Typography, Tooltip, Divider} from "antd";
 import {DashboardOutlined} from "@ant-design/icons";
+import TabsIndex from "./Components/Configuration/TabsIndex.jsx";
 
+const {Text, Link} = Typography;
 const monday = mondaySdk();
 monday.setApiVersion(import.meta.env.VITE_MONDAY_API_VERSION);
 
@@ -164,7 +166,7 @@ function Reporting() {
                     fontSize: "18px"
                 }}>
                     <Space>
-                        <span>Your account is currently on the {subscription.name} plan</span>
+                        <Text style={{color: "white"}}>Your account is currently on the {subscription.name} plan</Text>
                         <Button shape="round"
                                 icon={<DashboardOutlined/>}
                                 onClick={() => {
@@ -172,38 +174,38 @@ function Reporting() {
                                 }}>Change plan</Button>
                     </Space>
                 </div>}
-            <h1>Hello world {context?.user?.id}</h1>
-            <div style={{
-                position: "fixed",
-                right: 0,
-                bottom: 0,
-                backgroundColor: "rgba(255,255,255,0.5)",
-                padding: "0 5px",
-                lineHeight: "40px",
-                fontSize: "22px",
-                fontWeight: "bold",
-            }}>
-                <Typography.Link
+            <TabsIndex/>
+            <Space
+                split={<Divider type="vertical" style={{margin: 0, borderColor: "black"}}/>}
+                style={{
+                    position: "fixed",
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: "rgba(255,255,255,0.5)",
+                    padding: "0 5px",
+                    lineHeight: "40px",
+                    fontSize: "22px",
+                    fontWeight: "bold",
+                }}>
+                <Link
                     style={{fontSize: "22px"}}
                     onClick={() => monday.execute("openLinkInTab", {url: "https://www.superform.spot-nik.com/form/62193345c8a91eda41fb1190"})}>
                     Feedback
-                </Typography.Link>
-                <span> - </span>
+                </Link>
                 <Tooltip placement="top"
                          title="rnd@spot-nik.com">
-                    <Typography.Link
+                    <Link
                         style={{fontSize: "22px"}}
                         onClick={() => monday.execute("openLinkInTab", {url: "mailto:rnd@spot-nik.com"})}>
                         Support
-                    </Typography.Link>
+                    </Link>
                 </Tooltip>
-                <span> - </span>
-                <Typography.Link
+                <Link
                     style={{fontSize: "22px"}}
                     onClick={() => monday.execute("openLinkInTab", {url: "https://www.spot-nik.com/superform#comp-ky80d4dy"})}>
                     FAQ
-                </Typography.Link>
-            </div>
+                </Link>
+            </Space>
         </div>
     );
 }
