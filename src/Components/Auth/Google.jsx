@@ -12,7 +12,6 @@ const SCOPES = [
 ]
 export default function GoogleAuth({closeModal}) {
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
-    console.log(context);
     const loginHook = useGoogleLogin({
         flow: "auth-code",
         scope: SCOPES.join(" "),
@@ -20,7 +19,7 @@ export default function GoogleAuth({closeModal}) {
         onError: (error) => console.error("Failed authentication with google -", error)
     });
 
-    function handleClick() {
+    function handleLogin() {
         closeModal();
         loginHook();
     }
@@ -37,7 +36,7 @@ export default function GoogleAuth({closeModal}) {
     return <Button icon={<Avatar shape="square" style={{borderRadius: 0}}
                                  src="https://www.vectorlogo.zone/logos/google/google-icon.svg"/>}
                    style={{height: "50px"}}
-                   onClick={handleClick}>
+                   onClick={handleLogin}>
         Sign in with Google
     </Button>;
 }
