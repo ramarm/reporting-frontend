@@ -3,47 +3,43 @@ import Loader from "../../Loader/Loader.jsx";
 import {Button, Collapse, Divider, Space, Typography} from "antd";
 import ReportExtra from "./ReportExtra.jsx";
 import Report from "./Report.jsx";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
+import {createReport, getReports} from "../../../Queries/reporting.js";
 
 const {Text} = Typography;
-const REPORTS = [
-    {
-        id: 0,
-        title: "Report 1",
-        owner: "Ram Perel Perel perel perel",
-        from: null,
-        to: null,
-        subject: "Testing report",
-        body: "This is the content of a test report",
-    },
-    {
-        id: 1,
-        title: "Report 2",
-        owner: "Ram Perel",
-        from: null,
-        to: null,
-        subject: "I am a little bit longer subject",
-        body: "I am a very very long content and I am going to be longer with new lines and more.\nNow I am in a new line even",
-    }
-]
 
 export default function ReportsView() {
-    const [reports, setReports] = useState(REPORTS);
+    const queryClient = useQueryClient();
+    const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const [activeKey, setActiveKey] = useState([]);
 
+    const {data: reports, isLoading: isLoadingReports} = useQuery({
+        enabled: !!context.boardId,
+        queryKey: ["reports"],
+        queryFn: () => getReports({boardId: context.boardId}),
+        onError: (error) => {
+            console.error("error -", error);
+        }
+    });
+
     function updateReport(reportId, key, value) {
-        const report = reports.find((report) => report.id === reportId);
-        report[key] = value;
-        setReports([...reports]);
+        queryClient.setQueryData(["reports"], (oldData) => {
+            const report = oldData.find((report) => report.id === reportId);
+            report[key] = value;
+            return [...oldData];
+        });
     }
 
-    function createReport() {
-        const key = reports.length;
-        setReports((prevState) => [...prevState, {
-            title: `Report ${key + 1}`,
-            owner: "Ram Perel",
-            content: `The content of return ${key + 1}`
-        }]);
-        setActiveKey((prevState) => [...prevState, key]);
+    async function createNewReport() {
+        const newReport = await createReport({boardId: context.boardId});
+        queryClient.setQueryData(["reports"], (oldData) => {
+            return [
+                ...oldData,
+                newReport
+            ];
+        });
+        setActiveKey((prevState) => [...prevState, newReport.id]);
     }
 
     function generateCollapseItems() {
@@ -60,12 +56,12 @@ export default function ReportsView() {
                           style={{maxWidth: "50vw"}}>{report.body ? report.body : "No body"}</Text>
                 </Space>,
                 children: <Report report={report} updateReport={(key, value) => updateReport(report.id, key, value)}/>,
-                extra: <ReportExtra owner={report.owner}/>
+                extra: <ReportExtra report={report}/>
             }
         })
     }
 
-    if (reports === null) {
+    if (reports === undefined || reports === null || isLoadingReports) {
         return <Loader/>
     }
 
@@ -75,7 +71,7 @@ export default function ReportsView() {
         }}>
             <h1>You don&apos;t have any reports</h1>
             <Button type="primary"
-                    onClick={createReport}>Create new report</Button>
+                    onClick={createNewReport}>Create new report</Button>
         </div>
     }
 
@@ -87,7 +83,7 @@ export default function ReportsView() {
                     style={{
                         float: "right"
                     }}
-                    onClick={createReport}>Create new report</Button>
+                    onClick={createNewReport}>Create new report</Button>
             <h1>Your reports</h1>
             <Collapse items={generateCollapseItems()}
                       activeKey={activeKey}
