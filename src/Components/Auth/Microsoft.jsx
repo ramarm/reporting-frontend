@@ -4,14 +4,16 @@ import {STORAGE_MONDAY_CONTEXT_KEY} from "../../consts.js";
 const BASE_URL = `https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize`;
 const SCOPES = ["openid", "profile", "offline_access", "User.Read", "Mail.Read"];
 
-export default function MicrosoftAuth() {
+export default function MicrosoftAuth({closeModal}) {
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
 
     function handleLogin() {
+        closeModal();
+        const redirectUrl = new URL("/api/v1/auth/microsoft", import.meta.env.VITE_MANAGEMENT_API).href;
         const queryParams = {
             client_id: import.meta.env.VITE_MICROSOFT_CLIENT_ID,
             response_type: "code",
-            redirect_uri: `${import.meta.env.VITE_MANAGEMENT_API}/api/v1/auth/microsoft`,
+            redirect_uri: redirectUrl,
             response_mode: "query",
             scope: SCOPES.join(" "),
             state: JSON.stringify({
