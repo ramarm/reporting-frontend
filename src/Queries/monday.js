@@ -45,3 +45,8 @@ export async function getMe() {
         " name email photo_original country_code } }"
     return (await runQuery({query, variables: {}})).me
 }
+
+export async function getUser({userId}) {
+    const query = "query ($userId: [ID!]) { users (ids:$userId) { id name email photo_tiny photo_original } }"
+    return (await runQuery({query, variables: {userId}})).users[0]
+}

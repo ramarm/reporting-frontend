@@ -1,13 +1,20 @@
 import {Avatar, Dropdown, Space, Typography} from "antd";
-import {CopyOutlined, DeleteOutlined, EllipsisOutlined, UserSwitchOutlined} from "@ant-design/icons";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {CopyOutlined, DeleteOutlined, EllipsisOutlined, LoadingOutlined, UserSwitchOutlined} from "@ant-design/icons";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {changeOwner, deleteReport} from "../../../Queries/reporting.js";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
+import {getUser} from "../../../Queries/monday.js";
 
 const {Text} = Typography;
 export default function ReportExtra({report}) {
     const queryClient = useQueryClient();
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
+
+    const {data: owner} = useQuery({
+        queryKey: ["user", report.owner],
+        queryFn: () => getUser({userId: report.owner}),
+        enabled: !!report.owner
+    })
 
     const {mutate: changeOwnerMutation} = useMutation({
         mutationFn: () => changeOwner({reportId: report.id}),
@@ -35,11 +42,13 @@ export default function ReportExtra({report}) {
     return <Space size="middle" style={{height: "22px"}}>
         <Space size="small">
             <Text>Owner:</Text>
-            <Avatar size={22}
-                    src="https://files.monday.com/use1/photos/45249584/thumb/45249584-user_photo_initials_2023_07_03_12_47_49.png?1688388469"/>
-            <Text style={{maxWidth: "5vw"}} ellipsis={{
-                tooltip: true
-            }}>{report.owner}</Text>
+            {owner ? (<>
+                <Avatar size={22}
+                        src={owner.photo_tiny}/>
+                <Text style={{maxWidth: "5vw"}} ellipsis={{
+                    tooltip: true
+                }}>{owner.name}</Text>
+            </>) : <LoadingOutlined spin/>}
         </Space>
         <Dropdown onClick={(e) => e.stopPropagation()}
                   menu={{
