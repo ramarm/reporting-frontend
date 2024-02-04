@@ -34,6 +34,14 @@ export async function changeOwner({reportId}) {
     });
 }
 
+export async function patchReport({reportId, key, value}) {
+    return await sendReportingRequest({
+        method: "PATCH",
+        uri: `/api/v1/report/${reportId}`,
+        data: {key, value}
+    });
+}
+
 export async function deleteReport({reportId}) {
     return await sendReportingRequest({
         method: "DELETE",

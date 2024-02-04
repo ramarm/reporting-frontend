@@ -6,9 +6,10 @@ import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {getUser} from "../../../Queries/monday.js";
 
 const {Text} = Typography;
-export default function ReportExtra({report}) {
+export default function ReportExtra({reportId}) {
     const queryClient = useQueryClient();
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
+    const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
 
     const {data: owner} = useQuery({
         queryKey: ["user", report.owner],

@@ -23,14 +23,6 @@ export default function ReportsView() {
         }
     });
 
-    function updateReport(reportId, key, value) {
-        queryClient.setQueryData(["reports"], (oldData) => {
-            const report = oldData.find((report) => report.id === reportId);
-            report[key] = value;
-            return [...oldData];
-        });
-    }
-
     async function createNewReport() {
         const newReport = await createReport({boardId: context.boardId});
         queryClient.setQueryData(["reports"], (oldData) => {
@@ -55,10 +47,10 @@ export default function ReportsView() {
                     <Text ellipsis={true}
                           style={{maxWidth: "50vw"}}>{report.body ? report.body : "No body"}</Text>
                 </Space>,
-                children: <Report report={report} updateReport={(key, value) => updateReport(report.id, key, value)}/>,
-                extra: <ReportExtra report={report}/>
+                children: <Report reportId={report.id}/>,
+                extra: <ReportExtra reportId={report.id}/>
             }
-        })
+        });
     }
 
     if (reports === undefined || reports === null || isLoadingReports) {
