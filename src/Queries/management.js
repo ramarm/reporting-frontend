@@ -101,3 +101,10 @@ export async function authGoogle({userId, scopes, code}) {
     const url = new URL(`/api/v1/auth/google`, MANAGEMENT_URL_BASE).href;
     return await axios.post(url, {appId: import.meta.env.VITE_MONDAY_APP_ID, userId, scopes, code});
 }
+
+export async function getEmailAccounts() {
+    return await sendManagementRequest({
+        method: "GET",
+        uri: `/api/v1/user/me/${import.meta.env.VITE_MONDAY_APP_ID}/email_accounts`
+    });
+}
