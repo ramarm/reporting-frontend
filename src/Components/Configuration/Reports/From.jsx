@@ -5,7 +5,7 @@ import {useState} from "react";
 import {getEmailAccounts} from "../../../Queries/management.js";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 
-const {Text} = Typography;
+const {Title, Text} = Typography;
 
 export default function From({reportId, setReport}) {
     const queryClient = useQueryClient();
@@ -41,10 +41,22 @@ export default function From({reportId, setReport}) {
         </Space>
     }
 
+    function emptyResult() {
+        return <Space direction="vertical"
+                      style={{
+                          width: "100%",
+                          textAlign: "center",
+                          marginBottom: "10px"
+                      }}>
+            <Title level={4}>No email accounts associated with this user</Title>
+            <Button type="primary" onClick={() => setIsModalOpen(true)}>Add account</Button>
+        </Space>
+    }
+
     return <>
         <Row style={{padding: "4px 11px", width: "100%"}}>
             <Col>
-                <Text>From</Text>
+                <Text style={{lineHeight: "24px"}}>From</Text>
             </Col>
             <Col flex="auto">
                 <Select style={{width: "100%"}}
@@ -58,6 +70,7 @@ export default function From({reportId, setReport}) {
                             user_id: user.id,
                             email: value
                         })}
+                        notFoundContent={emptyResult()}
                         optionRender={(option) => {
                             return renderOption({
                                 picture: option.data.picture,

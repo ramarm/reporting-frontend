@@ -6,7 +6,8 @@ export default function AuthModal({isOpen, closeModal}) {
     return <Modal open={isOpen}
                   footer={null}
                   onCancel={closeModal}
-                  closable={true}>
+                  closable={true}
+                  zIndex={99999}>
         <Space direction="vertical" style={{textAlign: "center", width: "100%"}}>
             <GoogleAuth closeModal={closeModal}/>
             <MicrosoftAuth closeModal={closeModal}/>
