@@ -1,7 +1,7 @@
 import {Avatar, Dropdown, Space, Typography} from "antd";
 import {CopyOutlined, DeleteOutlined, EllipsisOutlined, LoadingOutlined, UserSwitchOutlined} from "@ant-design/icons";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {changeOwner, deleteReport} from "../../../Queries/reporting.js";
+import {changeOwner, deleteReport, duplicateReport} from "../../../Queries/reporting.js";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {getUser} from "../../../Queries/monday.js";
 
@@ -26,6 +26,18 @@ export default function ReportExtra({report}) {
                     }
                     return oldReport;
                 });
+            });
+        }
+    });
+
+    const {mutate: duplicateMutation} = useMutation({
+        mutationFn: () => duplicateReport({reportId: report.id}),
+        onSuccess: (newReport) => {
+            queryClient.setQueryData(["reports"], (oldData) => {
+                return [
+                    ...oldData,
+                    newReport
+                ];
             });
         }
     });
@@ -69,6 +81,7 @@ export default function ReportExtra({report}) {
                               label: <Text>Duplicate</Text>,
                               onClick: ({domEvent: e}) => {
                                   e.stopPropagation();
+                                  duplicateMutation();
                               }
                           },
                           {

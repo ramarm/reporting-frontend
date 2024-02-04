@@ -20,6 +20,13 @@ export async function createReport({boardId}) {
     });
 }
 
+export async function duplicateReport({reportId}) {
+    return await sendReportingRequest({
+        method: "POST",
+        uri: `/api/v1/report/${reportId}/duplicate`
+    });
+}
+
 export async function changeOwner({reportId}) {
     return await sendReportingRequest({
         method: "PATCH",
