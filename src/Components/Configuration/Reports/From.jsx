@@ -24,8 +24,7 @@ export default function From({reportId, setReport}) {
             value: emailAccount.email,
             customLabel: renderOption({
                 picture: emailAccount.picture,
-                name: emailAccount.name,
-                email: emailAccount.email
+                name: emailAccount.name
             }),
             email: emailAccount.email,
             name: emailAccount.name,
@@ -33,11 +32,11 @@ export default function From({reportId, setReport}) {
         }
     });
 
-    function renderOption({picture, name, email}) {
+    function renderOption({picture, name}) {
         const nameInitials = name.split(" ").map((word) => word[0]).join("");
         return <Space size={5}>
-            <Avatar size="small" src={picture}>{nameInitials}</Avatar>
-            <Text>{email}</Text>
+            {picture ? <Avatar size="small" src={picture}/> : <Avatar size="small">{nameInitials}</Avatar>}
+            <Text>{name}</Text>
         </Space>
     }
 
@@ -65,17 +64,17 @@ export default function From({reportId, setReport}) {
                         loading={isLoadingEmailAccounts}
                         variant="borderless"
                         options={options}
-                        value={report.sender.email}
-                        onChange={(value) => setReport("sender", {
+                        value={report?.sender?.email}
+                        onChange={(_, option) => setReport("sender", {
                             user_id: user.id,
-                            email: value
+                            name: option.name,
+                            email: option.email,
                         })}
                         notFoundContent={emptyResult()}
                         optionRender={(option) => {
                             return renderOption({
                                 picture: option.data.picture,
-                                name: option.data.name,
-                                email: option.data.email
+                                name: option.data.name
                             })
                         }}/>
             </Col>

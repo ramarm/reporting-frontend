@@ -2,7 +2,7 @@ import {Avatar, Button} from "antd";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../consts.js";
 
 const BASE_URL = `https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize`;
-const SCOPES = ["openid", "profile", "offline_access", "User.Read", "Mail.Read"];
+const SCOPES = ["openid", "profile", "offline_access", "User.Read", "Mail.Send"];
 
 export default function MicrosoftAuth({closeModal}) {
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));

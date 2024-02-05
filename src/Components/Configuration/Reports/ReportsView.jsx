@@ -35,9 +35,9 @@ export default function ReportsView() {
     }
 
     function generateCollapseItems() {
-        return reports.map((report, index) => {
+        return reports.map((report) => {
             return {
-                key: index,
+                key: report.id,
                 label: <Space split={<Divider type="vertical" style={{margin: 0}}/>}>
                     <Text ellipsis={true}
                           style={{
