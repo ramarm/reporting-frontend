@@ -1,9 +1,10 @@
-import {Avatar, Button, Col, Row, Select, Space, Typography} from "antd";
+import {Button, Col, Row, Select, Space, Typography} from "antd";
 import AuthModal from "../../Auth/AuthModal.jsx";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import {getEmailAccounts} from "../../../Queries/management.js";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
+import {renderOption} from "./GeneralComponents.jsx";
 
 const {Title, Text} = Typography;
 
@@ -32,14 +33,6 @@ export default function From({reportId, setReport}) {
         }
     });
 
-    function renderOption({picture, name}) {
-        const nameInitials = name.split(" ").map((word) => word[0]).join("");
-        return <Space size={5}>
-            {picture ? <Avatar size="small" src={picture}/> : <Avatar size="small">{nameInitials}</Avatar>}
-            <Text>{name}</Text>
-        </Space>
-    }
-
     function emptyResult() {
         return <Space direction="vertical"
                       style={{
@@ -59,7 +52,6 @@ export default function From({reportId, setReport}) {
             </Col>
             <Col flex="auto">
                 <Select style={{width: "100%"}}
-                        size="small"
                         optionLabelProp="customLabel"
                         loading={isLoadingEmailAccounts}
                         variant="borderless"
@@ -80,7 +72,6 @@ export default function From({reportId, setReport}) {
             </Col>
             <Col>
                 <Button style={{float: "right"}}
-                        size="small"
                         type="text"
                         onClick={() => setIsModalOpen(true)}>Add account</Button>
             </Col>

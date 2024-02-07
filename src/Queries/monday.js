@@ -50,3 +50,9 @@ export async function getUser({userId}) {
     const query = "query ($userId: [ID!]) { users (ids:$userId) { id name email photo_tiny photo_original } }"
     return (await runQuery({query, variables: {userId}})).users[0]
 }
+
+export async function getUsers() {
+    const query = "{ users { id name email photo_tiny } }"
+    return (await runQuery({query, variables: {}})).users
+
+}

@@ -29,7 +29,7 @@ export default function MicrosoftAuth({closeModal}) {
 
     return <Button icon={<Avatar shape="square" style={{borderRadius: 0}}
                                  src="https://www.vectorlogo.zone/logos/microsoft/microsoft-icon.svg"/>}
-                   style={{height: "50px"}}
+                   style={{height: "50px", width: "220px"}}
                    onClick={handleLogin}>
         Sign in with Microsoft
     </Button>;

@@ -35,7 +35,7 @@ export default function GoogleAuth({closeModal}) {
 
     return <Button icon={<Avatar shape="square" style={{borderRadius: 0}}
                                  src="https://www.vectorlogo.zone/logos/google/google-icon.svg"/>}
-                   style={{height: "50px"}}
+                   style={{height: "50px", width: "220px"}}
                    onClick={handleLogin}>
         Sign in with Google
     </Button>;
