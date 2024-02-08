@@ -3,6 +3,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {patchReport} from "../../../Queries/reporting.js";
 import From from "./From.jsx";
 import Recipients from "./Recipients.jsx";
+import ReportingEditor from "../../Editor/ReportingEditor.jsx";
 
 export default function Report({reportId}) {
     const queryClient = useQueryClient();
@@ -51,10 +52,6 @@ export default function Report({reportId}) {
                value={report.subject}
                onChange={(e) => updateReport("subject", e.target.value)}
                onBlur={(e) => setReportSubject(e.target.value)}/>
-        <Input.TextArea rows={5}
-                        variant="borderless"
-                        value={report.body}
-                        onChange={(e) => updateReport("body", e.target.value)}
-                        onBlur={(e) => setReport("body", e.target.value)}/>
+        <ReportingEditor initialValue={report.body} onChange={(value) => setReport("body", value)}/>
     </Space>
 }

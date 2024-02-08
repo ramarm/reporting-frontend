@@ -1,0 +1,22 @@
+@import url("Lexical.css");
+
+#editor-container {
+    padding: 5px;
+}
+
+#inner-editor-container {
+    position: relative;
+    min-height: 100px;
+}
+
+#footer-plugins-container {
+    margin-top: 5px;
+}
+
+.editor-placeholder {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    color: gray;
+    pointer-events: none;
+}
