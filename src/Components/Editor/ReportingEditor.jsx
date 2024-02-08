@@ -13,6 +13,7 @@ import BlockPlugin from "./SpotnikEditor/Plugins/BlockPlugin.jsx";
 import {LinkPlugin} from "@lexical/react/LexicalLinkPlugin.js";
 import ImagePlugin from "./SpotnikEditor/Plugins/ImagePlugin.jsx";
 import EmojiPlugin from "./SpotnikEditor/Plugins/EmojiPlugin.jsx";
+import InsightsPlugin from "./InsightsPlugin.jsx";
 
 export default function ReportingEditor({initialValue, disabled, onChange}) {
     const parser = new DOMParser();
@@ -22,6 +23,7 @@ export default function ReportingEditor({initialValue, disabled, onChange}) {
                           disabled={disabled}
                           innerEditor={<ReportingPlugin onChange={onChange} toolbarPlugins/>}
                           toolbarPlugins={[
+                              <InsightsPlugin key="insights"/>,
                               <UndoRedoPlugin key="undo-redo"/>,
                               <Divider key="div1" type={"vertical"}/>,
                               <FontsPlugin key="fonts"/>,
