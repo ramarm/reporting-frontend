@@ -2,7 +2,7 @@ import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {Avatar, Button, Space, Typography} from "antd";
 import {useRef, useState} from "react";
 import useOutsideClick from "./SpotnikEditor/Plugins/Toolbar/ClickOutsideHook.js";
-
+import InsightsLogo from "../../insights.svg";
 
 const {Text} = Typography;
 
@@ -27,7 +27,7 @@ export default function InsightsPlugin() {
                     disabled={!editor.isEditable()}
                     onClick={() => setVisible(!visible)}>
                 <Space>
-                    <Avatar shape="square" src="http://localhost:3000/insights.svg" size={24}/>
+                    <Avatar shape="square" src={InsightsLogo} size={24}/>
                     <Text style={{color: "white"}}>Add Insight</Text>
                 </Space>
             </Button>
