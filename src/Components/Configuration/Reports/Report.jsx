@@ -12,6 +12,9 @@ export default function Report({reportId}) {
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
     const editable = report.owner === context.user.id;
 
+    console.log("context", context)
+    console.log(report.owner);
+
     const {mutate: patchReportMutation} = useMutation({
         mutationFn: ({reportId, key, value}) => patchReport({reportId, key, value}),
         onSuccess: ({key, value}) => {
@@ -60,6 +63,7 @@ export default function Report({reportId}) {
                value={report.subject}
                onChange={(e) => updateReport("subject", e.target.value)}
                onBlur={(e) => setReportSubject(e.target.value)}/>
-        <ReportingEditor initialValue={report.body} disabled={!editable} onChange={(value) => setReport("body", value)}/>
+        <ReportingEditor initialValue={report.body} disabled={!editable}
+                         onChange={(value) => setReport("body", value)}/>
     </Space>
 }
