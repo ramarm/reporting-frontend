@@ -12,6 +12,8 @@ export default function AuthModal({isOpen, closeModal}) {
             <GoogleAuth closeModal={closeModal}/>
             <MicrosoftAuth closeModal={closeModal}/>
             <Alert message="Make sure to tick all the checkboxes when authorizing your account"/>
+            <Alert type="warning"
+                message="If you are using the monday.com Desktop app those buttons will not work. Please use the web version of monday.com to authorize your account."/>
         </Space>
     </Modal>
 }
