@@ -1,7 +1,7 @@
 import {Avatar, Button} from "antd";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../consts.js";
 
-const BASE_URL = `https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize`;
+const BASE_URL = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`;
 const SCOPES = ["openid", "profile", "offline_access", "User.Read", "Mail.Send"];
 
 export default function MicrosoftAuth({refetchAccounts, closeModal}) {
@@ -15,6 +15,7 @@ export default function MicrosoftAuth({refetchAccounts, closeModal}) {
             response_type: "code",
             redirect_uri: redirectUrl,
             response_mode: "query",
+            prompt: "select_account",
             scope: SCOPES.join(" "),
             state: JSON.stringify({
                 app_id: import.meta.env.VITE_MONDAY_APP_ID,
