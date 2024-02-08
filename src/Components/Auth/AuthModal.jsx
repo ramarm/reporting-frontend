@@ -3,7 +3,7 @@ import MicrosoftAuth from "./Microsoft.jsx";
 import GoogleAuth from "./Google.jsx";
 import {useState} from "react";
 
-export default function AuthModal({isOpen, closeModal}) {
+export default function AuthModal({isOpen, closeModal, refetchAccount}) {
     const [clicked, setClicked] = useState(false);
 
     return <Modal open={isOpen}
@@ -12,11 +12,11 @@ export default function AuthModal({isOpen, closeModal}) {
                   closable={true}
                   zIndex={99999}>
         <Space direction="vertical" style={{textAlign: "center", width: "100%"}}>
-            <GoogleAuth closeModal={() => {
+            <GoogleAuth refetchAccounts={refetchAccount} closeModal={() => {
                 setClicked(true);
                 closeModal();
             }}/>
-            <MicrosoftAuth closeModal={() => {
+            <MicrosoftAuth refetchAccounts={refetchAccount} closeModal={() => {
                 setClicked(true);
                 closeModal();
             }}/>

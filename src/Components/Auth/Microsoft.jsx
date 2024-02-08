@@ -4,7 +4,7 @@ import {STORAGE_MONDAY_CONTEXT_KEY} from "../../consts.js";
 const BASE_URL = `https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize`;
 const SCOPES = ["openid", "profile", "offline_access", "User.Read", "Mail.Send"];
 
-export default function MicrosoftAuth({closeModal}) {
+export default function MicrosoftAuth({refetchAccounts, closeModal}) {
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
 
     function handleLogin() {
@@ -24,7 +24,13 @@ export default function MicrosoftAuth({closeModal}) {
         };
         const query = Object.keys(queryParams).map(key => `${key}=${queryParams[key]}`).join("&");
         const url = `${BASE_URL}?${query}`;
-        window.open(url, "loginPopup", "width=600,height=600");
+        const popup = window.open(url, "loginPopup", "width=600,height=600");
+        const popupListener = setInterval(() => {
+            if (!popup || popup.closed) {
+                refetchAccounts();
+                clearInterval(popupListener);
+            }
+        }, 500);
     }
 
     return <Button icon={<Avatar shape="square" style={{borderRadius: 0}}

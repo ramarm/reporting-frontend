@@ -14,7 +14,11 @@ export default function From({reportId, setReport}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
 
-    const {data: emailAccounts, isLoading: isLoadingEmailAccounts} = useQuery({
+    const {
+        data: emailAccounts,
+        isLoading: isLoadingEmailAccounts,
+        refetch: refetchEmailAccount
+    } = useQuery({
         queryKey: ["emailAccounts"],
         queryFn: getEmailAccounts
     });
@@ -77,6 +81,7 @@ export default function From({reportId, setReport}) {
             </Col>
         </Row>
         <AuthModal isOpen={isModalOpen}
+                   refetchAccount={refetchEmailAccount}
                    closeModal={() => setIsModalOpen(false)}/>
     </>
 }
