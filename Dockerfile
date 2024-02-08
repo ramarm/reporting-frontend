@@ -17,7 +17,7 @@ ENV VITE_REPORTING_API=$VITE_REPORTING_API
 WORKDIR /app
 COPY package.json package-lock.json ./
 
-RUN npm ci
+RUN npm ci --include=dev
 
 COPY . .
 
