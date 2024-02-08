@@ -21,12 +21,13 @@ export default function ReportExtra({reportId}) {
         mutationFn: () => changeOwner({reportId: report.id}),
         onSuccess: (newOwner) => {
             queryClient.setQueryData(["reports"], (oldData) => {
-                return oldData.map((oldReport) => {
-                    if (oldReport.id === report.id) {
-                        report.owner = newOwner;
-                    }
-                    return oldReport;
-                });
+                const newData = [...oldData];
+                const reportIndex = newData.findIndex((report) => report.id === reportId);
+                const newReport = {...newData[reportIndex]};
+                newReport.owner = newOwner;
+                newReport.sender = null;
+                newData[reportIndex] = newReport;
+                return newData;
             });
         }
     });
