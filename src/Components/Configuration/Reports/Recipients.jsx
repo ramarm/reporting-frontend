@@ -5,13 +5,14 @@ import {renderOption} from "./GeneralComponents.jsx";
 
 const {Text} = Typography;
 
-function Recipient({options, isLoading, value, setValue, prefix, extra}) {
+function Recipient({options, isLoading, value, setValue, prefix, extra, editable}) {
     return <Row style={{padding: "4px 11px", width: "100%"}}>
         <Col>
             <Text style={{lineHeight: "24px"}}>{prefix}</Text>
         </Col>
         <Col flex="auto">
             <Select style={{width: "100%"}}
+                    disabled={!editable}
                     mode="multiple"
                     optionLabelProp="customLabel"
                     loading={isLoading}
@@ -38,7 +39,7 @@ function Recipient({options, isLoading, value, setValue, prefix, extra}) {
     </Row>
 }
 
-export default function Recipients({reportId, setReport}) {
+export default function Recipients({reportId, setReport, editable}) {
     const queryClient = useQueryClient();
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
 
@@ -63,8 +64,8 @@ export default function Recipients({reportId, setReport}) {
 
     function recipientAddon() {
         return <div>
-            {!report.cc && <Button type="text" onClick={() => setReport("cc", [])}>Cc</Button>}
-            {!report.bcc && <Button type="text" onClick={() => setReport("bcc", [])}>Bcc</Button>}
+            {!report.cc && <Button type="text" disabled={!editable} onClick={() => setReport("cc", [])}>Cc</Button>}
+            {!report.bcc && <Button type="text" disabled={!editable} onClick={() => setReport("bcc", [])}>Bcc</Button>}
         </div>
     }
 
@@ -73,17 +74,20 @@ export default function Recipients({reportId, setReport}) {
                   split={<Divider style={{margin: 0}}/>}
                   style={{width: "100%"}}>
         <Recipient options={recipientOptions}
+                   editable={editable}
                    isLoading={isLoadingUsers}
                    value={report.to}
                    setValue={(newValue) => setReport("to", newValue)}
                    prefix="To"
                    extra={recipientAddon()}/>
         {report.cc && <Recipient options={recipientOptions}
+                                 editable={editable}
                                  isLoading={isLoadingUsers}
                                  value={report.cc}
                                  setValue={(newValue) => setReport("cc", newValue)}
                                  prefix="Cc"/>}
         {report.bcc && <Recipient options={recipientOptions}
+                                  editable={editable}
                                   isLoading={isLoadingUsers}
                                   value={report.bcc}
                                   setValue={(newValue) => setReport("bcc", newValue)}

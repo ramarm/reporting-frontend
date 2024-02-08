@@ -4,10 +4,13 @@ import {patchReport} from "../../../Queries/reporting.js";
 import From from "./From.jsx";
 import Recipients from "./Recipients.jsx";
 import ReportingEditor from "../../Editor/ReportingEditor.jsx";
+import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 
 export default function Report({reportId}) {
     const queryClient = useQueryClient();
+    const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
+    const editable = report.owner === context.user.id;
 
     const {mutate: patchReportMutation} = useMutation({
         mutationFn: ({reportId, key, value}) => patchReport({reportId, key, value}),
@@ -43,15 +46,20 @@ export default function Report({reportId}) {
                size={2}
                split={<Divider style={{margin: 0}}/>}
                style={{width: "100%"}}>
-            <From reportId={reportId} setReport={setReport}/>
-            <Recipients reportId={reportId} setReport={setReport}/>
+            <From reportId={reportId}
+                  setReport={setReport}
+                  editable={editable}/>
+            <Recipients reportId={reportId}
+                        setReport={setReport}
+                        editable={editable}/>
         </Space>
         <Input style={{lineHeight: "32px"}}
                placeholder="Subject"
                variant="borderless"
+               disabled={!editable}
                value={report.subject}
                onChange={(e) => updateReport("subject", e.target.value)}
                onBlur={(e) => setReportSubject(e.target.value)}/>
-        <ReportingEditor initialValue={report.body} onChange={(value) => setReport("body", value)}/>
+        <ReportingEditor initialValue={report.body} disabled={!editable} onChange={(value) => setReport("body", value)}/>
     </Space>
 }

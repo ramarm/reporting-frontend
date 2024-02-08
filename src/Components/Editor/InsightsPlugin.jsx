@@ -24,8 +24,11 @@ export default function InsightsPlugin() {
         <div ref={ref}>
             <Button className={"toolbar-button"}
                     type="primary"
-                    disabled={!editor.isEditable()}
-                    onClick={() => setVisible(!visible)}>
+                    onClick={() => {
+                        if (editor.isEditable()) {
+                            setVisible(!visible)
+                        }
+                    }}>
                 <Space>
                     <Avatar shape="square" src={InsightsLogo} size={24}/>
                     <Text style={{color: "white"}}>Add Insight</Text>

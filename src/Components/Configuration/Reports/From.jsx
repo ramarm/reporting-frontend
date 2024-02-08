@@ -8,7 +8,7 @@ import {renderOption} from "./GeneralComponents.jsx";
 
 const {Title, Text} = Typography;
 
-export default function From({reportId, setReport}) {
+export default function From({reportId, setReport, editable}) {
     const queryClient = useQueryClient();
     const {user} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,6 +56,7 @@ export default function From({reportId, setReport}) {
             </Col>
             <Col flex="auto">
                 <Select style={{width: "100%"}}
+                        disabled={!editable}
                         optionLabelProp="customLabel"
                         loading={isLoadingEmailAccounts}
                         variant="borderless"
@@ -76,6 +77,7 @@ export default function From({reportId, setReport}) {
             </Col>
             <Col>
                 <Button style={{float: "right"}}
+                        disabled={!editable}
                         type="text"
                         onClick={() => setIsModalOpen(true)}>Add account</Button>
             </Col>

@@ -11,7 +11,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         theme={{
             token: {
                 fontFamily: "-apple-system, Poppins, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
-                colorTextPlaceholder: "rgba(0,0,0,0.7)"
+                colorTextPlaceholder: "rgba(0,0,0,0.7)",
+                colorBgContainerDisabled: "rgba(0,0,0,0)",
+                colorTextDisabled: "rgba(0,0,0,0.7)",
             }
         }}>
         <App>
