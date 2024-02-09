@@ -108,3 +108,10 @@ export async function getEmailAccounts() {
         uri: `/api/v1/user/me/${import.meta.env.VITE_MONDAY_APP_ID}/email_accounts`
     });
 }
+
+export async function deleteEmailAccount({email}) {
+    return await sendManagementRequest({
+        method: "DELETE",
+        uri: `/api/v1/user/me/${import.meta.env.VITE_MONDAY_APP_ID}/email_accounts/${email}`
+    });
+}

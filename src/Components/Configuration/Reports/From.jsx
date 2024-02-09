@@ -2,9 +2,10 @@ import {Button, Col, Row, Select, Space, Typography} from "antd";
 import AuthModal from "../../Auth/AuthModal.jsx";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useEffect, useState} from "react";
-import {getEmailAccounts} from "../../../Queries/management.js";
+import {deleteEmailAccount, getEmailAccounts} from "../../../Queries/management.js";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {renderOption} from "./GeneralComponents.jsx";
+import {DeleteOutlined} from "@ant-design/icons";
 
 const {Title, Text} = Typography;
 
@@ -68,7 +69,6 @@ export default function From({reportId, setReport, editable}) {
             <Button type="primary" onClick={() => setIsModalOpen(true)}>Add account</Button>
         </Space>
     }
-    console.log(report.sender);
 
     return <>
         <Row style={{padding: "4px 11px", width: "100%"}}>
@@ -92,7 +92,19 @@ export default function From({reportId, setReport, editable}) {
                         optionRender={(option) => {
                             return renderOption({
                                 picture: option.data.picture,
-                                name: option.data.name
+                                name: option.data.name,
+                                extra: <Button size="small"
+                                               type="text"
+                                               icon={<DeleteOutlined/>}
+                                               onClick={(e) => {
+                                                   e.stopPropagation();
+                                                   if (report.sender?.email === option.data.email) {
+                                                       setSender(null);
+                                                       setReport("sender", null);
+                                                   }
+                                                   deleteEmailAccount({email: option.data.email})
+                                                       .then(() => refetchEmailAccount())
+                                               }}/>
                             })
                         }}/>
             </Col>
