@@ -4,7 +4,7 @@ import {STORAGE_MONDAY_CONTEXT_KEY} from "../../consts.js";
 const BASE_URL = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`;
 const SCOPES = ["openid", "profile", "offline_access", "User.Read", "Mail.Send"];
 
-export default function MicrosoftAuth({refetchAccounts, closeModal}) {
+export default function MicrosoftAuth({refetchAccounts, setSender, closeModal}) {
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
 
     function handleLogin() {
@@ -29,6 +29,7 @@ export default function MicrosoftAuth({refetchAccounts, closeModal}) {
         const popupListener = setInterval(() => {
             if (!popup || popup.closed) {
                 refetchAccounts();
+                setSender("__LAST_EMAIL_ACCOUNT__");
                 clearInterval(popupListener);
             }
         }, 500);

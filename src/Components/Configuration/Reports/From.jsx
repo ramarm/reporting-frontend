@@ -1,7 +1,7 @@
 import {Button, Col, Row, Select, Space, Typography} from "antd";
 import AuthModal from "../../Auth/AuthModal.jsx";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {getEmailAccounts} from "../../../Queries/management.js";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {renderOption} from "./GeneralComponents.jsx";
@@ -13,6 +13,7 @@ export default function From({reportId, setReport, editable}) {
     const {user} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const [isModalOpen, setIsModalOpen] = useState(false);
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
+    const [sender, setSender] = useState(report?.sender?.email);
 
     const {
         data: emailAccounts,
@@ -22,6 +23,23 @@ export default function From({reportId, setReport, editable}) {
         queryKey: ["emailAccounts"],
         queryFn: getEmailAccounts
     });
+
+    useEffect(() => {
+        if (emailAccounts && sender) {
+            let account;
+            if (sender === "__LAST_EMAIL_ACCOUNT__") {
+                account = emailAccounts.sort((a, b) => new Date(b.last_update) - new Date(a.last_update))[0];
+                setSender(account.email)
+            } else {
+                account = emailAccounts.find((emailAccount) => emailAccount.email === sender)
+            }
+            setReport("sender", {
+                user_id: user.id,
+                name: account.name,
+                email: account.email
+            });
+        }
+    }, [emailAccounts]);
 
     const options = emailAccounts?.map((emailAccount) => {
         return {
@@ -84,6 +102,7 @@ export default function From({reportId, setReport, editable}) {
         </Row>
         <AuthModal isOpen={isModalOpen}
                    refetchAccount={refetchEmailAccount}
+                   setSender={setSender}
                    closeModal={() => setIsModalOpen(false)}/>
     </>
 }

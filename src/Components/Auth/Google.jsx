@@ -10,7 +10,7 @@ const SCOPES = [
     `${GOOGLE_API_URL}/auth/userinfo.email`,
     `${GOOGLE_API_URL}/auth/gmail.send`
 ]
-export default function GoogleAuth({refetchAccounts, closeModal}) {
+export default function GoogleAuth({refetchAccounts, setSender, closeModal}) {
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const loginHook = useGoogleLogin({
         flow: "auth-code",
@@ -25,12 +25,13 @@ export default function GoogleAuth({refetchAccounts, closeModal}) {
     }
 
     async function handleAuth(code) {
-        await authGoogle({
+        const newEmail = (await authGoogle({
             userId: context.user.id,
             scopes: SCOPES,
             code: code
-        });
+        })).data;
         refetchAccounts();
+        setSender(newEmail);
     }
 
     return <Button icon={<Avatar shape="square" style={{borderRadius: 0}}
