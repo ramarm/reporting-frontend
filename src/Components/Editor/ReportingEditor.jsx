@@ -10,10 +10,10 @@ import StylePlugin from "./SpotnikEditor/Plugins/StylePlugin.jsx";
 import DirectionPlugin from "./SpotnikEditor/Plugins/DirectionPlugin.jsx";
 import AlignPlugin from "./SpotnikEditor/Plugins/AlignPlugin.jsx";
 import BlockPlugin from "./SpotnikEditor/Plugins/BlockPlugin.jsx";
-import {LinkPlugin} from "@lexical/react/LexicalLinkPlugin.js";
 import ImagePlugin from "./SpotnikEditor/Plugins/ImagePlugin.jsx";
 import EmojiPlugin from "./SpotnikEditor/Plugins/EmojiPlugin.jsx";
 import InsightsPlugin from "./InsightsPlugin.jsx";
+import LinkPlugin from "./SpotnikEditor/Plugins/LinkPlugin.jsx";
 
 export default function ReportingEditor({initialValue, disabled, onChange}) {
     const parser = new DOMParser();
