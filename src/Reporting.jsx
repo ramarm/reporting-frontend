@@ -174,14 +174,12 @@ function Reporting() {
                     </Space>
                 </div>}
             <TabsIndex/>
-            <FloatButton.Group>
-                <FloatButton icon={<CustomerServiceOutlined/>}
-                             tooltip="Support"
-                             onClick={() => monday.execute("openLinkInTab", {url: "mailto:rnd@spot-nik.com"})}/>
-                <FloatButton icon={<QuestionCircleOutlined/>}
-                             tooltip={"FAQ"}
-                             onClick={() => monday.execute("openLinkInTab", {url: "https://www.spot-nik.com/how-to-use-insights"})}/>
-            </FloatButton.Group>
+            <FloatButton style={{right: 65}} icon={<CustomerServiceOutlined/>}
+                         tooltip="Support"
+                         onClick={() => monday.execute("openLinkInTab", {url: "mailto:rnd@spot-nik.com"})}/>
+            <FloatButton style={{right: 15}} icon={<QuestionCircleOutlined/>}
+                         tooltip={"FAQ"}
+                         onClick={() => monday.execute("openLinkInTab", {url: "https://www.spot-nik.com/how-to-use-insights"})}/>
         </div>
     );
 }

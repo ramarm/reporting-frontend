@@ -78,7 +78,8 @@ export default function ReportsView() {
                     }}
                     onClick={createNewReport}>Create new report</Button>
             <h1>Your reports</h1>
-            <Collapse items={generateCollapseItems()}
+            <Collapse style={{marginBottom: "100px"}}
+                      items={generateCollapseItems()}
                       activeKey={activeKey}
                       bordered={false}
                       onChange={(newActiveKeys) => {
