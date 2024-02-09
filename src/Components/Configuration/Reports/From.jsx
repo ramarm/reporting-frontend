@@ -37,8 +37,7 @@ export default function From({reportId, setReport, editable}) {
                 setReport("sender", {
                     user_id: Number(user.id),
                     name: account.name,
-                    email: account.email,
-                    picture: account.picture
+                    email: account.email
                 });
             }
         }
@@ -87,8 +86,7 @@ export default function From({reportId, setReport, editable}) {
                         onChange={(_, option) => setReport("sender", {
                             user_id: Number(user.id),
                             name: option.name,
-                            email: option.email,
-                            picture: option.picture
+                            email: option.email
                         })}
                         notFoundContent={emptyResult()}
                         optionRender={(option) => {
