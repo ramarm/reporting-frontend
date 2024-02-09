@@ -19,7 +19,7 @@ export default function MicrosoftAuth({refetchAccounts, setSender, closeModal}) 
             scope: SCOPES.join(" "),
             state: JSON.stringify({
                 app_id: import.meta.env.VITE_MONDAY_APP_ID,
-                user_id: context.user.id,
+                user_id: Number(context.user.id),
                 scopes: SCOPES
             })
         };

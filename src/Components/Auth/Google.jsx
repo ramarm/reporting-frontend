@@ -26,7 +26,7 @@ export default function GoogleAuth({refetchAccounts, setSender, closeModal}) {
 
     async function handleAuth(code) {
         const newEmail = (await authGoogle({
-            userId: context.user.id,
+            userId: Number(context.user.id),
             scopes: SCOPES,
             code: code
         })).data;

@@ -25,19 +25,22 @@ export default function From({reportId, setReport, editable}) {
     });
 
     useEffect(() => {
-        if (emailAccounts && sender) {
-            let account;
-            if (sender === "__LAST_EMAIL_ACCOUNT__") {
-                account = emailAccounts.sort((a, b) => new Date(b.last_update) - new Date(a.last_update))[0];
-                setSender(account.email)
-            } else {
-                account = emailAccounts.find((emailAccount) => emailAccount.email === sender)
+        if (editable) {
+            if (emailAccounts && sender) {
+                let account;
+                if (sender === "__LAST_EMAIL_ACCOUNT__") {
+                    account = emailAccounts.sort((a, b) => new Date(b.last_update) - new Date(a.last_update))[0];
+                    setSender(account.email)
+                } else {
+                    account = emailAccounts.find((emailAccount) => emailAccount.email === sender)
+                }
+                setReport("sender", {
+                    user_id: Number(user.id),
+                    name: account.name,
+                    email: account.email,
+                    picture: account.picture
+                });
             }
-            setReport("sender", {
-                user_id: user.id,
-                name: account.name,
-                email: account.email
-            });
         }
     }, [emailAccounts]);
 
@@ -66,6 +69,7 @@ export default function From({reportId, setReport, editable}) {
             <Button type="primary" onClick={() => setIsModalOpen(true)}>Add account</Button>
         </Space>
     }
+    console.log(report.sender);
 
     return <>
         <Row style={{padding: "4px 11px", width: "100%"}}>
@@ -81,9 +85,10 @@ export default function From({reportId, setReport, editable}) {
                         options={options}
                         value={report?.sender?.email}
                         onChange={(_, option) => setReport("sender", {
-                            user_id: user.id,
+                            user_id: Number(user.id),
                             name: option.name,
                             email: option.email,
+                            picture: option.picture
                         })}
                         notFoundContent={emptyResult()}
                         optionRender={(option) => {
