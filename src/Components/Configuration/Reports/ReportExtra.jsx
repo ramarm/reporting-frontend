@@ -10,6 +10,7 @@ export default function ReportExtra({reportId}) {
     const queryClient = useQueryClient();
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
+    const editable = report.owner === Number(context.user.id);
 
     const {data: owner} = useQuery({
         queryKey: ["user", report.owner],
@@ -71,7 +72,7 @@ export default function ReportExtra({reportId}) {
                               key: "take_ownership",
                               icon: <UserSwitchOutlined/>,
                               label: <Text>Take ownership</Text>,
-                              disabled: report.owner === context.user.id,
+                              disabled: editable,
                               onClick: ({domEvent: e}) => {
                                   e.stopPropagation();
                                   changeOwnerMutation();
@@ -90,6 +91,7 @@ export default function ReportExtra({reportId}) {
                               key: "delete",
                               icon: <DeleteOutlined/>,
                               label: <Text>Delete</Text>,
+                              disabled: !editable,
                               onClick: ({domEvent: e}) => {
                                   e.stopPropagation();
                                   deleteReportMutation();
