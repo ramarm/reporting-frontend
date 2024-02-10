@@ -8,7 +8,7 @@ import {$createImageNode} from "../Nodes/ImageNode.jsx";
 import {InfoCircleTwoTone, UploadOutlined} from "@ant-design/icons";
 import {getClosestElementNode} from "./KeyboardPlugin";
 import {$createDivParagraphNode} from "../Nodes/DivParagraphNode.jsx";
-
+import {v4 as uuid} from "uuid";
 
 function UrlTab({setImageUrl}) {
     return (
@@ -32,7 +32,7 @@ function UploadTab({setImageUrl, uploadImage}) {
     )
 }
 
-export default function ImagePlugin({uploadImage}) {
+export default function ImagePlugin() {
     const [editor] = useLexicalComposerContext()
     const ref = useRef();
     const [visible, setVisible] = useState(false)
@@ -62,6 +62,24 @@ export default function ImagePlugin({uploadImage}) {
         setImageUrl(null);
         setWidth(null);
         setHeight(null);
+    }
+
+    async function uploadImage({file}) {
+        const fileKey = encodeURIComponent(`${uuid()}-${file.name}`);
+        const url = `https://storage.googleapis.com/upload/storage/v1/b/${import.meta.env.VITE_PHOTOS_BUCKET}/o?uploadType=media&name=${fileKey}`;
+
+        const response = await fetch(url, {
+            method: "POST",
+            body: file,
+            headers: {
+                "Content-Type": file.type
+            }
+        });
+        if (response.status === 200) {
+            return `https://storage.googleapis.com/${import.meta.env.VITE_PHOTOS_BUCKET}/${fileKey}`;
+        } else {
+            return false;
+        }
     }
 
     function insertImage() {

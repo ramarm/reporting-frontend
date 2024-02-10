@@ -42,7 +42,7 @@ export default function ReportingEditor({initialValue, disabled, onChange}) {
                               <BlockPlugin key="block"/>,
                               <Divider key="div6" type={"vertical"}/>,
                               <LinkPlugin key="link"/>,
-                              <ImagePlugin key="image" uploadImage={() => console.log("upload")}/>,
+                              <ImagePlugin key="image"/>,
                               <EmojiPlugin key="emoji"/>
                           ]}
     />
