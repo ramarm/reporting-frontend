@@ -6,7 +6,7 @@ import Report from "./Report.jsx";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {createReport, getReports} from "../../../Queries/reporting.js";
-import {htmlToText} from "html-to-text";
+import {convert as htmlConvert} from "html-to-text";
 
 const {Text} = Typography;
 
@@ -46,7 +46,11 @@ export default function ReportsView() {
                               fontWeight: 600
                           }}>{report.subject ? report.subject : "No subject"}</Text>
                     <Text ellipsis={true}
-                          style={{maxWidth: "50vw"}}>{report.body ? htmlToText(report.body) : "No body"}</Text>
+                          style={{maxWidth: "50vw"}}>{report.body ? htmlConvert(report.body, {
+                        selectors: [
+                            {selector: "img", format: "skip"}
+                        ]
+                    }) : "No body"}</Text>
                 </Space>,
                 children: <Report reportId={report.id}/>,
                 extra: <ReportExtra reportId={report.id}/>
