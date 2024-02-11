@@ -45,15 +45,21 @@ export default function From({reportId, setReport, editable}) {
     }, [emailAccounts]);
 
     const options = emailAccounts?.map((emailAccount) => {
+        let name;
+        if (emailAccount.name.trim()) {
+            name = emailAccount.name;
+        } else {
+            name = emailAccount.email;
+        }
         return {
             label: emailAccount.email,
             value: emailAccount.email,
             customLabel: renderOption({
                 picture: emailAccount.picture,
-                name: emailAccount.name
+                name: name
             }),
             email: emailAccount.email,
-            name: emailAccount.name,
+            name: name,
             picture: emailAccount.picture
         }
     });
