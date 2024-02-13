@@ -13,7 +13,7 @@ import {ImageNode} from "./Nodes/ImageNode.jsx";
 import {ExtendedListItemNode} from "./Nodes/ExtendedListItemNode.jsx";
 import {ExtendedListNode} from "./Nodes/ExtendedListNode.jsx";
 import DivParagraphNode from "./Nodes/DivParagraphNode.jsx";
-import {InsightNode} from "../InsightsNode.jsx";
+import {InsightNode} from "../InsightsPlugin/InsightsNode.jsx";
 
 
 export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, footerPlugins, disabled}) {

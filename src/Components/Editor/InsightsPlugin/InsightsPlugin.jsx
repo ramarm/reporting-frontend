@@ -3,7 +3,7 @@ import {Avatar, Button, Flex, Form, Space, Steps, Typography} from "antd";
 import {useRef, useState} from "react";
 import InsightsLogo from "../../../insights.svg";
 import {$getSelection, $insertNodes} from "lexical";
-import {$createInsightNode} from "../InsightsNode.jsx";
+import {$createInsightNode} from "./InsightsNode.jsx";
 import {getClosestElementNode} from "../SpotnikEditor/Plugins/KeyboardPlugin.js";
 import Criteria from "./Criteria.jsx";
 import ChooseFunction from "./ChooseFunction.jsx";
@@ -19,7 +19,7 @@ export default function InsightsPlugin() {
     const [visible, setVisible] = useState(false);
     const [step, setStep] = useState(0);
 
-    console.log(insightData);
+    const func = FUNCTIONS.find((func => func.value === insightData.func));
 
     const steps = [
         {
@@ -28,14 +28,18 @@ export default function InsightsPlugin() {
                                      setData={setInsightData}/>,
             buttons: <Space>
                 <Button type="primary"
-                        disabled={!insightData.func}
-                        onClick={() => setStep(oldStep => oldStep + 1)}>
+                        disabled={!func}
+                        onClick={() => setStep(oldStep => {
+                            if (func.criteria.length > 0) return oldStep + 1
+                            return oldStep + 2
+                        })}>
                     Next
                 </Button>
             </Space>
         },
         {
             title: "Criteria",
+            disabled: !func || func.criteria.length === 0,
             content: <Criteria data={insightData}
                                setData={setInsightData}/>,
             buttons: <Space>
@@ -51,10 +55,14 @@ export default function InsightsPlugin() {
         },
         {
             title: "Filter",
+            disabled: !func,
             content: <h1>Here the user will choose filters</h1>,
             buttons: <Space>
                 <Button type="default"
-                        onClick={() => setStep(oldStep => oldStep - 1)}>
+                        onClick={() => setStep(oldStep => {
+                            if (func.criteria.length > 0) return oldStep - 1
+                            return oldStep - 2
+                        })}>
                     Back
                 </Button>
                 <Button type="primary"
@@ -65,6 +73,7 @@ export default function InsightsPlugin() {
         },
         {
             title: "Breakdown",
+            disabled: !func,
             content: <h1>Here the user will choose breakdowns</h1>,
             buttons: <Space>
                 <Button type="default"
@@ -79,6 +88,7 @@ export default function InsightsPlugin() {
         },
         {
             title: "Confirmation",
+            disabled: !validateInsight(),
             content: <Confirmation data={insightData} setData={setInsightData}/>,
             buttons: <Space>
                 <Button type="default"
@@ -95,6 +105,15 @@ export default function InsightsPlugin() {
             </Space>
         }
     ]
+
+    function validateInsight() {
+        if (!func) {
+            return false;
+        }
+        return func.criteria.every((criterion) => {
+            return insightData[criterion];
+        });
+    }
 
     function generateSentence() {
         if (!insightData.func) {
@@ -129,6 +148,8 @@ export default function InsightsPlugin() {
         })
         closeWindow();
     }
+
+    console.log(insightData);
 
     return (
         <div ref={ref}>

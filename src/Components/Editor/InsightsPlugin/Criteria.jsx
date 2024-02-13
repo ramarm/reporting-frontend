@@ -1,7 +1,27 @@
 import {Form, Input, Space} from "antd";
+import {FUNCTIONS} from "./config.jsx";
 
 export default function Criteria({data, setData}) {
-    const {column, value} = data;
+    const {column, value, timespan} = data;
+    const func = FUNCTIONS.find(f => f.value === data.func);
+
+    const critirias = {
+        column: {
+            label: "Column",
+            value: column,
+            changeFunction: setColumn
+        },
+        value: {
+            label: "Value",
+            value: value,
+            changeFunction: setValue
+        },
+        timespan: {
+            label: "Time",
+            value: timespan,
+            changeFunction: setTime
+        }
+    }
 
     function setColumn(column) {
         setData((oldData) => ({...oldData, "column": column}))
@@ -11,12 +31,16 @@ export default function Criteria({data, setData}) {
         setData((oldData) => ({...oldData, "value": value}))
     }
 
+    function setTime(time) {
+        setData((oldData) => ({...oldData, "timespan": time}))
+    }
+
     return <Space>
-        <Form.Item label="Column">
-            <Input value={column} onChange={(e) => setColumn(e.target.value)}/>
-        </Form.Item>
-        <Form.Item name="value" label="Value">
-            <Input value={value} onChange={(e) => setValue(e.target.value)}/>
-        </Form.Item>
+        {func.criteria?.map(c => {
+            const cretiria = critirias[c];
+            return <Form.Item key={cretiria.label} label={cretiria.label}>
+                <Input value={cretiria.value} onChange={(e) => cretiria.changeFunction(e.target.value)}/>
+            </Form.Item>
+        })}
     </Space>
 }
