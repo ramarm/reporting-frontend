@@ -1,11 +1,11 @@
-import {Button, Col, Row, Select, Space, Typography} from "antd";
+import {Button, Col, Divider, Row, Select, Space, Typography} from "antd";
 import AuthModal from "../../Auth/AuthModal.jsx";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useEffect, useState} from "react";
 import {deleteEmailAccount, getEmailAccounts} from "../../../Queries/management.js";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {renderOption} from "./GeneralComponents.jsx";
-import {DeleteOutlined} from "@ant-design/icons";
+import {DeleteOutlined, PlusOutlined} from "@ant-design/icons";
 
 const {Title, Text} = Typography;
 
@@ -112,13 +112,18 @@ export default function From({reportId, setReport, editable}) {
                                                        .then(() => refetchEmailAccount())
                                                }}/>
                             })
-                        }}/>
-            </Col>
-            <Col>
-                <Button style={{float: "right"}}
-                        disabled={!editable}
-                        type="text"
-                        onClick={() => setIsModalOpen(true)}>Add account</Button>
+                        }}
+                        dropdownRender={(menu) => <Space direction="vertical"
+                                                         split={<Divider style={{margin: 0}}/>}
+                                                         style={{width: "100%"}}>
+                            {menu}
+                            <Button style={{float: "right", width: "100%", textAlign: "left"}}
+                                    disabled={!editable}
+                                    type="text"
+                                    icon={<PlusOutlined/>}
+                                    onClick={() => setIsModalOpen(true)}>Add account</Button>
+                        </Space>
+                        }/>
             </Col>
         </Row>
         <AuthModal isOpen={isModalOpen}
