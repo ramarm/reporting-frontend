@@ -13,6 +13,7 @@ import {ImageNode} from "./Nodes/ImageNode.jsx";
 import {ExtendedListItemNode} from "./Nodes/ExtendedListItemNode.jsx";
 import {ExtendedListNode} from "./Nodes/ExtendedListNode.jsx";
 import DivParagraphNode from "./Nodes/DivParagraphNode.jsx";
+import {InsightNode} from "../InsightsNode.jsx";
 
 
 export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, footerPlugins, disabled}) {
@@ -40,7 +41,8 @@ export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, 
             ExtendedListItemNode,
             {replace: ListItemNode, with: (node) => new ExtendedListItemNode(node.getValue(), node.getChecked())},
             LinkNode,
-            ImageNode
+            ImageNode,
+            InsightNode
         ]
     };
 

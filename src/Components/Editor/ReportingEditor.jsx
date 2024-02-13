@@ -12,7 +12,7 @@ import AlignPlugin from "./SpotnikEditor/Plugins/AlignPlugin.jsx";
 import BlockPlugin from "./SpotnikEditor/Plugins/BlockPlugin.jsx";
 import ImagePlugin from "./SpotnikEditor/Plugins/ImagePlugin.jsx";
 import EmojiPlugin from "./SpotnikEditor/Plugins/EmojiPlugin.jsx";
-import InsightsPlugin from "./InsightsPlugin.jsx";
+import InsightsPlugin from "./InsightsPlugin/InsightsPlugin.jsx";
 import LinkPlugin from "./SpotnikEditor/Plugins/LinkPlugin.jsx";
 
 export default function ReportingEditor({initialValue, disabled, onChange}) {
