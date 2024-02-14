@@ -14,10 +14,6 @@ export const FUNCTIONS = [
                 {data.column ? <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column}</Text>
                     : <Text
                         style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
-                <Text style={{fontSize: "24px"}}>where</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>filters</Text>
-                <Text style={{fontSize: "24px"}}>breakdown by</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>
             </Flex>
         }
     },
@@ -32,10 +28,6 @@ export const FUNCTIONS = [
                 {data.column ? <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column}</Text>
                     : <Text
                         style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
-                <Text style={{fontSize: "24px"}}>where</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>filters</Text>
-                <Text style={{fontSize: "24px"}}>breakdown by</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>
             </Flex>
         }
     },
@@ -50,10 +42,6 @@ export const FUNCTIONS = [
                 {data.column ? <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column}</Text>
                     : <Text
                         style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
-                <Text style={{fontSize: "24px"}}>where</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>filters</Text>
-                <Text style={{fontSize: "24px"}}>breakdown by</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>
             </Flex>
         }
     },
@@ -68,10 +56,6 @@ export const FUNCTIONS = [
                 {data.column ? <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column}</Text>
                     : <Text
                         style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
-                <Text style={{fontSize: "24px"}}>where</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>filters</Text>
-                <Text style={{fontSize: "24px"}}>breakdown by</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>
             </Flex>
         }
     },
@@ -86,10 +70,6 @@ export const FUNCTIONS = [
                 {data.column ? <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column}</Text>
                     : <Text
                         style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
-                <Text style={{fontSize: "24px"}}>where</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>filters</Text>
-                <Text style={{fontSize: "24px"}}>breakdown by</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>
             </Flex>
         }
     },
@@ -101,10 +81,6 @@ export const FUNCTIONS = [
         getSentence: (data) => {
             return <Flex gap="small" wrap="wrap" justify="center" style={{marginBottom: "20px"}}>
                 <Text style={{fontSize: "24px", textDecoration: "underline"}}>Count items</Text>
-                <Text style={{fontSize: "24px"}}>where</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>filters</Text>
-                <Text style={{fontSize: "24px"}}>breakdown by</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>
             </Flex>
         }
     },
@@ -118,10 +94,6 @@ export const FUNCTIONS = [
                 <Text style={{fontSize: "24px", textDecoration: "underline"}}>Count created items</Text>
                 <Text style={{fontSize: "24px"}}>in</Text>
                 <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>time</Text>
-                <Text style={{fontSize: "24px"}}>where</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>filters</Text>
-                <Text style={{fontSize: "24px"}}>breakdown by</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>
             </Flex>
         }
     },
@@ -139,10 +111,6 @@ export const FUNCTIONS = [
                 <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>value</Text>
                 <Text style={{fontSize: "24px"}}>in</Text>
                 <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>time</Text>
-                <Text style={{fontSize: "24px"}}>where</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>filters</Text>
-                <Text style={{fontSize: "24px"}}>breakdown by</Text>
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>
             </Flex>
         }
     }
