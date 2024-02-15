@@ -2,7 +2,13 @@ import {DecoratorNode} from "lexical";
 
 function convertInsightElement(domNode) {
     if (domNode instanceof HTMLElement && domNode.tagName === "INSIGHT") {
-        const {title, func, column, value, timespan, filters, breakdown} = domNode;
+        const title = domNode.attributes.getNamedItem("title").value;
+        const func = domNode.attributes.getNamedItem("func").value;
+        const column = domNode.attributes.getNamedItem("column").value;
+        const value = domNode.attributes.getNamedItem("value").value;
+        const timespan = domNode.attributes.getNamedItem("timespan").value;
+        const filters = domNode.attributes.getNamedItem("filters").value;
+        const breakdown = domNode.attributes.getNamedItem("breakdown").value;
         const node = $createInsightNode({title, func, column, value, timespan, filters, breakdown});
         return {node};
     }
