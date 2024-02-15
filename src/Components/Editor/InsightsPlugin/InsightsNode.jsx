@@ -12,7 +12,6 @@ function convertInsightElement(domNode) {
         const node = $createInsightNode({title, func, column, value, timespan, filters, breakdown});
         return {node};
     }
-    return null;
 }
 
 export class InsightNode extends DecoratorNode {
