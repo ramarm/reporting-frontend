@@ -13,6 +13,7 @@ import {FUNCTIONS} from "./config.jsx";
 const {Text} = Typography;
 
 export default function InsightsPlugin() {
+    const [step, setStep] = useState(0);
     const [insightData, setInsightData] = useState({step: 0});
     const [editor] = useLexicalComposerContext();
     const ref = useRef();
@@ -21,18 +22,18 @@ export default function InsightsPlugin() {
     const func = FUNCTIONS.find((func => func.value === insightData.func));
 
     function increaseStep() {
-        if (insightData.step === 0 && func?.criteria.length === 0) {
-            setInsightData(oldData => ({...oldData, step: oldData.step + 2}));
+        if (step === 0 && func?.criteria.length === 0) {
+            setStep((oldStep) => oldStep + 2);
         } else {
-            setInsightData(oldData => ({...oldData, step: oldData.step + 1}));
+            setStep((oldStep) => oldStep + 1);
         }
     }
 
     function decreaseStep() {
-        if (insightData.step === 2 && func?.criteria.length === 0) {
-            setInsightData(oldData => ({...oldData, step: oldData.step - 2}));
+        if (step === 2 && func?.criteria.length === 0) {
+            setStep((oldStep) => oldStep - 2);
         } else {
-            setInsightData(oldData => ({...oldData, step: oldData.step - 1}));
+            setStep((oldStep) => oldStep - 1);
         }
     }
 
@@ -41,7 +42,7 @@ export default function InsightsPlugin() {
             title: "Choose Function",
             content: <ChooseFunction data={insightData}
                                      setData={setInsightData}
-                                     increaseStep={increaseStep}/>
+                                     setStep={setStep}/>
         },
         {
             title: "Criteria",
@@ -166,14 +167,13 @@ export default function InsightsPlugin() {
                     <Flex>
                         <Steps style={{width: "20vw"}}
                                progressDot
-                               current={insightData.step}
+                               current={step}
                                direction="vertical"
-                               onChange={(step) => setInsightData(oldData => ({...oldData, step}))}
+                               onChange={(step) => setStep(step)}
                                items={steps}/>
-                        <Flex vertical align="center" justify="space-evenly" style={{width: "100%"}}>
-                            {steps[insightData.step].content}
-                            {steps[insightData.step].buttons}
-                        </Flex>
+                        <div>
+                            {steps[step].content}
+                        </div>
                     </Flex>
                 </Form>
             )}

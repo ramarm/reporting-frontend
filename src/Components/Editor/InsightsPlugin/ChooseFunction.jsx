@@ -3,7 +3,7 @@ import {useState} from "react";
 import {FUNCTIONS} from "./config.jsx";
 
 const {Text} = Typography;
-export default function ChooseFunction({data, setData, increaseStep}) {
+export default function ChooseFunction({data, setData, setStep}) {
     const [hoverFunc, setHoverFunc] = useState()
 
     function sentence() {
@@ -20,7 +20,12 @@ export default function ChooseFunction({data, setData, increaseStep}) {
 
     function setFunc(func) {
         setData((oldData) => ({...oldData, "func": func}))
-        increaseStep();
+        const newFunc = FUNCTIONS.find((f => f.value === func));
+        if (newFunc?.criteria.length === 0) {
+            setStep((oldStep) => oldStep + 2);
+        } else {
+            setStep((oldStep) => oldStep + 1);
+        }
     }
 
     return <Flex vertical align="center" justify="space-evenly" style={{height: "100%"}}>
