@@ -1,19 +1,30 @@
-import {Button, Flex, Form, Space, Typography} from "antd";
+import {Button, Flex, Form, Typography} from "antd";
 import {useState} from "react";
-import {InfoCircleOutlined} from "@ant-design/icons";
 import {FUNCTIONS} from "./config.jsx";
 
 const {Text} = Typography;
 export default function ChooseFunction({data, setData}) {
     const [hoverFunc, setHoverFunc] = useState()
 
+    function sentence() {
+        const chosenFunc = hoverFunc || data.func;
+        if (!chosenFunc) {
+            return <Text
+                style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4)", textAlign: "center"}}>
+                Choose a function
+            </Text>;
+        }
+        const func = FUNCTIONS.find((func => func.value === chosenFunc));
+        return func.sentence(data);
+    }
 
     function setFunc(func) {
         setData((oldData) => ({...oldData, "func": func}))
     }
 
-    return <Space>
-        <Flex wrap="wrap" gap="middle" justify="space-evenly" align="center">
+    return <Flex vertical align="center" justify="space-evenly" style={{height: "100%"}}>
+            {sentence()}
+        <Flex wrap="wrap" gap="small" justify="space-evenly" align="center">
             {FUNCTIONS.map((func, index) => {
                 return <Form.Item key={index}>
                     <Button type={data?.func === func.value ? "primary" : "default"}
@@ -25,11 +36,5 @@ export default function ChooseFunction({data, setData}) {
                 </Form.Item>
             })}
         </Flex>
-        <div style={{width: "250px"}}>
-            {hoverFunc && <Space direction="vertical" style={{textAlign: "center", width: "250px"}}>
-                <InfoCircleOutlined/>
-                <Text>{FUNCTIONS.find((func => func.value === hoverFunc))?.description}</Text>
-            </Space>}
-        </div>
-    </Space>
+    </Flex>
 }

@@ -1,6 +1,6 @@
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {Avatar, Button, Flex, Form, Space, Steps, Typography} from "antd";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import InsightsLogo from "../../../insights.svg";
 import {$getSelection, $insertNodes} from "lexical";
 import {$createInsightNode} from "./InsightsNode.jsx";
@@ -21,21 +21,17 @@ export default function InsightsPlugin() {
 
     const func = FUNCTIONS.find((func => func.value === insightData.func));
 
+    useEffect(() => {
+        if (func) {
+            setStep(1);
+        }
+    }, [func]);
+
     const steps = [
         {
             title: "Choose Function",
             content: <ChooseFunction data={insightData}
-                                     setData={setInsightData}/>,
-            buttons: <Space>
-                <Button type="primary"
-                        disabled={!func}
-                        onClick={() => setStep(oldStep => {
-                            if (func.criteria.length > 0) return oldStep + 1
-                            return oldStep + 2
-                        })}>
-                    Next
-                </Button>
-            </Space>
+                                     setData={setInsightData}/>
         },
         {
             title: "Criteria",
@@ -115,16 +111,6 @@ export default function InsightsPlugin() {
         });
     }
 
-    function generateSentence() {
-        if (!insightData.func) {
-            return <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>
-                Choose a function
-            </Text>;
-        }
-        const func = FUNCTIONS.find((func => func.value === insightData.func));
-        return func.getSentence(insightData);
-    }
-
     function resetSelector() {
         setInsightData({});
         setStep(0);
@@ -179,7 +165,6 @@ export default function InsightsPlugin() {
                                onChange={setStep}
                                items={steps}/>
                         <Flex vertical align="center" justify="space-evenly" style={{width: "100%"}}>
-                            {generateSentence()}
                             {steps[step].content}
                             {steps[step].buttons}
                         </Flex>
