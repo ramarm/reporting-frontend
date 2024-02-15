@@ -13,25 +13,35 @@ import {FUNCTIONS} from "./config.jsx";
 const {Text} = Typography;
 
 export default function InsightsPlugin() {
-    const [insightData, setInsightData] = useState({});
+    const [insightData, setInsightData] = useState({step: 0});
     const [editor] = useLexicalComposerContext();
     const ref = useRef();
     const [visible, setVisible] = useState(false);
-    const [step, setStep] = useState(0);
 
     const func = FUNCTIONS.find((func => func.value === insightData.func));
 
-    useEffect(() => {
-        if (func) {
-            setStep(1);
+    function increaseStep() {
+        if (insightData.step === 0 && func?.criteria.length === 0) {
+            setInsightData(oldData => ({...oldData, step: oldData.step + 2}));
+        } else {
+            setInsightData(oldData => ({...oldData, step: oldData.step + 1}));
         }
-    }, [func]);
+    }
+
+    function decreaseStep() {
+        if (insightData.step === 2 && func?.criteria.length === 0) {
+            setInsightData(oldData => ({...oldData, step: oldData.step - 2}));
+        } else {
+            setInsightData(oldData => ({...oldData, step: oldData.step - 1}));
+        }
+    }
 
     const steps = [
         {
             title: "Choose Function",
             content: <ChooseFunction data={insightData}
-                                     setData={setInsightData}/>
+                                     setData={setInsightData}
+                                     increaseStep={increaseStep}/>
         },
         {
             title: "Criteria",
@@ -40,11 +50,11 @@ export default function InsightsPlugin() {
                                setData={setInsightData}/>,
             buttons: <Space>
                 <Button type="default"
-                        onClick={() => setStep(oldStep => oldStep - 1)}>
+                        onClick={decreaseStep}>
                     Back
                 </Button>
                 <Button type="primary"
-                        onClick={() => setStep(oldStep => oldStep + 1)}>
+                        onClick={increaseStep}>
                     Next
                 </Button>
             </Space>
@@ -55,14 +65,11 @@ export default function InsightsPlugin() {
             content: <h1>Here the user will choose filters</h1>,
             buttons: <Space>
                 <Button type="default"
-                        onClick={() => setStep(oldStep => {
-                            if (func.criteria.length > 0) return oldStep - 1
-                            return oldStep - 2
-                        })}>
+                        onClick={decreaseStep}>
                     Back
                 </Button>
                 <Button type="primary"
-                        onClick={() => setStep(oldStep => oldStep + 1)}>
+                        onClick={increaseStep}>
                     Next
                 </Button>
             </Space>
@@ -73,11 +80,11 @@ export default function InsightsPlugin() {
             content: <h1>Here the user will choose breakdowns</h1>,
             buttons: <Space>
                 <Button type="default"
-                        onClick={() => setStep(oldStep => oldStep - 1)}>
+                        onClick={decreaseStep}>
                     Back
                 </Button>
                 <Button type="primary"
-                        onClick={() => setStep(oldStep => oldStep + 1)}>
+                        onClick={increaseStep}>
                     Next
                 </Button>
             </Space>
@@ -88,7 +95,7 @@ export default function InsightsPlugin() {
             content: <Confirmation data={insightData} setData={setInsightData}/>,
             buttons: <Space>
                 <Button type="default"
-                        onClick={() => setStep(oldStep => oldStep - 1)}>
+                        onClick={decreaseStep}>
                     Back
                 </Button>
                 <Button type="primary"
@@ -112,8 +119,7 @@ export default function InsightsPlugin() {
     }
 
     function resetSelector() {
-        setInsightData({});
-        setStep(0);
+        setInsightData({step: 0});
     }
 
     function closeWindow() {
@@ -160,13 +166,13 @@ export default function InsightsPlugin() {
                     <Flex>
                         <Steps style={{width: "20vw"}}
                                progressDot
-                               current={step}
+                               current={insightData.step}
                                direction="vertical"
-                               onChange={setStep}
+                               onChange={(step) => setInsightData(oldData => ({...oldData, step}))}
                                items={steps}/>
                         <Flex vertical align="center" justify="space-evenly" style={{width: "100%"}}>
-                            {steps[step].content}
-                            {steps[step].buttons}
+                            {steps[insightData.step].content}
+                            {steps[insightData.step].buttons}
                         </Flex>
                     </Flex>
                 </Form>

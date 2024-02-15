@@ -3,7 +3,7 @@ import {useState} from "react";
 import {FUNCTIONS} from "./config.jsx";
 
 const {Text} = Typography;
-export default function ChooseFunction({data, setData}) {
+export default function ChooseFunction({data, setData, increaseStep}) {
     const [hoverFunc, setHoverFunc] = useState()
 
     function sentence() {
@@ -20,10 +20,11 @@ export default function ChooseFunction({data, setData}) {
 
     function setFunc(func) {
         setData((oldData) => ({...oldData, "func": func}))
+        increaseStep();
     }
 
     return <Flex vertical align="center" justify="space-evenly" style={{height: "100%"}}>
-            {sentence()}
+        {sentence()}
         <Flex wrap="wrap" gap="small" justify="space-evenly" align="center">
             {FUNCTIONS.map((func, index) => {
                 return <Form.Item key={index}>
