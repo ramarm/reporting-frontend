@@ -87,4 +87,10 @@ export class ExtendedTextNode extends TextNode {
         serialized.type = ExtendedTextNode.getType();
         return serialized;
     }
+
+    exportDOM(editor) {
+        const {element} = super.exportDOM(editor);
+        element.style.whiteSpace = null;
+        return {element};
+    }
 }
