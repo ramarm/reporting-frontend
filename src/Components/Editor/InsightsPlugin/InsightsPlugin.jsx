@@ -149,8 +149,6 @@ export default function InsightsPlugin() {
         closeWindow();
     }
 
-    console.log(insightData);
-
     return (
         <div ref={ref}>
             <Button className={"toolbar-button"}
