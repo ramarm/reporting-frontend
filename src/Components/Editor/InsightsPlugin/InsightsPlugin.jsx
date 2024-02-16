@@ -1,6 +1,6 @@
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {Avatar, Button, Flex, Form, Space, Steps, Typography} from "antd";
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import InsightsLogo from "../../../insights.svg";
 import {$getSelection, $insertNodes} from "lexical";
 import {$createInsightNode} from "./InsightsNode.jsx";
@@ -48,48 +48,40 @@ export default function InsightsPlugin() {
             title: "Criteria",
             disabled: !func || func.criteria.length === 0,
             content: <Criteria data={insightData}
-                               setData={setInsightData}/>,
-            buttons: <Space>
-                <Button type="default"
-                        onClick={decreaseStep}>
-                    Back
-                </Button>
-                <Button type="primary"
-                        onClick={increaseStep}>
-                    Next
-                </Button>
-            </Space>
+                               setData={setInsightData}
+                               increaseStep={increaseStep}
+                               decreaseStep={decreaseStep}/>
         },
-        {
-            title: "Filter",
-            disabled: !func,
-            content: <h1>Here the user will choose filters</h1>,
-            buttons: <Space>
-                <Button type="default"
-                        onClick={decreaseStep}>
-                    Back
-                </Button>
-                <Button type="primary"
-                        onClick={increaseStep}>
-                    Next
-                </Button>
-            </Space>
-        },
-        {
-            title: "Breakdown",
-            disabled: !func,
-            content: <h1>Here the user will choose breakdowns</h1>,
-            buttons: <Space>
-                <Button type="default"
-                        onClick={decreaseStep}>
-                    Back
-                </Button>
-                <Button type="primary"
-                        onClick={increaseStep}>
-                    Next
-                </Button>
-            </Space>
-        },
+        // {
+        //     title: "Filter",
+        //     disabled: !func,
+        //     content: <h1>Here the user will choose filters</h1>,
+        //     buttons: <Space>
+        //         <Button type="default"
+        //                 onClick={decreaseStep}>
+        //             Back
+        //         </Button>
+        //         <Button type="primary"
+        //                 onClick={increaseStep}>
+        //             Next
+        //         </Button>
+        //     </Space>
+        // },
+        // {
+        //     title: "Breakdown",
+        //     disabled: !func,
+        //     content: <h1>Here the user will choose breakdowns</h1>,
+        //     buttons: <Space>
+        //         <Button type="default"
+        //                 onClick={decreaseStep}>
+        //             Back
+        //         </Button>
+        //         <Button type="primary"
+        //                 onClick={increaseStep}>
+        //             Next
+        //         </Button>
+        //     </Space>
+        // },
         {
             title: "Confirmation",
             disabled: !validateInsight(),
@@ -136,7 +128,15 @@ export default function InsightsPlugin() {
             if (!hasElementNode) {
                 nodesToInsert.push(editor.createDivParagraphNode());
             }
-            nodesToInsert.push($createInsightNode(insightData));
+            nodesToInsert.push($createInsightNode({
+                title: insightData.title,
+                func: insightData.func,
+                column: insightData.column?.value,
+                filters: insightData.filters?.value,
+                value: insightData.value?.value,
+                timespan: insightData.timespan?.value,
+                breakdown: insightData.breakdown?.value
+            }));
             $insertNodes(nodesToInsert);
         })
         closeWindow();
@@ -171,7 +171,7 @@ export default function InsightsPlugin() {
                                direction="vertical"
                                onChange={(step) => setStep(step)}
                                items={steps}/>
-                        <div>
+                        <div style={{width:"100%"}}>
                             {steps[step].content}
                         </div>
                     </Flex>

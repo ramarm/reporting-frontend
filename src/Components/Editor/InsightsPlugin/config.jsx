@@ -7,11 +7,11 @@ export const FUNCTIONS = [
         title: "Sum",
         value: "SUM",
         description: "Sum of the values",
-        criteria: ["column"],
+        criteria: ["_Sum_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Sum</Text>
             {data.column ?
-                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column}</Text>
+                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column.label}</Text>
                 : <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
         </Space>
     },
@@ -19,11 +19,11 @@ export const FUNCTIONS = [
         title: "Average",
         value: "AVERAGE",
         description: "Average of the values",
-        criteria: ["column"],
+        criteria: ["_Sum_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Average</Text>
             {data.column ?
-                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column}</Text>
+                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column.label}</Text>
                 : <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
         </Space>
     },
@@ -31,11 +31,11 @@ export const FUNCTIONS = [
         title: "Median",
         value: "MEDIAN",
         description: "Median of the values",
-        criteria: ["column"],
+        criteria: ["_Sum_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Median</Text>
             {data.column ?
-                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column}</Text>
+                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column.label}</Text>
                 : <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
         </Space>
     },
@@ -43,11 +43,11 @@ export const FUNCTIONS = [
         title: "Minimum",
         value: "MIN",
         description: "Minimum value",
-        criteria: ["column"],
+        criteria: ["_Sum_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Minimum</Text>
             {data.column ?
-                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column}</Text>
+                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column.label}</Text>
                 : <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
         </Space>
     },
@@ -55,11 +55,11 @@ export const FUNCTIONS = [
         title: "Maximum",
         value: "MAX",
         description: "Maximum value",
-        criteria: ["column"],
+        criteria: ["_Sum_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Maximum</Text>
             {data.column ?
-                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column}</Text>
+                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column.label}</Text>
                 : <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
         </Space>
     },
@@ -93,7 +93,7 @@ export const FUNCTIONS = [
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Count items</Text>
             <Text style={{fontSize: "24px"}}>where</Text>
             {data.column ?
-                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column}</Text> :
+                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column.label}</Text> :
                 <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
             <Text style={{fontSize: "24px"}}>changed to</Text>
             {data.value ?

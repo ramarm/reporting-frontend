@@ -1,33 +1,40 @@
-import {Form, Select, Space} from "antd";
+import {Button, Flex, Select, Space, Typography} from "antd";
 import {FUNCTIONS} from "./config.jsx";
 import {useQuery} from "@tanstack/react-query";
 import {getBoardColumns} from "../../../Queries/monday.js";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
+import "./Criteria.css";
 
-function ColumnSelector({onChange, types}) {
+const {Text} = Typography;
+
+function ColumnSelector({index, value, onChange, types}) {
     const {boardId} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
 
     const {data: columns} = useQuery({
-        queryKey: ["columns"],
+        queryKey: ["columns", types],
         queryFn: () => getBoardColumns({boardId, types})
     });
 
     const options = columns?.map(column => ({label: column.title, value: column.id}));
 
-    console.log(columns);
-    return <Form.Item label="Column">
-        <Select options={options}
-                popupMatchSelectWidth={false}
-                onChange={onChange}/>
-    </Form.Item>
+    return <Select key={index}
+                   suffixIcon={null}
+                   options={options}
+                   placeholder="column"
+                   variant="borderless"
+                   popupMatchSelectWidth={false}
+                   value={value?.value}
+                   onChange={(_, option) => {
+                       onChange(option)
+                   }}/>
 }
 
-export default function Criteria({data, setData}) {
+export default function Criteria({data, setData, increaseStep, decreaseStep}) {
     const {column, value, timespan} = data;
     const func = FUNCTIONS.find(f => f.value === data.func);
 
-    const critirias = {
-        column: {
+    const critics = {
+        __COLUMN__: {
             label: "Column",
             value: column,
             changeFunction: setColumn,
@@ -57,13 +64,36 @@ export default function Criteria({data, setData}) {
         setData((oldData) => ({...oldData, "timespan": time}))
     }
 
-    return <Space>
-        {func.criteria?.map(c => {
-            const cretiria = critirias[c];
-            return cretiria.component({
-                onChange: cretiria.changeFunction,
-                types: "numbers"
-            });
-        })}
-    </Space>
+    return <Flex vertical align="center" justify="space-evenly" style={{width: "100%", height: "100%"}}>
+        <Space>
+            {func.criteria?.map((criterion, index) => {
+                if (criterion.startsWith("__") && criterion.endsWith("__")) {
+                    return <div key={index}>
+                        {critics[criterion].component({
+                            key: index,
+                            value: critics[criterion].value,
+                            onChange: critics[criterion].changeFunction,
+                            types: ["numbers"]
+                        })}
+                    </div>
+                }
+                if (criterion.startsWith("_") && criterion.endsWith("_")) {
+                    const criterionName = criterion.slice(1, -1);
+                    return <Text key={index}
+                                 style={{fontSize: "32px", textDecoration: "underline"}}>{criterionName}</Text>
+                }
+                return <Text key={index} style={{fontSize: "32px"}}>{criterion}</Text>
+            })}
+        </Space>
+        <Space>
+            <Button type="default"
+                    onClick={decreaseStep}>
+                Back
+            </Button>
+            <Button type="primary"
+                    onClick={increaseStep}>
+                Next
+            </Button>
+        </Space>
+    </Flex>
 }
