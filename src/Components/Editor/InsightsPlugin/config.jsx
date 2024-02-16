@@ -19,7 +19,7 @@ export const FUNCTIONS = [
         title: "Average",
         value: "AVERAGE",
         description: "Average of the values",
-        criteria: ["_Sum_", "__COLUMN__"],
+        criteria: ["_Average_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Average</Text>
             {data.column ?
@@ -31,7 +31,7 @@ export const FUNCTIONS = [
         title: "Median",
         value: "MEDIAN",
         description: "Median of the values",
-        criteria: ["_Sum_", "__COLUMN__"],
+        criteria: ["_Median_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Median</Text>
             {data.column ?
@@ -43,7 +43,7 @@ export const FUNCTIONS = [
         title: "Minimum",
         value: "MIN",
         description: "Minimum value",
-        criteria: ["_Sum_", "__COLUMN__"],
+        criteria: ["_Minimum_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Minimum</Text>
             {data.column ?
@@ -55,7 +55,7 @@ export const FUNCTIONS = [
         title: "Maximum",
         value: "MAX",
         description: "Maximum value",
-        criteria: ["_Sum_", "__COLUMN__"],
+        criteria: ["_Maximum_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Maximum</Text>
             {data.column ?
