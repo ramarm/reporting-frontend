@@ -81,7 +81,7 @@ export default function InsightsPlugin() {
             title: "Confirmation",
             disabled: !validateInsight(),
             content: <Confirmation data={insightData} setData={setInsightData} decreaseStep={decreaseStep}
-            insertInsight={insertInsight}/>
+                                   insertInsight={insertInsight}/>
         }
     ]
 
@@ -105,7 +105,7 @@ export default function InsightsPlugin() {
     }
 
     function getDoneFilters() {
-        return insightData.filters.filter((filter) => filter.column && filter.condition && filter.value);
+        return insightData.filters.filter((filter) => filter.column !== undefined && filter.condition !== undefined && filter.value !== undefined);
     }
 
     function insertInsight() {

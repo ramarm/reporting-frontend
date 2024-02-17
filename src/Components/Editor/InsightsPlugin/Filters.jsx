@@ -5,6 +5,7 @@ import {getBoardColumns, getBoardGroups, getBoardUsers} from "../../../Queries/m
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import "./InsightsPlugin.css";
 import {DeleteOutlined, PlusOutlined} from "@ant-design/icons";
+import {useEffect, useState} from "react";
 
 const {Text} = Typography;
 
@@ -12,6 +13,8 @@ const SUPPORTED_FILTER_COLUMNS = ["status", "people", "date", "dropdown"];
 
 function Filter({index, filter, addFilter, removeFilter, updateFilter, columns}) {
     const {boardId} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
+    const [columnSettings, setColumnSettings] = useState([]);
+
     const {data: groups} = useQuery({
         queryKey: ["groups"],
         enabled: filter.column?.type === "group",
@@ -22,6 +25,17 @@ function Filter({index, filter, addFilter, removeFilter, updateFilter, columns})
         enabled: filter.column?.type === "people",
         queryFn: () => getBoardUsers({boardId})
     });
+    const {data: column} = useQuery({
+        queryKey: ["column", filter.column?.value],
+        enabled: ["status", "dropdown"].includes(filter.column?.type),
+        queryFn: () => getBoardColumns({boardId, columnIds: [filter.column?.value]})
+    });
+
+    useEffect(() => {
+        if (column) {
+            setColumnSettings(JSON.parse(column[0].settings_str));
+        }
+    }, [column])
 
     const columnTypeMapping = {
         group: {
@@ -41,6 +55,7 @@ function Filter({index, filter, addFilter, removeFilter, updateFilter, columns})
                 {label: "Is", value: "any_of", text: "is"},
                 {label: "Is not", value: "not_any_of", text: "is not"}
             ],
+            options: columnSettings?.labels?.map(label => ({label: label.name, value: label.id}))
         },
         people: {
             conditions: [
@@ -53,6 +68,7 @@ function Filter({index, filter, addFilter, removeFilter, updateFilter, columns})
             }))
         }
     }
+
     return <Space>
         <Text style={{fontSize: "24px"}}>{index === 0 ? "Where" : "And"}</Text>
         <Select placeholder="Column"
@@ -83,7 +99,7 @@ function Filter({index, filter, addFilter, removeFilter, updateFilter, columns})
                 disabled={!filter.column}
                 options={columnTypeMapping[filter.column?.type]?.options}
                 value={filter.value?.value}
-                onChange={(_, option) => updateFilter(index, "value", option)}
+                onChange={(_, option) => updateFilter("value", option)}
                 showSearch
                 filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
         <Button icon={<PlusOutlined/>} type="text"

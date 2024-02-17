@@ -57,12 +57,12 @@ export async function getUsers() {
 
 }
 
-export async function getBoardColumns({boardId, types}) {
-    const query = "query ($boardId: [ID!], $types: [ColumnType!]) { " +
+export async function getBoardColumns({boardId,columnIds, types}) {
+    const query = "query ($boardId: [ID!], $columnIds: [String], $types: [ColumnType!]) { " +
         "boards(ids: $boardId) { " +
-        "columns(types: $types) { id title type } " +
+        "columns(ids: $columnIds, types: $types) { id title type settings_str } " +
         "} }"
-    const res = await runQuery({query, variables: {boardId, types}})
+    const res = await runQuery({query, variables: {boardId, columnIds, types}})
     return res.boards[0].columns
 }
 
