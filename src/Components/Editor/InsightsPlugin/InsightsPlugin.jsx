@@ -14,7 +14,7 @@ const {Text} = Typography;
 
 export default function InsightsPlugin() {
     const [step, setStep] = useState(0);
-    const [insightData, setInsightData] = useState({step: 0});
+    const [insightData, setInsightData] = useState({});
     const [editor] = useLexicalComposerContext();
     const ref = useRef();
     const [visible, setVisible] = useState(false);
@@ -112,7 +112,8 @@ export default function InsightsPlugin() {
     }
 
     function resetSelector() {
-        setInsightData({step: 0});
+        setInsightData({});
+        setStep(0);
     }
 
     function closeWindow() {
@@ -171,7 +172,7 @@ export default function InsightsPlugin() {
                                direction="vertical"
                                onChange={(step) => setStep(step)}
                                items={steps}/>
-                        <div style={{width:"100%"}}>
+                        <div style={{width: "100%"}}>
                             {steps[step].content}
                         </div>
                     </Flex>
