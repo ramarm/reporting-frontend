@@ -7,6 +7,7 @@ export const FUNCTIONS = [
         title: "Sum",
         value: "SUM",
         description: "Sum of the values",
+        supportFilter: true,
         criteria: ["_Sum_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Sum</Text>
@@ -19,6 +20,7 @@ export const FUNCTIONS = [
         title: "Average",
         value: "AVERAGE",
         description: "Average of the values",
+        supportFilter: true,
         criteria: ["_Average_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Average</Text>
@@ -31,6 +33,7 @@ export const FUNCTIONS = [
         title: "Median",
         value: "MEDIAN",
         description: "Median of the values",
+        supportFilter: true,
         criteria: ["_Median_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Median</Text>
@@ -43,6 +46,7 @@ export const FUNCTIONS = [
         title: "Minimum",
         value: "MIN",
         description: "Minimum value",
+        supportFilter: true,
         criteria: ["_Minimum_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Minimum</Text>
@@ -55,6 +59,7 @@ export const FUNCTIONS = [
         title: "Maximum",
         value: "MAX",
         description: "Maximum value",
+        supportFilter: true,
         criteria: ["_Maximum_", "__COLUMN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Maximum</Text>
@@ -67,6 +72,7 @@ export const FUNCTIONS = [
         title: "Count items",
         value: "COUNT_ITEMS",
         description: "Number of items",
+        supportFilter: true,
         criteria: [],
         sentence: () => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Count items</Text>
@@ -76,32 +82,34 @@ export const FUNCTIONS = [
         title: "Count items created",
         value: "COUNT_CREATED_ITEMS",
         description: "Number of items created",
-        criteria: ["timespan"],
+        supportFilter: false,
+        criteria: ["_Count created items_", "__TIMESPAN__"],
         sentence: (data) => <Space>
             <Text style={{fontSize: "24px", textDecoration: "underline"}}>Count items created</Text>
             {data.timespan ?
-                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.timespan}</Text>
+                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.timespan.label}</Text>
                 : <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>in time</Text>}
         </Space>
     },
-    {
-        title: "Count changed items",
-        value: "COUNT_CHANGED_ITEMS",
-        description: "Number of items changed",
-        criteria: ["column", "value", "timespan"],
-        sentence: (data) => <Space>
-            <Text style={{fontSize: "24px", textDecoration: "underline"}}>Count items</Text>
-            <Text style={{fontSize: "24px"}}>where</Text>
-            {data.column ?
-                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column.label}</Text> :
-                <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
-            <Text style={{fontSize: "24px"}}>changed to</Text>
-            {data.value ?
-                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.value}</Text>
-                : <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>value</Text>}
-            {data.timespan ?
-                <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.timespan}</Text>
-                : <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>in time</Text>}
-        </Space>
-    }
+    // {
+    //     title: "Count changed items",
+    //     value: "COUNT_CHANGED_ITEMS",
+    //     description: "Number of items changed",
+    //     supportFilter: false,
+    //     criteria: ["column", "value", "timespan"],
+    //     sentence: (data) => <Space>
+    //         <Text style={{fontSize: "24px", textDecoration: "underline"}}>Count items</Text>
+    //         <Text style={{fontSize: "24px"}}>where</Text>
+    //         {data.column ?
+    //             <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.column.label}</Text> :
+    //             <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>column</Text>}
+    //         <Text style={{fontSize: "24px"}}>changed to</Text>
+    //         {data.value ?
+    //             <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.value}</Text>
+    //             : <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>value</Text>}
+    //         {data.timespan ?
+    //             <Text style={{fontSize: "24px", textDecoration: "underline"}}>{data.timespan}</Text>
+    //             : <Text style={{fontSize: "24px", textDecoration: "underline", color: "rgba(0,0,0,0.4"}}>in time</Text>}
+    //     </Space>
+    // }
 ]

@@ -139,6 +139,12 @@ export default function Filters({data, setData, increaseStep, decreaseStep}) {
     const {boardId} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const {filters} = data;
 
+    useEffect(() => {
+        if (!FUNCTIONS.find(func => func.value === data.func).supportFilter) {
+            increaseStep();
+        }
+    }, []);
+
     const {data: columns} = useQuery({
         queryKey: ["column", SUPPORTED_FILTER_COLUMNS],
         queryFn: () => getBoardColumns({boardId, types: SUPPORTED_FILTER_COLUMNS})

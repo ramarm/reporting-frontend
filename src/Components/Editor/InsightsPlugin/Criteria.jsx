@@ -6,7 +6,7 @@ import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 
 const {Text} = Typography;
 
-function ColumnSelector({index, value, onChange, types}) {
+function ColumnSelector({value, onChange, types}) {
     const {boardId} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
 
     const {data: columns} = useQuery({
@@ -16,12 +16,70 @@ function ColumnSelector({index, value, onChange, types}) {
 
     const options = columns?.map(column => ({label: column.title, value: column.id}));
 
-    return <Select key={index}
-                   size="large"
+    return <Select size="large"
                    className={"sentence-select"}
                    suffixIcon={null}
                    options={options}
                    placeholder="column"
+                   variant="borderless"
+                   popupMatchSelectWidth={false}
+                   value={value?.value}
+                   onChange={(_, option) => {
+                       onChange(option)
+                   }}
+                   showSearch
+                   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
+}
+
+function TimespanSelector({value, onChange}) {
+    const options = [
+        {
+            label: "today",
+            value: "TODAY"
+        },
+        {
+            label: "yesterday",
+            value: "YESTERDAY"
+        },
+        {
+            label: "this week",
+            value: "THIS_WEEK"
+        },
+        {
+            label: "last week",
+            value: "ONE_WEEK_AGO"
+        },
+        // {
+        //     label: "this month",
+        //     value: "THIS_MONTH"
+        // },
+        // {
+        //     label: "last month",
+        //     value: "ONE_MONTH_AGO"
+        // },
+        // {
+        //     label: "next month",
+        //     value: "ONE_MONTH_FROM_NOW"
+        // },
+        // {
+        //     label: "past dates",
+        //     value: "PAST_DATETIME"
+        // },
+        // {
+        //     label: "future dates",
+        //     value: "FUTURE_DATETIME"
+        // },
+        // {
+        //     label: "blank",
+        //     value: "$$$black$$$"
+        // }
+    ]
+
+    return <Select size="large"
+                   className={"sentence-select"}
+                   suffixIcon={null}
+                   options={options}
+                   placeholder="in time"
                    variant="borderless"
                    popupMatchSelectWidth={false}
                    value={value?.value}
@@ -38,20 +96,16 @@ export default function Criteria({data, setData, increaseStep, decreaseStep}) {
 
     const critics = {
         __COLUMN__: {
-            label: "Column",
             value: column,
-            changeFunction: setColumn,
-            component: ColumnSelector
+            component: <ColumnSelector value={column} onChange={setColumn} types={["numbers"]}/>
         },
         value: {
-            label: "Value",
             value: value,
-            changeFunction: setValue
+            changeFunction: setValue,
         },
-        timespan: {
-            label: "Time",
+        __TIMESPAN__: {
             value: timespan,
-            changeFunction: setTime
+            component: <TimespanSelector value={timespan} onChange={setTime}/>
         }
     }
 
@@ -77,12 +131,7 @@ export default function Criteria({data, setData, increaseStep, decreaseStep}) {
             {func.criteria?.map((criterion, index) => {
                 if (criterion.startsWith("__") && criterion.endsWith("__")) {
                     return <div key={index}>
-                        {critics[criterion].component({
-                            key: index,
-                            value: critics[criterion].value,
-                            onChange: critics[criterion].changeFunction,
-                            types: ["numbers"]
-                        })}
+                        {critics[criterion].component}
                     </div>
                 }
                 if (criterion.startsWith("_") && criterion.endsWith("_")) {
