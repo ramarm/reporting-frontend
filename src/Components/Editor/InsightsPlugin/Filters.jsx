@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 
 const {Text} = Typography;
 
-const SUPPORTED_FILTER_COLUMNS = ["status", "people", "date", "dropdown"];
+const SUPPORTED_FILTER_COLUMNS = ["status", "people", "date", "dropdown", "date"];
 
 function Filter({index, filter, addFilter, removeFilter, updateFilter, columns}) {
     const {boardId} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
@@ -92,6 +92,28 @@ function Filter({index, filter, addFilter, removeFilter, updateFilter, columns})
                 label: subscriber.name,
                 value: `${subscriber.type}-${subscriber.id}`
             }))
+        },
+        date: {
+            conditions: [
+                {label: "Is", value: "any_of", text: "is"},
+                {label: "Is not", value: "not_any_of", text: "is not"},
+                {label: "Is before", value: "greater_than_or_equals", text: "is before"},
+                {label: "Is after", value: "lower_than_or_equal", text: "is after"}
+            ],
+            options: [
+                {label: "Today", value: "TODAY"},
+                {label: "Yesterday", value: "YESTERDAY"},
+                {label: "Tomorrow", value: "TOMORROW"},
+                {label: "This week", value: "THIS_WEEK"},
+                {label: "Last week", value: "ONE_WEEK_AGO"},
+                {label: "Next week", value: "ONE_WEEK_FROM_NOW"},
+                {label: "This month", value: "THIS_MONTH"},
+                {label: "Last month", value: "ONE_MONTH_AGO"},
+                {label: "Next month", value: "ONE_MONTH_FROM_NOW"},
+                {label: "Past dates", value: "PAST_DATETIME"},
+                {label: "Future dates", value: "FUTURE_DATETIME"},
+                {label: "Blank", value: "$$$blank$$$"}
+            ]
         }
     }
 
