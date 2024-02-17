@@ -2,13 +2,13 @@ import {DecoratorNode} from "lexical";
 
 function convertInsightElement(domNode) {
     if (domNode instanceof HTMLElement && domNode.tagName === "INSIGHT") {
-        const title = domNode.attributes.getNamedItem("title").value;
-        const func = domNode.attributes.getNamedItem("func").value;
-        const column = domNode.attributes.getNamedItem("column").value;
-        const value = domNode.attributes.getNamedItem("value").value;
-        const timespan = domNode.attributes.getNamedItem("timespan").value;
-        const filters = domNode.attributes.getNamedItem("filters").value;
-        const breakdown = domNode.attributes.getNamedItem("breakdown").value;
+        const title = domNode.attributes.getNamedItem("title")?.value;
+        const func = domNode.attributes.getNamedItem("func")?.value;
+        const column = domNode.attributes.getNamedItem("column")?.value;
+        const value = domNode.attributes.getNamedItem("value")?.value;
+        const timespan = domNode.attributes.getNamedItem("timespan")?.value;
+        const filters = domNode.attributes.getNamedItem("filters")?.value;
+        const breakdown = domNode.attributes.getNamedItem("breakdown")?.value;
         const node = $createInsightNode({title, func, column, value, timespan, filters, breakdown});
         return {node};
     }
@@ -66,13 +66,13 @@ export class InsightNode extends DecoratorNode {
 
     exportDOM() {
         const element = document.createElement('insight');
-        element.setAttribute('title', this.__title);
-        element.setAttribute('func', this.__function);
-        element.setAttribute('column', this.__column);
-        element.setAttribute('value', this.__value);
-        element.setAttribute('timespan', this.__timespan);
-        element.setAttribute('filters', this.__filters);
-        element.setAttribute('breakdown', this.__breakdown);
+        if (this.__title) element.setAttribute('title', this.__title);
+        if (this.__function) element.setAttribute('func', this.__function);
+        if (this.__column) element.setAttribute('column', this.__column);
+        if (this.__value) element.setAttribute('value', this.__value);
+        if (this.__timespan) element.setAttribute('timespan', this.__timespan);
+        if (this.__filters) element.setAttribute('filters', this.__filters);
+        if (this.__breakdown) element.setAttribute('breakdown', this.__breakdown);
         return {element};
     }
 
