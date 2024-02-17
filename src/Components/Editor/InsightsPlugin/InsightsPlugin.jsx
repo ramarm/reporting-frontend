@@ -9,6 +9,8 @@ import Criteria from "./Criteria.jsx";
 import ChooseFunction from "./ChooseFunction.jsx";
 import Confirmation from "./Confirmation.jsx";
 import {FUNCTIONS} from "./config.jsx";
+import Filters from "./Filters.jsx";
+import "./InsightsPlugin.css";
 
 const {Text} = Typography;
 
@@ -52,21 +54,14 @@ export default function InsightsPlugin() {
                                increaseStep={increaseStep}
                                decreaseStep={decreaseStep}/>
         },
-        // {
-        //     title: "Filter",
-        //     disabled: !func,
-        //     content: <h1>Here the user will choose filters</h1>,
-        //     buttons: <Space>
-        //         <Button type="default"
-        //                 onClick={decreaseStep}>
-        //             Back
-        //         </Button>
-        //         <Button type="primary"
-        //                 onClick={increaseStep}>
-        //             Next
-        //         </Button>
-        //     </Space>
-        // },
+        {
+            title: "Filter",
+            disabled: !func,
+            content: <Filters data={insightData}
+                              setData={setInsightData}
+                              increaseStep={increaseStep}
+                              decreaseStep={decreaseStep}/>
+        },
         // {
         //     title: "Breakdown",
         //     disabled: !func,
@@ -85,20 +80,8 @@ export default function InsightsPlugin() {
         {
             title: "Confirmation",
             disabled: !validateInsight(),
-            content: <Confirmation data={insightData} setData={setInsightData}/>,
-            buttons: <Space>
-                <Button type="default"
-                        onClick={decreaseStep}>
-                    Back
-                </Button>
-                <Button type="primary"
-                        onClick={insertInsights}>
-                    <Space>
-                        <Avatar shape="square" src={InsightsLogo} size={24}/>
-                        <Text style={{color: "white"}}>Generate</Text>
-                    </Space>
-                </Button>
-            </Space>
+            content: <Confirmation data={insightData} setData={setInsightData} decreaseStep={decreaseStep}
+            insertInsight={insertInsight}/>
         }
     ]
 
@@ -121,7 +104,11 @@ export default function InsightsPlugin() {
         setVisible(false);
     }
 
-    function insertInsights() {
+    function getDoneFilters(filters) {
+        return filters.filter((filter) => filter.column && filter.condition && filter.value);
+    }
+
+    function insertInsight() {
         editor.update(() => {
             const selection = $getSelection();
             const hasElementNode = selection.getNodes().map(getClosestElementNode).some((node) => node);
@@ -133,7 +120,7 @@ export default function InsightsPlugin() {
                 title: insightData.title,
                 func: insightData.func,
                 column: insightData.column?.value,
-                filters: insightData.filters?.value,
+                filters: JSON.stringify(getDoneFilters()),
                 value: insightData.value?.value,
                 timespan: insightData.timespan?.value,
                 breakdown: insightData.breakdown?.value

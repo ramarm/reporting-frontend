@@ -3,7 +3,6 @@ import {FUNCTIONS} from "./config.jsx";
 import {useQuery} from "@tanstack/react-query";
 import {getBoardColumns} from "../../../Queries/monday.js";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
-import "./Criteria.css";
 
 const {Text} = Typography;
 
@@ -18,7 +17,8 @@ function ColumnSelector({index, value, onChange, types}) {
     const options = columns?.map(column => ({label: column.title, value: column.id}));
 
     return <Select key={index}
-                   className={"criteria-select"}
+                   size="large"
+                   className={"sentence-select"}
                    suffixIcon={null}
                    options={options}
                    placeholder="column"
@@ -27,7 +27,9 @@ function ColumnSelector({index, value, onChange, types}) {
                    value={value?.value}
                    onChange={(_, option) => {
                        onChange(option)
-                   }}/>
+                   }}
+                   showSearch
+                   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
 }
 
 export default function Criteria({data, setData, increaseStep, decreaseStep}) {
@@ -81,7 +83,7 @@ export default function Criteria({data, setData, increaseStep, decreaseStep}) {
                 if (criterion.startsWith("_") && criterion.endsWith("_")) {
                     const criterionName = criterion.slice(1, -1);
                     return <Text key={index}
-                                 style={{fontSize: "32px", textDecoration: "underline"}}>{criterionName}</Text>
+                                 style={{fontSize: "24px", textDecoration: "underline"}}>{criterionName}</Text>
                 }
                 return <Text key={index} style={{fontSize: "32px"}}>{criterion}</Text>
             })}

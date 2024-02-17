@@ -65,3 +65,57 @@ export async function getBoardColumns({boardId, types}) {
     const res = await runQuery({query, variables: {boardId, types}})
     return res.boards[0].columns
 }
+
+export async function getBoardGroups({boardId}) {
+    const query = "query ($boardId: [ID!]) { " +
+        "boards(ids: $boardId) { " +
+        "groups { id title position } " +
+        "} }"
+    const res = await runQuery({query, variables: {boardId}})
+    return res.boards[0].groups
+}
+
+export async function getBoardUsers({boardId}) {
+    const query = "query ($boardId: [ID!]) { " +
+        "boards(ids: $boardId) { board_kind " +
+        "owners { id name photo_tiny } " +
+        "subscribers { id name photo_tiny } " +
+        "team_owners { id name picture_url } " +
+        "team_subscribers { id name picture_url } " +
+        "} " +
+        "users { id name photo_tiny } " +
+        "teams { id name picture_url } " +
+        "}"
+    const res = await runQuery({query, variables: {boardId}})
+
+    const boardKind = res.boards[0].board_kind
+    if (["private", "share"].includes(boardKind)) {
+        const users = [];
+        res.boards[0].owners.forEach(owner => {
+            users.push({...owner, type: "person"})
+        });
+        res.boards[0].subscribers.forEach(subscriber => {
+            if (!users.some(user => user.id === subscriber.id)) {
+                users.push({...subscriber, type: "person"})
+            }
+        });
+        res.boards[0].team_owners.forEach(teamOwner => {
+            users.push({...teamOwner, type: "team"})
+        });
+        res.boards[0].team_subscribers.forEach(teamSubscriber => {
+            if (!users.some(user => user.id === teamSubscriber.id)) {
+                users.push({...teamSubscriber, type: "team"})
+            }
+        });
+        return users;
+    } else {
+        const users = [];
+        res.users.forEach(user => {
+            users.push({...user, type: "person"})
+        });
+        res.teams.forEach(team => {
+            users.push({...team, type: "team"})
+        });
+        return users;
+    }
+}
