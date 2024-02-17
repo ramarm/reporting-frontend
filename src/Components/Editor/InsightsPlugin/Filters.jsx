@@ -13,7 +13,7 @@ const SUPPORTED_FILTER_COLUMNS = ["status", "people", "date", "dropdown"];
 
 function Filter({index, filter, addFilter, removeFilter, updateFilter, columns}) {
     const {boardId} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
-    const [columnSettings, setColumnSettings] = useState([]);
+    const [columnSettings, setColumnSettings] = useState();
 
     const {data: groups} = useQuery({
         queryKey: ["groups"],
@@ -35,7 +35,29 @@ function Filter({index, filter, addFilter, removeFilter, updateFilter, columns})
         if (column) {
             setColumnSettings(JSON.parse(column[0].settings_str));
         }
-    }, [column])
+    }, [column]);
+
+    function getStatusOptions() {
+        const options = [];
+        if (columnSettings) {
+            Object.keys(columnSettings.labels).forEach(key => {
+                index = Number(key)
+                let label = columnSettings?.labels[index];
+                if (label === "") {
+                    if (index === 5) {
+                        label = "(Default)";
+                    } else {
+                        return;
+                    }
+                }
+                options.push({label, value: index});
+            });
+            if (!Object.keys(columnSettings.labels).includes("5")) {
+                options.push({label: "(Default)", value: 5});
+            }
+        }
+        return options;
+    }
 
     const columnTypeMapping = {
         group: {
@@ -49,13 +71,17 @@ function Filter({index, filter, addFilter, removeFilter, updateFilter, columns})
                 {label: "Is", value: "any_of", text: "is"},
                 {label: "Is not", value: "not_any_of", text: "is not"}
             ],
+            options: filter.column?.type === "status" && getStatusOptions()
         },
         dropdown: {
             conditions: [
                 {label: "Is", value: "any_of", text: "is"},
                 {label: "Is not", value: "not_any_of", text: "is not"}
             ],
-            options: columnSettings?.labels?.map(label => ({label: label.name, value: label.id}))
+            options: filter.column?.type === "dropdown" && columnSettings?.labels?.map(label => ({
+                label: label.name,
+                value: label.id
+            }))
         },
         people: {
             conditions: [
