@@ -105,7 +105,7 @@ export default function InsightsPlugin() {
     }
 
     function getDoneFilters() {
-        return insightData.filters.filter((filter) => filter.column !== undefined && filter.condition !== undefined && filter.value !== undefined);
+        return insightData.filters?.filter((filter) => filter.column !== undefined && filter.condition !== undefined && filter.value !== undefined);
     }
 
     function insertInsight() {
