@@ -18,6 +18,7 @@ function ColumnSelector({index, value, onChange, types}) {
     const options = columns?.map(column => ({label: column.title, value: column.id}));
 
     return <Select key={index}
+                   className={"criteria-select"}
                    suffixIcon={null}
                    options={options}
                    placeholder="column"
