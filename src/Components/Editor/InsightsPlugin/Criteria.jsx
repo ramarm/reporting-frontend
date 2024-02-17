@@ -67,6 +67,11 @@ export default function Criteria({data, setData, increaseStep, decreaseStep}) {
         setData((oldData) => ({...oldData, "timespan": time}))
     }
 
+    function isReady() {
+        const relevantCriteria = func.criteria.filter(criterion => criterion.startsWith("__") && criterion.endsWith("__"));
+        return !relevantCriteria.every(criterion => critics[criterion].value);
+    }
+
     return <Flex vertical align="center" justify="space-evenly" style={{width: "100%", height: "100%"}}>
         <Space>
             {func.criteria?.map((criterion, index) => {
@@ -94,6 +99,7 @@ export default function Criteria({data, setData, increaseStep, decreaseStep}) {
                 Back
             </Button>
             <Button type="primary"
+                    disabled={isReady()}
                     onClick={increaseStep}>
                 Next
             </Button>
