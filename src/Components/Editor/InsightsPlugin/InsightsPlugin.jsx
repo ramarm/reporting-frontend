@@ -104,8 +104,8 @@ export default function InsightsPlugin() {
         setVisible(false);
     }
 
-    function getDoneFilters(filters) {
-        return filters.filter((filter) => filter.column && filter.condition && filter.value);
+    function getDoneFilters() {
+        return insightData.filters.filter((filter) => filter.column && filter.condition && filter.value);
     }
 
     function insertInsight() {
