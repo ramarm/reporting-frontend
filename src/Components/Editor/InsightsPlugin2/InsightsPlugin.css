@@ -1,0 +1,15 @@
+.sentence-select .ant-select-selector {
+    padding: 0 !important;
+}
+
+.sentence-select .ant-select-selection-placeholder {
+    font-size: 24px;
+    line-height: 1.5714285714285714;
+    color: rgba(0, 0, 0, 0.4) !important;
+    text-decoration: underline;
+}
+
+.sentence-select .ant-select-selection-item {
+    font-size: 24px;
+    text-decoration: underline;
+}
