@@ -53,11 +53,12 @@ export default function InsightsPlugin() {
             content: <Criteria data={insightData}
                                setData={setInsightData}
                                increaseStep={increaseStep}
-                               decreaseStep={decreaseStep}/>
+                               decreaseStep={decreaseStep}
+                               isReady={validateInsight()}/>
         },
         {
             title: "Filter",
-            disabled: !func,
+            disabled: !func || !func?.supportFilter || !validateInsight(),
             content: <Filters data={insightData}
                               setData={setInsightData}
                               increaseStep={increaseStep}
@@ -91,7 +92,11 @@ export default function InsightsPlugin() {
             return false;
         }
         return func.criteria.every((criterion) => {
-            return insightData[criterion];
+            if (criterion.startsWith("__") && criterion.endsWith("__")) {
+                criterion = criterion.slice(2, -2).toLowerCase();
+                return insightData[criterion] !== undefined;
+            }
+            return true;
         });
     }
 
@@ -124,11 +129,11 @@ export default function InsightsPlugin() {
             nodesToInsert.push($createInsightNode({
                 title: insightData.title,
                 func: insightData.func,
-                column: insightData.column?.value,
+                column: JSON.stringify(insightData.column),
                 filters: JSON.stringify(getDoneFilters()),
-                value: insightData.value?.value,
-                timespan: insightData.timespan?.value,
-                breakdown: insightData.breakdown?.value
+                value: JSON.stringify(insightData.value),
+                timespan: JSON.stringify(insightData.timespan),
+                breakdown: insightData.breakdown
             }));
             $insertNodes(nodesToInsert);
         })

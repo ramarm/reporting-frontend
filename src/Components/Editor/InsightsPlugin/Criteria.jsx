@@ -1,8 +1,9 @@
 import {Button, Flex, Select, Space, Typography} from "antd";
 import {FUNCTIONS} from "./config.jsx";
 import {useQuery} from "@tanstack/react-query";
-import {getBoardColumns} from "../../../Queries/monday.js";
+import {getBoardColumns, getBoardUsers} from "../../../Queries/monday.js";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
+import {useEffect, useState} from "react";
 
 const {Text} = Typography;
 
@@ -14,7 +15,7 @@ function ColumnSelector({value, onChange, types}) {
         queryFn: () => getBoardColumns({boardId, types})
     });
 
-    const options = columns?.map(column => ({label: column.title, value: column.id}));
+    const options = columns?.map(column => ({label: column.title, value: column.id, type: column.type}));
 
     return <Select size="large"
                    className={"sentence-select"}
@@ -102,18 +103,77 @@ function TimespanSelector({value, onChange}) {
                    filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
 }
 
-export default function Criteria({data, setData, increaseStep, decreaseStep}) {
+function ValueSelector({column: selectedColumn, value, onChange}) {
+    const {boardId} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
+    const [options, setOptions] = useState([]);
+
+    const {data: column} = useQuery({
+        queryKey: ["column", selectedColumn?.value],
+        enabled: !!selectedColumn,
+        queryFn: () => getBoardColumns({boardId, columnIds: [selectedColumn?.value]})
+    });
+
+    const {data: subscribers} = useQuery({
+        queryKey: ["subscribers"],
+        queryFn: () => getBoardUsers({boardId})
+    });
+
+    useEffect(() => {
+        if (column?.length === 1) {
+            const type = column[0].type;
+            const tempOptions = [{label: "anything", value: "__ANYTHING__"}];
+            if (type === "people") {
+                tempOptions.push(...subscribers.map(subscriber => ({label: subscriber.name, value: subscriber.id})));
+            }
+            if (type === "status") {
+                const columnSettings = JSON.parse(column[0].settings_str)
+                Object.keys(columnSettings.labels).forEach(key => {
+                    const index = Number(key)
+                    let label = columnSettings?.labels[index];
+                    if (label === "") {
+                        if (index === 5) {
+                            label = "(Default)";
+                        } else {
+                            return;
+                        }
+                    }
+                    tempOptions.push({label: label, value: index});
+                });
+                if (!Object.keys(columnSettings.labels).includes("5")) {
+                    tempOptions.push({label: "(Default)", value: 5});
+                }
+            }
+            setOptions(tempOptions);
+        }
+    }, [column]);
+
+    return <Select size="large"
+                   className={"sentence-select"}
+                   suffixIcon={null}
+                   options={options}
+                   placeholder="value"
+                   variant="borderless"
+                   popupMatchSelectWidth={false}
+                   value={value?.value}
+                   onChange={(_, option) => {
+                       onChange(option)
+                   }}
+                   showSearch
+                   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
+}
+
+export default function Criteria({data, setData, increaseStep, decreaseStep, isReady}) {
     const {column, value, timespan} = data;
     const func = FUNCTIONS.find(f => f.value === data.func);
 
     const critics = {
         __COLUMN__: {
             value: column,
-            component: <ColumnSelector value={column} onChange={setColumn} types={["numbers"]}/>
+            component: <ColumnSelector value={column} onChange={setColumn} types={func.supportedColumnTypes}/>
         },
-        value: {
+        __VALUE__: {
             value: value,
-            changeFunction: setValue,
+            component: <ValueSelector column={column} value={value} onChange={setValue}/>
         },
         __TIMESPAN__: {
             value: timespan,
@@ -133,10 +193,6 @@ export default function Criteria({data, setData, increaseStep, decreaseStep}) {
         setData((oldData) => ({...oldData, "timespan": time}))
     }
 
-    function isReady() {
-        const relevantCriteria = func.criteria.filter(criterion => criterion.startsWith("__") && criterion.endsWith("__"));
-        return !relevantCriteria.every(criterion => critics[criterion].value);
-    }
 
     return <Flex vertical align="center" justify="space-evenly" style={{width: "100%", height: "100%"}}>
         <Space>
@@ -151,7 +207,7 @@ export default function Criteria({data, setData, increaseStep, decreaseStep}) {
                     return <Text key={index}
                                  style={{fontSize: "24px", textDecoration: "underline"}}>{criterionName}</Text>
                 }
-                return <Text key={index} style={{fontSize: "32px"}}>{criterion}</Text>
+                return <Text key={index} style={{fontSize: "24px"}}>{criterion}</Text>
             })}
         </Space>
         <Space>
@@ -160,7 +216,7 @@ export default function Criteria({data, setData, increaseStep, decreaseStep}) {
                 Back
             </Button>
             <Button type="primary"
-                    disabled={isReady()}
+                    disabled={!isReady}
                     onClick={increaseStep}>
                 Next
             </Button>

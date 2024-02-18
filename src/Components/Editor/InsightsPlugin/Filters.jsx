@@ -41,7 +41,7 @@ function Filter({index, filter, addFilter, removeFilter, updateFilter, columns})
         const options = [];
         if (columnSettings) {
             Object.keys(columnSettings.labels).forEach(key => {
-                index = Number(key)
+                const index = Number(key)
                 let label = columnSettings?.labels[index];
                 if (label === "") {
                     if (index === 5) {
