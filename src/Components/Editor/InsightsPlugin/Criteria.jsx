@@ -49,30 +49,42 @@ function TimespanSelector({value, onChange}) {
             label: "last week",
             value: "ONE_WEEK_AGO"
         },
-        // {
-        //     label: "this month",
-        //     value: "THIS_MONTH"
-        // },
-        // {
-        //     label: "last month",
-        //     value: "ONE_MONTH_AGO"
-        // },
-        // {
-        //     label: "next month",
-        //     value: "ONE_MONTH_FROM_NOW"
-        // },
-        // {
-        //     label: "past dates",
-        //     value: "PAST_DATETIME"
-        // },
-        // {
-        //     label: "future dates",
-        //     value: "FUTURE_DATETIME"
-        // },
-        // {
-        //     label: "blank",
-        //     value: "$$$black$$$"
-        // }
+        {
+            label: "this month",
+            value: "THIS_MONTH"
+        },
+        {
+            label: "last month",
+            value: "ONE_MONTH_AGO"
+        },
+        {
+            label: "this quarter",
+            value: "THIS_QUARTER"
+        },
+        {
+            label: "last quarter",
+            value: "LAST_QUARTER"
+        },
+        {
+            label: "this year",
+            value: "THIS_YEAR"
+        },
+        {
+            label: "last year",
+            value: "LAST_YEAR"
+        },
+        {
+            label: "in last 24 hours",
+            value: "LAST_24_HOURS"
+        },
+        {
+            label: "in last 7 days",
+            value: "LAST_7_DAYS"
+        },
+        {
+            label: "in last 30 days",
+            value: "LAST_30_DAYS"
+        }
     ]
 
     return <Select size="large"
