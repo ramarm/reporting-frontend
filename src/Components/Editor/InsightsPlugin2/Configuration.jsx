@@ -396,7 +396,7 @@ export default function Configuration({data, setData, increaseStep, isReady}) {
     }
 
     function setFunc(func) {
-        setData({"func": func})
+        setData((oldData) => ({...oldData, func: func}));
         setHoverFunc(undefined);
     }
 
