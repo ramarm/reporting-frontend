@@ -17,7 +17,7 @@ const {Text} = Typography;
 
 export default function InsightsPlugin() {
     const [step, setStep] = useState(0);
-    const [insightData, setInsightData] = useState({});
+    const [insightData, setInsightData] = useState({title: "Insight"});
     const [editor] = useLexicalComposerContext();
     const ref = useRef();
     const [visible, setVisible] = useState(false);
