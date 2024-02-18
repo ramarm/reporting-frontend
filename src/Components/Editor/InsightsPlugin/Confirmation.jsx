@@ -7,11 +7,11 @@ export default function Confirmation({data, setData, decreaseStep, insertInsight
     const {title} = data;
 
     function setTitle(title) {
-        setData((oldData) => ({...oldData, "title": title}))
+        setData((oldData) => ({...oldData, title: title}))
     }
 
     function clear() {
-        setData({})
+        setData({title:"Insight"})
         setStep(0)
     }
 

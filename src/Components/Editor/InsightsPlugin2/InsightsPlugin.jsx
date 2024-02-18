@@ -71,7 +71,7 @@ export default function InsightsPlugin2() {
     }
 
     function resetSelector() {
-        setInsightData({});
+        setInsightData({title:"Insight"});
         setStep(0);
     }
 

@@ -492,7 +492,7 @@ export default function Configuration({data, setData, increaseStep, isReady}) {
 
     function buttons() {
         return <Space>
-            <Button onClick={() => setData({})}>
+            <Button onClick={() => setData({title: "Insight"})}>
                 Clear
             </Button>
             <Button type="primary"
