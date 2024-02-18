@@ -21,7 +21,6 @@ export default function Confirmation({data, setData, decreaseStep, insertInsight
             {func.criteria.map((criterion, index) => {
                 if (criterion.startsWith("__") && criterion.endsWith("__")) {
                     criterion = criterion.replaceAll("_", "").toLowerCase();
-                    console.log(data)
                     return <Text key={`cri-${index}`} style={{fontSize: "24px"}}>{data[criterion].label}</Text>;
                 } else {
                     criterion = criterion.replaceAll("_", "");
@@ -75,14 +74,4 @@ export default function Confirmation({data, setData, decreaseStep, insertInsight
         </Flex>
         {buttons()}
     </Space>
-
-
-    // return <Flex align="center" justify="space-evenly" style={{width: "100%"}}>
-    //     <Form.Item label="Insight title">
-    //         <Input value={title} onChange={(e) => setTitle(e.target.value)}/>
-    //     </Form.Item>
-    //     <Form.Item label="preview">
-    //         <Input.TextArea value="Some example data" disabled/>
-    //     </Form.Item>
-    //  </Flex>
 }
