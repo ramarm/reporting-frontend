@@ -19,7 +19,7 @@ export default function ReportingPlugin({onChange}) {
         <RichTextPlugin
             contentEditable={<ContentEditable style={{
                 minHeight: "100px",
-                maxHeight: "300px",
+                maxHeight: "600px",
                 overflow: "auto",
                 padding: "0 5px",
                 outline: 0
