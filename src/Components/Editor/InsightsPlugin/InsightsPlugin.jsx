@@ -83,7 +83,8 @@ export default function InsightsPlugin() {
             title: "Confirmation",
             disabled: !validateInsight(),
             content: <Confirmation data={insightData} setData={setInsightData} decreaseStep={decreaseStep}
-                                   insertInsight={insertInsight}/>
+                                   insertInsight={insertInsight}
+                                   setStep={setStep}/>
         }
     ]
 

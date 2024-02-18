@@ -52,7 +52,8 @@ export default function InsightsPlugin2() {
             content: <Confirmation data={insightData}
                                    setData={setInsightData}
                                    decreaseStep={decreaseStep}
-                                   insertInsight={insertInsight}/>
+                                   insertInsight={insertInsight}
+                                   setStep={setStep}/>
         }
     ]
 
