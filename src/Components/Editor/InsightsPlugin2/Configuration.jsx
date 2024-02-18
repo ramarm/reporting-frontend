@@ -348,7 +348,7 @@ export default function Configuration({data, setData, increaseStep, isReady}) {
         },
         __VALUE__: {
             value: data.value,
-            component: <ValueSelector column={data.value} value={data.value} onChange={setValue}/>
+            component: <ValueSelector column={data.column} value={data.value} onChange={setValue}/>
         },
         __TIMESPAN__: {
             value: data.timespan,
