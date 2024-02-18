@@ -2,7 +2,7 @@ import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {Avatar, Button, Flex, Form, Space, Steps, Typography} from "antd";
 import {useRef, useState} from "react";
 import InsightsLogo from "../../../insights.svg";
-import {$getSelection, $insertNodes} from "lexical";
+import {$createRangeSelection, $getSelection, $insertNodes} from "lexical";
 import {$createInsightNode} from "./InsightsNode.jsx";
 import {getClosestElementNode} from "../SpotnikEditor/Plugins/KeyboardPlugin.js";
 import Criteria from "./Criteria.jsx";
@@ -11,6 +11,7 @@ import Confirmation from "./Confirmation.jsx";
 import {FUNCTIONS} from "./config.jsx";
 import Filters from "./Filters.jsx";
 import "./InsightsPlugin.css";
+import {$createDivParagraphNode} from "../SpotnikEditor/Nodes/DivParagraphNode.jsx";
 
 const {Text} = Typography;
 
@@ -110,11 +111,15 @@ export default function InsightsPlugin() {
 
     function insertInsight() {
         editor.update(() => {
-            const selection = $getSelection();
+            let selection;
+            selection = $getSelection();
+            if (selection === null) {
+                selection = $createRangeSelection();
+            }
             const hasElementNode = selection.getNodes().map(getClosestElementNode).some((node) => node);
             const nodesToInsert = [];
             if (!hasElementNode) {
-                nodesToInsert.push(editor.createDivParagraphNode());
+                nodesToInsert.push($createDivParagraphNode());
             }
             nodesToInsert.push($createInsightNode({
                 title: insightData.title,
