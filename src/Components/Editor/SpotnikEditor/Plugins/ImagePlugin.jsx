@@ -2,7 +2,7 @@ import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {Button, Input, InputNumber, Space, Tabs, Tooltip, Upload} from "antd";
 import {useRef, useState} from "react";
 import useOutsideClick from "./Toolbar/ClickOutsideHook";
-import {$getSelection, $insertNodes} from "lexical";
+import {$createRangeSelection, $getSelection, $insertNodes} from "lexical";
 import {BiImageAdd} from "react-icons/bi";
 import {$createImageNode} from "../Nodes/ImageNode.jsx";
 import {InfoCircleTwoTone, UploadOutlined} from "@ant-design/icons";
@@ -84,7 +84,11 @@ export default function ImagePlugin() {
 
     function insertImage() {
         editor.update(() => {
-            const selection = $getSelection();
+            let selection;
+            selection = $getSelection();
+            if (selection === null) {
+                selection = $createRangeSelection();
+            }
             const hasElementNode = selection.getNodes().map(getClosestElementNode).some((node) => node);
             const nodesToInsert = [];
             if (!hasElementNode) {
