@@ -17,7 +17,7 @@ import {$isExtendedListNode, $getExtendedListNode} from "../Nodes/ExtendedListNo
 const SUPPORTED_BLOCK_TYPES = [
     {
         key: "paragraph",
-        title: "Paragraph",
+        title: "Normal text",
         icon: <BsTextParagraph/>,
         createNodeFunction: ({selection}) => $setBlocksType(selection, () => $createParagraphNode()),
         typeFunction: $isParagraphNode
