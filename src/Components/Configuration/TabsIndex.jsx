@@ -1,37 +1,32 @@
 import {useState} from "react";
-import {BarChartOutlined, DollarOutlined, FormOutlined, QuestionOutlined} from "@ant-design/icons";
-import {Space, Tabs} from "antd";
 import ReportsView from "./Reports/ReportsView.jsx";
+import {Tab, TabList, TabPanel, TabPanels, TabsContext} from "monday-ui-react-core";
+import {Dashboard, Edit, Help, Upgrade} from "monday-ui-react-core/icons";
 
 
 export default function TabsIndex() {
-    const [selected, setSelected] = useState("reports");
+    const [activeTab, setActiveTab] = useState(0);
 
-    const tabs = [
-        {
-            label: <Space><FormOutlined/>Reports</Space>,
-            key: "reports",
-            children: <ReportsView/>
-        },
-        {
-            label: <Space><QuestionOutlined/>How to use</Space>,
-            key: "howToUse",
-            children: <h1>How to use</h1>
-        },
-        {
-            label: <Space><BarChartOutlined/>Management</Space>,
-            key: "management",
-            children: <h1>Management</h1>
-        },
-        {
-            label: <Space><DollarOutlined/>Pricing & Plans</Space>,
-            key: "pricingAndPlan",
-            children: <h1>Pricing & Plans</h1>
-        }
-    ]
-
-    return <Tabs type="card"
-                 activeKey={selected}
-                 onChange={setSelected}
-                 items={tabs}/>
+    return <TabsContext activeTabId={activeTab}>
+        <TabList onTabChange={setActiveTab}>
+            <Tab icon={Edit} className={"reporting-tab"}>Reports</Tab>
+            <Tab icon={Help} className={"reporting-tab"}>How to use</Tab>
+            <Tab icon={Dashboard} className={"reporting-tab"}>Management</Tab>
+            <Tab icon={Upgrade} className={"reporting-tab"}>Pricing & Plans</Tab>
+        </TabList>
+        <TabPanels>
+            <TabPanel>
+                <ReportsView/>
+            </TabPanel>
+            <TabPanel>
+                <h1>How to use</h1>
+            </TabPanel>
+            <TabPanel>
+                <h1>Management</h1>
+            </TabPanel>
+            <TabPanel>
+                <h1>Pricing & Plans</h1>
+            </TabPanel>
+        </TabPanels>
+    </TabsContext>
 }
