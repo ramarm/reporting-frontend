@@ -5,3 +5,19 @@ html, body {
     margin: 0;
     font-family: Poppins, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif;
 }
+
+#floating-icon-container {
+    position: fixed;
+    inset-inline-end: 48px;
+    inset-block-end: 24px;
+    display: inline-flex;
+    column-gap: var(--spacing-small);
+}
+
+.floating-icon:hover {
+    box-shadow: var(--box-shadow-small);
+}
+
+.result-page {
+    margin: 50px auto;
+}

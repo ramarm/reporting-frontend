@@ -1,12 +1,16 @@
-import {Result} from "antd";
+import {AttentionBox} from "monday-ui-react-core";
 
-export default function ResultPage({title, message, status, extra}) {
+export default function ResultPage({title, message, status}) {
+    const types = {
+        error: AttentionBox.types.DANGER,
+        warning: AttentionBox.types.WARNING,
+        success: AttentionBox.types.SUCCESS
+    }
+
     return (
-        <Result
+        <AttentionBox className="result-page"
+            type={types[status]}
             title={title}
-            subTitle={message || "Please contact us on rnd@spot-nik.com for further assistance"}
-            status={status || "info"}
-            extra={extra}
-        />
+            text={message || "Please contact us on rnd@spot-nik.com for further assistance"}/>
     );
 }

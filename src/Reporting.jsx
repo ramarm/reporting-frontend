@@ -6,11 +6,9 @@ import Loader from "./Components/Loader/Loader.jsx";
 import ResultPage from "./Components/ResultPage.jsx";
 import {getMe} from "./Queries/monday.js";
 import {authorize, createUser, getSubscription, installApp, updateUserInformation} from "./Queries/management.js";
-import {AlertBanner, AlertBannerButton, AlertBannerText} from "monday-ui-react-core";
-import {FloatButton} from "antd";
-import {CustomerServiceOutlined, QuestionCircleOutlined} from "@ant-design/icons";
+import {AlertBanner, AlertBannerButton, AlertBannerText, IconButton} from "monday-ui-react-core";
+import {Upgrade, Help, Email} from "monday-ui-react-core/icons";
 import TabsIndex from "./Components/Configuration/TabsIndex.jsx";
-import {Upgrade} from "monday-ui-react-core/icons";
 
 const monday = mondaySdk();
 monday.setApiVersion(import.meta.env.VITE_MONDAY_API_VERSION);
@@ -175,12 +173,16 @@ function Reporting() {
                     </AlertBanner>
                 </div>}
             <TabsIndex/>
-            <FloatButton style={{right: 65}} icon={<CustomerServiceOutlined/>}
-                         tooltip="Support"
-                         onClick={() => monday.execute("openLinkInTab", {url: "mailto:rnd@spot-nik.com"})}/>
-            <FloatButton style={{right: 15}} icon={<QuestionCircleOutlined/>}
-                         tooltip={"FAQ"}
-                         onClick={() => monday.execute("openLinkInTab", {url: "https://www.spot-nik.com/how-to-use-insights"})}/>
+            <div id="floating-icon-container">
+                <IconButton icon={Email} className="floating-icon"
+                            kind={IconButton.kinds.SECONDARY}
+                            tooltipContent="Support"
+                            onClick={() => monday.execute("openLinkInTab", {url: "mailto:rnd@spot-nik.com"})}/>
+                <IconButton icon={Help} className="floating-icon"
+                            kind={IconButton.kinds.SECONDARY}
+                            tooltipContent="FAQ"
+                            onClick={() => monday.execute("openLinkInTab", {url: "https://www.spot-nik.com/how-to-use-insights"})}/>
+            </div>
         </div>
     );
 }
