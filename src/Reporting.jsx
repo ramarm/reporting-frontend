@@ -6,11 +6,12 @@ import Loader from "./Components/Loader/Loader.jsx";
 import ResultPage from "./Components/ResultPage.jsx";
 import {getMe} from "./Queries/monday.js";
 import {authorize, createUser, getSubscription, installApp, updateUserInformation} from "./Queries/management.js";
-import {Button, Space, Typography, FloatButton} from "antd";
-import {CustomerServiceOutlined, DashboardOutlined, QuestionCircleOutlined} from "@ant-design/icons";
+import {AlertBanner, AlertBannerButton, AlertBannerText} from "monday-ui-react-core";
+import {FloatButton} from "antd";
+import {CustomerServiceOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import TabsIndex from "./Components/Configuration/TabsIndex.jsx";
+import {Upgrade} from "monday-ui-react-core/icons";
 
-const {Text} = Typography;
 const monday = mondaySdk();
 monday.setApiVersion(import.meta.env.VITE_MONDAY_API_VERSION);
 
@@ -164,14 +165,14 @@ function Reporting() {
                     color: "white",
                     fontSize: "18px"
                 }}>
-                    <Space>
-                        <Text style={{color: "white"}}>Your account is currently on the {subscription.name} plan</Text>
-                        <Button shape="round"
-                                icon={<DashboardOutlined/>}
-                                onClick={() => {
-                                    monday.execute('openPlanSelection');
-                                }}>Change plan</Button>
-                    </Space>
+                    <AlertBanner isCloseHidden={true}
+                                 backgroundColor={AlertBanner.backgroundColors.DARK}>
+                        <AlertBannerText text="Your account is currently on the Free plan"/>
+                        <AlertBannerButton leftIcon={Upgrade}
+                                           onClick={() => {
+                                               monday.execute('openPlanSelection');
+                                           }}>Change plan</AlertBannerButton>
+                    </AlertBanner>
                 </div>}
             <TabsIndex/>
             <FloatButton style={{right: 65}} icon={<CustomerServiceOutlined/>}
