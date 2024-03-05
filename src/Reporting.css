@@ -3,27 +3,3 @@
 html, body {
     margin: 0;
 }
-
-#floating-icon-container {
-    position: fixed;
-    inset-inline-end: 48px;
-    inset-block-end: 24px;
-    display: inline-flex;
-    column-gap: var(--spacing-small);
-}
-
-.floating-icon:hover {
-    box-shadow: var(--box-shadow-small);
-}
-
-.result-page {
-    margin: 50px auto;
-}
-
-.insights-tab-list ul {
-    padding-inline-start: 0;
-}
-
-.reporting-tab a {
-    padding: 0 16px !important;
-}
