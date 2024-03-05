@@ -19,3 +19,11 @@ html, body {
 .result-page {
     margin: 50px auto;
 }
+
+.insights-tab-list ul {
+    padding-inline-start: 0;
+}
+
+.reporting-tab a {
+    padding: 0 16px !important;
+}

@@ -8,11 +8,11 @@ export default function TabsIndex() {
     const [activeTab, setActiveTab] = useState(0);
 
     return <TabsContext activeTabId={activeTab}>
-        <TabList onTabChange={setActiveTab}>
-            <Tab icon={Edit} className={"reporting-tab"}>Reports</Tab>
-            <Tab icon={Help} className={"reporting-tab"}>How to use</Tab>
-            <Tab icon={Dashboard} className={"reporting-tab"}>Management</Tab>
-            <Tab icon={Upgrade} className={"reporting-tab"}>Pricing & Plans</Tab>
+        <TabList className="insights-tab-list" onTabChange={setActiveTab}>
+            <Tab icon={Edit} className="reporting-tab">Reports</Tab>
+            <Tab icon={Help} className="reporting-tab">How to use</Tab>
+            <Tab icon={Dashboard} className="reporting-tab">Management</Tab>
+            <Tab icon={Upgrade} className="reporting-tab">Pricing & Plans</Tab>
         </TabList>
         <TabPanels>
             <TabPanel>
