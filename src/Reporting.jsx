@@ -173,7 +173,7 @@ function Reporting() {
                     </AlertBanner>
                 </div>}
             <TabsIndex/>
-            <div id="floating-icon-container">
+            <div id="floating-icon-container" className="horizontal-space">
                 <IconButton icon={Email} className="floating-icon"
                             kind={IconButton.kinds.SECONDARY}
                             tooltipContent="Support"
