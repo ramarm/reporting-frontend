@@ -10,3 +10,19 @@
 .insight-builder-footer {
     width: 100%;
 }
+
+.insight-dialog {
+    z-index: 20000;
+}
+
+.insight-list {
+    height: 150px;
+}
+
+.insight-list-item {
+    height: auto !important;
+}
+
+.insight-select-text {
+    text-decoration: underline;
+}

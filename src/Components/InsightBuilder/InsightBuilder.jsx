@@ -1,6 +1,5 @@
 import {Modal, ModalHeader, ModalContent, Button, Flex} from 'monday-ui-react-core';
 import {useRef, useState} from "react";
-import ModalBase from "./ModalBase.jsx";
 import "./InsightBuilder.css";
 import "./VibeBugFix.css";
 import Steps from "./Steps.jsx";
@@ -9,13 +8,74 @@ import Footer from "./Footer.jsx";
 
 export default function InsightBuilder() {
     const [insightData, setInsightData] = useState({});
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const buttonRef = useRef(null);
+
+    const steps = [
+        {
+            key: "function",
+            titleText: "Function",
+            status: isFunctionStepDone() ? "fulfilled" : "pending",
+            isNextVisible: false
+        },
+        {
+            key: "configuration",
+            titleText: "Configuration",
+            status: isConfigurationStepDone() ? "fulfilled" : "pending",
+            isNextVisible: false
+        },
+        {
+            key: "filter",
+            titleText: "Filter",
+            status: isFilterStepDone() ? "fulfilled" : "pending",
+            isNextVisible: true
+        },
+        {
+            key: "breakdown",
+            titleText: "Breakdown",
+            status: isBreakdownStepDone() ? "fulfilled" : "pending",
+            isNextVisible: true
+        },
+        {
+            key: "preview",
+            titleText: "Preview"
+        }
+    ]
+
+    function isFunctionStepDone() {
+        return insightData.function !== undefined;
+    }
+
+    function isConfigurationStepDone() {
+        return insightData.configuration !== undefined;
+    }
+
+    function isFilterStepDone() {
+        return insightData.filter !== undefined;
+    }
+
+    function isBreakdownStepDone() {
+        return insightData.breakdown !== undefined;
+    }
+
+    function currentStep() {
+        return steps.find((step) => step.status === "pending");
+    }
+
+    function resetInsight() {
+        setInsightData({});
+    }
+
+    function setInsight(key, value) {
+        setInsightData({...insightData, [key]: value});
+    }
 
     function closeModal() {
         setIsOpen(false);
-        setInsightData({});
+        resetInsight();
     }
+
+    console.log(insightData);
 
     return <div>
         <Button ref={buttonRef} onClick={() => setIsOpen(true)}>Create Insight</Button>
@@ -27,9 +87,9 @@ export default function InsightBuilder() {
             <ModalHeader title="" titleClassName="insight-modal-header"/>
             <ModalContent>
                 <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.MEDIUM}>
-                    <Steps insightData={insightData}/>
-                    <MainContent insightData={insightData}/>
-                    <Footer insightData={insightData}/>
+                    <Steps steps={steps} insightData={insightData}/>
+                    <MainContent insightData={insightData} setInsight={setInsight}/>
+                    <Footer step={currentStep()} resetInsight={resetInsight}/>
                 </Flex>
             </ModalContent>
         </Modal>
