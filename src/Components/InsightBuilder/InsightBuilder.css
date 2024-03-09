@@ -1,0 +1,12 @@
+.insight-modal-header {
+    display: none;
+}
+
+.insight-steps-divider {
+    min-width: 30px !important;
+    max-width: 50px !important;
+}
+
+.insight-builder-footer {
+    width: 100%;
+}
