@@ -1,15 +1,29 @@
 import {Flex} from "monday-ui-react-core";
-import FunctionChooser from "./functionChooser.jsx";
 import {FUNCTIONS} from "./insightsFunctions.js";
+import {Heading} from "monday-ui-react-core/next";
+import ChooseDialog from "./Chosers/ChooseDialog.jsx";
+import FunctionCombobox from "./Chosers/Function.jsx";
 
 export default function MainContent({insightData, setInsight}) {
     const chosenFunction = FUNCTIONS.find((f) => f.value === insightData.function);
 
-    if (!chosenFunction) {
-        return <FunctionChooser insightData={insightData} setInsight={setInsight}/>
+    const partsComponents = {
+        text: ({key, part}) => <Heading key={key} type={Heading.types.H1}>
+            {part.text}
+        </Heading>
     }
 
-    return <Flex gap={Flex.gaps.SMALL}>
-        <span>Now configure</span>
+    if (!chosenFunction) {
+        return <ChooseDialog insightData={insightData}
+                             setInsight={setInsight}
+                             type="function"
+                             placeholder="Choose function"
+                             component={FunctionCombobox}/>
+    }
+
+    return <Flex justify={Flex.justify.CENTER} gap={Flex.gaps.SMALL} wrap={true}>
+        {chosenFunction.parts.map((part, index) => {
+            return partsComponents[part.type]({key: index, part})
+        })}
     </Flex>
 }

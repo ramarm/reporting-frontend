@@ -5,11 +5,14 @@ import "./VibeBugFix.css";
 import Steps from "./Steps.jsx";
 import MainContent from "./MainContent.jsx";
 import Footer from "./Footer.jsx";
+import {FUNCTIONS} from "./insightsFunctions.js";
 
 export default function InsightBuilder() {
     const [insightData, setInsightData] = useState({});
     const [isOpen, setIsOpen] = useState(true);
     const buttonRef = useRef(null);
+
+    const chosenFunction = FUNCTIONS.find((f) => f.value === insightData.function);
 
     const steps = [
         {
@@ -47,7 +50,12 @@ export default function InsightBuilder() {
     }
 
     function isConfigurationStepDone() {
-        return insightData.configuration !== undefined;
+        if (chosenFunction) {
+            if (chosenFunction?.hasConfiguration) {
+                return insightData.configuration !== undefined;
+            }
+            return true;
+        }
     }
 
     function isFilterStepDone() {
