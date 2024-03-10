@@ -2,7 +2,7 @@ import {createElement, useEffect, useState} from "react";
 import {Dialog} from "monday-ui-react-core";
 import {Heading} from "monday-ui-react-core/next";
 
-export default function ChooseDialog({insightData, setInsight, type, placeholder, component}) {
+export default function ChooseDialog({insightData, setInsight, type, placeholder, component, childProps}) {
     const [hoverValue, setHoverValue] = useState();
     const [chosenValue, setChosenValue] = useState();
 
@@ -19,7 +19,7 @@ export default function ChooseDialog({insightData, setInsight, type, placeholder
     return <Dialog wrapperClassName="insight-dialog"
                    position={Dialog.positions.BOTTOM}
                    content={createElement(component, {
-                       hover: hoverValue,
+                       ...childProps,
                        setHover: setHoverValue,
                        value: chosenValue,
                        setValue: setValue

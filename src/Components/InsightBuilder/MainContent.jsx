@@ -3,21 +3,29 @@ import {FUNCTIONS} from "./insightsFunctions.js";
 import {Heading} from "monday-ui-react-core/next";
 import ChooseDialog from "./Chosers/ChooseDialog.jsx";
 import FunctionCombobox from "./Chosers/Function.jsx";
+import ColumnCombobox from "./Chosers/Column.jsx";
 
 export default function MainContent({insightData, setInsight}) {
-    const chosenFunction = FUNCTIONS.find((f) => f.value === insightData.function);
+    const chosenFunction = FUNCTIONS.find((f) => f.value === insightData.function?.value);
 
     const partsComponents = {
         text: ({key, part}) => <Heading key={key} type={Heading.types.H1}>
             {part.text}
-        </Heading>
+        </Heading>,
+        column: ({key, part}) => <ChooseDialog key={key}
+                                         insightData={insightData}
+                                         setInsight={setInsight}
+                                         type="column"
+                                         placeholder="column"
+                                         component={ColumnCombobox}
+                                         childProps={part.props}/>,
     }
 
     if (!chosenFunction) {
         return <ChooseDialog insightData={insightData}
                              setInsight={setInsight}
                              type="function"
-                             placeholder="Choose function"
+                             placeholder="Function"
                              component={FunctionCombobox}/>
     }
 

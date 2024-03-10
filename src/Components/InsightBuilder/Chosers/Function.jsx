@@ -1,10 +1,7 @@
 import {List, ListItem, DialogContentContainer} from 'monday-ui-react-core';
 import {FUNCTIONS} from "../insightsFunctions.js";
 
-export default function FunctionCombobox({hover, setHover, value, setValue}) {
-    const hoverFunction = FUNCTIONS.find((func) => func.value === hover);
-    const currentFunction = FUNCTIONS.find((func) => func.value === value);
-
+export default function FunctionCombobox({setHover, value, setValue}) {
     function onClick(value) {
         setValue({
             label: value.title,
@@ -19,7 +16,7 @@ export default function FunctionCombobox({hover, setHover, value, setValue}) {
                                  className="insight-list-item"
                                  onHover={() => setHover(func.preview)}
                                  onClick={() => onClick(func)}
-                                 selected={currentFunction?.value === func.value}>
+                                 selected={value?.value === func.value}>
                     {func.title}
                 </ListItem>
             })}
