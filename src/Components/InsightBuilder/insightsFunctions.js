@@ -90,6 +90,18 @@ export const FUNCTIONS = [
         configurationFields: ["column"]
     },
     {
+        title: "List items",
+        value: "LIST_ITEMS",
+        preview: "List items",
+        parts: [
+            {
+                type: "text",
+                text: "List items"
+            }
+        ],
+        configurationFields: []
+    },
+    {
         title: "Count items",
         value: "COUNT_ITEMS",
         preview: "Count items",
