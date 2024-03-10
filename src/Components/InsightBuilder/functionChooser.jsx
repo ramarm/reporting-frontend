@@ -1,9 +1,11 @@
 import {List, ListItem, Dialog, DialogContentContainer} from 'monday-ui-react-core';
 import {Heading} from 'monday-ui-react-core/next';
 import {FUNCTIONS} from "./insightsFunctions.js";
+import {useState} from "react";
 
-function FunctionCombobox({currentFunction, setFunction}) {
+function FunctionCombobox({setHoverFunction, currentFunction, setFunction}) {
     function onFunctionSelect(value) {
+        setHoverFunction(value);
         setFunction(value);
     }
 
@@ -12,6 +14,7 @@ function FunctionCombobox({currentFunction, setFunction}) {
             {FUNCTIONS.map((func) => {
                 return <ListItem key={func.value}
                                  className="insight-list-item"
+                                 onHover={() => setHoverFunction(func.value)}
                                  onClick={() => onFunctionSelect(func.value)}
                                  selected={currentFunction?.value === func.value}>
                     {func.title}
@@ -22,18 +25,25 @@ function FunctionCombobox({currentFunction, setFunction}) {
 }
 
 export default function FunctionChooser({insightData, setInsight}) {
-    const func = FUNCTIONS.find((f) => f.value === insightData.function);
+    const [hoverFunction, setHoverFunction] = useState();
+
+    const tempFunction = FUNCTIONS.find((f) => f.value === hoverFunction);
+    const chosenFunction = FUNCTIONS.find((f) => f.value === insightData.function);
+
     return <Dialog wrapperClassName="insight-dialog"
                    position={Dialog.positions.BOTTOM}
-                   content={<FunctionCombobox currentFunction={func}
+                   content={<FunctionCombobox setHoverFunction={setHoverFunction}
+                                              currentFunction={chosenFunction}
                                               setFunction={(value) => setInsight("function", value)}/>}
                    showTrigger={[Dialog.hideShowTriggers.CLICK]}
-                   hideTrigger={[Dialog.hideShowTriggers.CLICK, Dialog.hideShowTriggers.CLICK_OUTSIDE, Dialog.hideShowTriggers.CONTENT_CLICK]}>
-        <Heading className={"insight-select-text"}
-                 color={func ? Heading.colors.PRIMARY : Heading.colors.SECONDARY}
-                 type={Heading.types.H1}
-                 weight={Heading.weights.NORMAL}>
-            {func ? func.title : "Function"}
+                   hideTrigger={[Dialog.hideShowTriggers.CLICK, Dialog.hideShowTriggers.CLICK_OUTSIDE, Dialog.hideShowTriggers.CONTENT_CLICK]}
+                   onDialogDidHide={() => setHoverFunction()}>
+        <Heading className={!tempFunction && "insight-select-text"}
+                 color={chosenFunction ? Heading.colors.PRIMARY : Heading.colors.SECONDARY}
+                 type={Heading.types.H1}>
+            {tempFunction ? tempFunction.preview
+                : chosenFunction ? chosenFunction.title
+                    : "Function"}
         </Heading>
     </Dialog>
 }

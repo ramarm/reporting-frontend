@@ -67,6 +67,9 @@ export default function InsightBuilder() {
     }
 
     function setInsight(key, value) {
+        if (key === "function") {
+            resetInsight();
+        }
         setInsightData({...insightData, [key]: value});
     }
 
