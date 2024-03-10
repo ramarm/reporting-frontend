@@ -12,32 +12,32 @@ export default function InsightBuilder() {
     const [isOpen, setIsOpen] = useState(true);
     const buttonRef = useRef(null);
 
-    const chosenFunction = FUNCTIONS.find((f) => f.value === insightData.function);
+    const chosenFunction = FUNCTIONS.find((f) => f.value === insightData.function?.value);
 
     const steps = [
         {
             key: "function",
             titleText: "Function",
             status: isFunctionStepDone() ? "fulfilled" : "pending",
-            isNextVisible: false
+            isNextDisabled: true
         },
         {
             key: "configuration",
             titleText: "Configuration",
             status: isConfigurationStepDone() ? "fulfilled" : "pending",
-            isNextVisible: false
+            isNextDisabled: true
         },
         {
             key: "filter",
             titleText: "Filter",
             status: isFilterStepDone() ? "fulfilled" : "pending",
-            isNextVisible: true
+            isNextDisabled: false
         },
         {
             key: "breakdown",
             titleText: "Breakdown",
             status: isBreakdownStepDone() ? "fulfilled" : "pending",
-            isNextVisible: true
+            isNextDisabled: false
         },
         {
             key: "preview",
@@ -51,10 +51,7 @@ export default function InsightBuilder() {
 
     function isConfigurationStepDone() {
         if (chosenFunction) {
-            if (chosenFunction?.hasConfiguration) {
-                return insightData.configuration !== undefined;
-            }
-            return true;
+            return chosenFunction.configurationFields.every((field) => insightData[field] !== undefined);
         }
     }
 

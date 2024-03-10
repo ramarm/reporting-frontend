@@ -16,10 +16,11 @@ export default function Footer({step, resetInsight}) {
             <Button kind={Button.kinds.SECONDARY}
                     leftIcon={Broom}
                     onClick={resetInsight}>Clear all</Button>
-            {step.isNextVisible && <Button kind={Button.kinds.PRIMARY}
+            <Button disabled={step.isNextDisabled}
+                    kind={Button.kinds.PRIMARY}
                     rightIcon={NavigationChevronRight}>
                 Next
-            </Button>}
+            </Button>
         </div>
     </Flex>
 }

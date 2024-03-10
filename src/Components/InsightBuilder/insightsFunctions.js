@@ -15,7 +15,7 @@ export const FUNCTIONS = [
                 }
             }
         ],
-        hasConfiguration: true
+        configurationFields: ["column"]
     },
     {
         title: "Average",
@@ -33,7 +33,7 @@ export const FUNCTIONS = [
                 }
             }
         ],
-        hasConfiguration: true,
+        configurationFields: ["column"]
     },
     {
         title: "Median",
@@ -51,7 +51,7 @@ export const FUNCTIONS = [
                 }
             }
         ],
-        hasConfiguration: true
+        configurationFields: ["column"]
     },
     {
         title: "Minimum",
@@ -69,7 +69,7 @@ export const FUNCTIONS = [
                 }
             }
         ],
-        hasConfiguration: true
+        configurationFields: ["column"]
     },
     {
         title: "Maximum",
@@ -87,7 +87,7 @@ export const FUNCTIONS = [
                 }
             }
         ],
-        hasConfiguration: true
+        configurationFields: ["column"]
     },
     {
         title: "Count items",
@@ -99,7 +99,7 @@ export const FUNCTIONS = [
                 text: "Count items"
             }
         ],
-        hasConfiguration: false
+        configurationFields: []
     },
     {
         title: "Count items created",
@@ -114,7 +114,7 @@ export const FUNCTIONS = [
                 type: "timespan"
             }
         ],
-        hasConfiguration: true
+        configurationFields: ["timespan"]
     },
     {
         title: "Count changed items",
@@ -142,6 +142,6 @@ export const FUNCTIONS = [
                 type: "timespan"
             }
         ],
-        hasConfiguration: true
+        configurationFields: ["column", "value", "timespan"]
     }
 ]
