@@ -3,6 +3,7 @@ import {Heading} from "monday-ui-react-core/next";
 import {Add, Delete} from "monday-ui-react-core/icons";
 import ColumnCombobox from "../Chosers/Column.jsx";
 import ChooseDialog from "../Chosers/ChooseDialog.jsx";
+import ConditionCombobox from "../Chosers/Condition.jsx";
 
 function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast, isEdit}) {
     return <Flex justify={Flex.justify.CENTER} gap={Flex.gaps.SMALL} wrap={true}>
@@ -17,9 +18,13 @@ function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast,
                           extraColumns: [{title: "Group", id: "__GROUP__", type: "group"}],
                           columnTypes: ["status", "people", "date", "dropdown", "date"]
                       }}/>
-        <Heading type={Heading.types.H4}>
-            condition
-        </Heading>
+        <ChooseDialog value={filter.condition}
+                      setValue={(value) => updateFilter("condition", value)}
+                      placeholder="condition"
+                      component={ConditionCombobox}
+                      childProps={{
+                            columnType: filter.column?.type
+                      }}/>
         <Heading type={Heading.types.H4}>
             value
         </Heading>
