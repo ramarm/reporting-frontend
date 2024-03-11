@@ -11,19 +11,19 @@ export default function ValueCombobox({setHover, value, setValue, includeAnythin
     const {data: column, isLoading: isLoadingColumn} = useQuery({
         queryKey: ["column", selectedColumn?.value],
         queryFn: () => getBoardColumns({boardId, columnIds: [selectedColumn?.value]}),
-        enabled: ["status", "dropdown"].includes(selectedColumn.type)
+        enabled: ["status", "dropdown"].includes(selectedColumn?.type)
     });
 
     const {data: subscribers, isLoading: isLoadingSubscribers} = useQuery({
         queryKey: ["subscribers", boardId],
         queryFn: () => getBoardUsers({boardId}),
-        enabled: selectedColumn.type === "people"
+        enabled: selectedColumn?.type === "people"
     });
 
     const {data: groups, isLoading: isLoadingGroups} = useQuery({
         queryKey: ["groups", boardId],
         queryFn: () => getBoardGroups({boardId}),
-        enabled: selectedColumn.type === "group"
+        enabled: selectedColumn?.type === "group"
     })
 
 
@@ -90,7 +90,10 @@ export default function ValueCombobox({setHover, value, setValue, includeAnythin
     }
 
     useEffect(() => {
-        if (column?.length > 0 || subscribers || groups) {
+        if ((["status", "dropdown"].includes(selectedColumn?.type) && column)
+            || (selectedColumn?.type === "people" && subscribers)
+            || (selectedColumn?.type === "group" && groups)
+            || (selectedColumn?.type === "date")) {
             const tempOptions = [];
             if (includeAnything) {
                 tempOptions.push({label: "Anything", value: "anything"});
