@@ -4,6 +4,7 @@ import {Add, Delete} from "monday-ui-react-core/icons";
 import ColumnCombobox from "../Chosers/Column.jsx";
 import ChooseDialog from "../Chosers/ChooseDialog.jsx";
 import ConditionCombobox from "../Chosers/Condition.jsx";
+import ValueCombobox from "../Chosers/Value.jsx";
 
 function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast, isEdit}) {
     return <Flex justify={Flex.justify.CENTER} gap={Flex.gaps.SMALL} wrap={true}>
@@ -25,9 +26,13 @@ function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast,
                       childProps={{
                             columnType: filter.column?.type
                       }}/>
-        <Heading type={Heading.types.H4}>
-            value
-        </Heading>
+        <ChooseDialog value={filter.value}
+                      setValue={(value) => updateFilter("value", value)}
+                      placeholder="value"
+                      component={ValueCombobox}
+                      childProps={{
+                          selectedColumn: filter.column
+                      }}/>
         {isEdit && <IconButton icon={Delete} onClick={removeFilter}/>}
         {isEdit && isLast && <IconButton icon={Add} onClick={addFilter}/>}
     </Flex>

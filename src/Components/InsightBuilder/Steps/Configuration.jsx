@@ -22,7 +22,8 @@ export default function Configuration({chosenFunction, insightData, setInsight})
                                         placeholder="value"
                                         component={ValueCombobox}
                                         childProps={{
-                                            selectedColumnId: insightData.column?.value
+                                            includeAnything: true,
+                                            selectedColumn: insightData.column
                                         }}/>,
         timespan: ({key}) => <ChooseDialog key={key}
                                            value={insightData.timespan}

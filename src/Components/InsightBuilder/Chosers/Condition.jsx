@@ -1,4 +1,4 @@
-import {List, ListItem, DialogContentContainer} from 'monday-ui-react-core';
+import {Text, List, ListItem, DialogContentContainer} from 'monday-ui-react-core';
 
 const CONDITION_MAP = {
     group: [
@@ -30,16 +30,18 @@ export default function ConditionCombobox({setHover, value, setValue, columnType
     }
 
     return <DialogContentContainer>
-        <List className="insight-list" component={List.components.DIV}>
-            {CONDITION_MAP[columnType].map((condition) => {
-                return <ListItem key={condition.value}
-                                 className="insight-list-item"
-                                 onHover={() => setHover(condition.label)}
-                                 onClick={() => onClick(condition)}
-                                 selected={value?.value === condition.value}>
-                    {condition.label}
-                </ListItem>
-            })}
-        </List>
+        {!columnType
+            ? <Text type={Text.types.TEXT2} style={{padding: "5px 15px"}}>Select column first</Text>
+            : <List className="insight-list" component={List.components.DIV}>
+                {CONDITION_MAP[columnType].map((condition) => {
+                    return <ListItem key={condition.value}
+                                     className="insight-list-item"
+                                     onHover={() => setHover(condition.label)}
+                                     onClick={() => onClick(condition)}
+                                     selected={value?.value === condition.value}>
+                        {condition.label}
+                    </ListItem>
+                })}
+            </List>}
     </DialogContentContainer>
 }
