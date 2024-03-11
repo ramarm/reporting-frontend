@@ -41,14 +41,16 @@ export default function InsightBuilder() {
             key: "breakdown",
             titleText: "Breakdown",
             status: isBreakdownDone ? "fulfilled" : "pending",
-            nextText: insightData.filters?.length > 0 ? "Next" : "Skip",
+            nextText: insightData.breakdown ? "Next" : "Skip",
             isNextDisabled: false,
             onNext: () => setIsBreakdownDone(true),
             onBack: () => setIsFilterDone(false)
         },
         {
             key: "preview",
-            titleText: "Preview"
+            titleText: "Preview",
+            status: "pending",
+            onBack: () => setIsBreakdownDone(false)
         }
     ]
 

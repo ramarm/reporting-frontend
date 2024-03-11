@@ -9,7 +9,7 @@ import ValueCombobox from "../Chosers/Value.jsx";
 function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast, isEdit}) {
     return <Flex justify={Flex.justify.CENTER} gap={Flex.gaps.SMALL} wrap={true}>
         <Heading type={Heading.types.H4}>
-            {isFirst ? "Where" : "And"}
+            {isFirst ? "Where" : "and"}
         </Heading>
         <ChooseDialog value={filter.column}
                       setValue={(value) => updateFilter("column", value)}
