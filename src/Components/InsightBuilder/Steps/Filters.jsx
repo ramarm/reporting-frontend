@@ -24,7 +24,7 @@ function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast,
                       placeholder="condition"
                       component={ConditionCombobox}
                       childProps={{
-                            columnType: filter.column?.type
+                          columnType: filter.column?.type
                       }}/>
         <ChooseDialog value={filter.value}
                       setValue={(value) => updateFilter("value", value)}
@@ -43,7 +43,11 @@ export default function Filters({setInsight, filters, currentStep}) {
 
     function updateFilter(index, key, value) {
         const newFilters = [...filters];
-        newFilters[index][key] = value;
+        if (key === "column") {
+            newFilters[index] = {"column": value}
+        } else {
+            newFilters[index][key] = value;
+        }
         setInsight("filters", newFilters);
     }
 
