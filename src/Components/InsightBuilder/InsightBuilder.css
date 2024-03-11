@@ -26,3 +26,7 @@
 .insight-select-text {
     text-decoration: underline;
 }
+
+.insight-modal-content {
+    min-height: 100px;
+}

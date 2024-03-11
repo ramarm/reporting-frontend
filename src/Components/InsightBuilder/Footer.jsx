@@ -5,7 +5,8 @@ export default function Footer({step, resetInsight}) {
     return <Flex className="insight-builder-footer"
                  justify={Flex.justify.SPACE_BETWEEN}>
         <Button kind={Button.kinds.SECONDARY}
-                leftIcon={NavigationChevronLeft}>
+                leftIcon={NavigationChevronLeft}
+                onClick={step.onBack}>
             Back
         </Button>
         <div className="horizontal-space">
@@ -18,8 +19,9 @@ export default function Footer({step, resetInsight}) {
                     onClick={resetInsight}>Clear all</Button>
             <Button disabled={step.isNextDisabled}
                     kind={Button.kinds.PRIMARY}
-                    rightIcon={NavigationChevronRight}>
-                Next
+                    rightIcon={NavigationChevronRight}
+                    onClick={step.onNext}>
+                {step.nextText || "Next"}
             </Button>
         </div>
     </Flex>

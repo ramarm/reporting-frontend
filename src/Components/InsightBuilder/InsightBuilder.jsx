@@ -8,8 +8,10 @@ import Footer from "./Footer.jsx";
 import {FUNCTIONS} from "./insightsFunctions.js";
 
 export default function InsightBuilder() {
-    const [insightData, setInsightData] = useState({});
-    const [isOpen, setIsOpen] = useState(true);
+    const [insightData, setInsightData] = useState({filters: []});
+    const [isFilterDone, setIsFilterDone] = useState(false);
+    const [isBreakdownDone, setIsBreakdownDone] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const buttonRef = useRef(null);
 
     const chosenFunction = FUNCTIONS.find((f) => f.value === insightData.function?.value);
@@ -30,14 +32,19 @@ export default function InsightBuilder() {
         {
             key: "filter",
             titleText: "Filter",
-            status: isFilterStepDone() ? "fulfilled" : "pending",
-            isNextDisabled: false
+            status: isFilterDone ? "fulfilled" : "pending",
+            nextText: insightData.filters?.length > 0 ? "Next" : "Skip",
+            isNextDisabled: !verifyFilters(),
+            onNext: () => setIsFilterDone(true)
         },
         {
             key: "breakdown",
             titleText: "Breakdown",
-            status: isBreakdownStepDone() ? "fulfilled" : "pending",
-            isNextDisabled: false
+            status: isBreakdownDone ? "fulfilled" : "pending",
+            nextText: insightData.filters?.length > 0 ? "Next" : "Skip",
+            isNextDisabled: false,
+            onNext: () => setIsBreakdownDone(true),
+            onBack: () => setIsFilterDone(false)
         },
         {
             key: "preview",
@@ -55,12 +62,12 @@ export default function InsightBuilder() {
         }
     }
 
-    function isFilterStepDone() {
-        return insightData.filter !== undefined;
-    }
+    function verifyFilters() {
+        if (insightData.filters.length === 0) {
+            return true;
+        }
+        return insightData.filters.every((filter) => filter.column && filter.condition && filter.value);
 
-    function isBreakdownStepDone() {
-        return insightData.breakdown !== undefined;
     }
 
     function currentStep() {
@@ -68,7 +75,9 @@ export default function InsightBuilder() {
     }
 
     function resetInsight() {
-        setInsightData({});
+        setInsightData({filters: []});
+        setIsFilterDone(false);
+        setIsBreakdownDone(false);
     }
 
     function setInsight(key, value) {
@@ -96,7 +105,7 @@ export default function InsightBuilder() {
             <ModalContent>
                 <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.MEDIUM}>
                     <Steps steps={steps} insightData={insightData}/>
-                    <MainContent insightData={insightData} setInsight={setInsight}/>
+                    <MainContent insightData={insightData} setInsight={setInsight} currentStep={currentStep()}/>
                     <Footer step={currentStep()} resetInsight={resetInsight}/>
                 </Flex>
             </ModalContent>
