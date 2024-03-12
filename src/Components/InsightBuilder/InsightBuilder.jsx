@@ -41,7 +41,7 @@ export default function InsightBuilder() {
             key: "breakdown",
             titleText: "Breakdown",
             status: isBreakdownDone ? "fulfilled" : "pending",
-            nextText: insightData.breakdown ? "Next" : "Skip",
+            nextText: insightData.breakdown ? "Done" : "Skip",
             isNextDisabled: false,
             onNext: () => setIsBreakdownDone(true),
             onBack: () => setIsFilterDone(false)
@@ -93,8 +93,6 @@ export default function InsightBuilder() {
         setIsOpen(false);
         resetInsight();
     }
-
-    console.log(insightData);
 
     return <div>
         <Button ref={buttonRef} onClick={() => setIsOpen(true)}>Create Insight</Button>

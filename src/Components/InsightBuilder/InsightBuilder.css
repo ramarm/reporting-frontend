@@ -28,5 +28,14 @@
 }
 
 .insight-modal-content {
+    width: 100%;
     min-height: 100px;
+}
+
+#insight-preview-box {
+    height: 100px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -38,7 +38,7 @@ export default function ValueCombobox({setHover, value, setValue, includeAnythin
     function generatePeopleOptions() {
         return subscribers.map((subscriber) => ({
             label: subscriber.name,
-            value: subscriber.id
+            value: {id: subscriber.id},
         }));
     }
 
@@ -55,21 +55,30 @@ export default function ValueCombobox({setHover, value, setValue, includeAnythin
                     return;
                 }
             }
-            tempOptions.push({label: label, value: index});
+            tempOptions.push({
+                label: label,
+                value: {index: index}
+            });
         });
         if (!Object.keys(columnSettings.labels).includes("5")) {
-            tempOptions.push({label: "(Default)", value: 5});
+            tempOptions.push({label: "(Default)", value: {index: 5}});
         }
         return tempOptions;
     }
 
     function generateDropdownOptions() {
         const columnSettings = JSON.parse(column[0].settings_str);
-        return columnSettings.labels?.map((label) => ({label: label.name, value: label.id}));
+        return columnSettings.labels?.map((label) => ({
+            label: label.name,
+            value: {id: label.id}
+        }));
     }
 
     function generateGroupOptions() {
-        return groups.map((group) => ({label: group.title, value: group.id}));
+        return groups.map((group) => ({
+            label: group.title,
+            value: {id: group.id}
+        }));
     }
 
     function generateDateOptions() {
@@ -96,7 +105,7 @@ export default function ValueCombobox({setHover, value, setValue, includeAnythin
             || (selectedColumn?.type === "date")) {
             const tempOptions = [];
             if (includeAnything) {
-                tempOptions.push({label: "Anything", value: "anything"});
+                tempOptions.push({label: "Anything", value: "__ANYTHING__"});
             }
             setOptions(tempOptions.concat(optionsGeneratorMapping[selectedColumn.type]()));
         }
@@ -117,7 +126,7 @@ export default function ValueCombobox({setHover, value, setValue, includeAnythin
                 ? <Loader size={Loader.sizes.SMALL}/>
                 : <List className="insight-list" component={List.components.DIV}>
                     {options.map((option) => {
-                        return <ListItem key={option.value}
+                        return <ListItem key={option.label}
                                          className="insight-list-item"
                                          onHover={() => setHover(option.label)}
                                          onClick={() => onClick(option)}

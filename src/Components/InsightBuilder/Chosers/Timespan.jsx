@@ -15,7 +15,7 @@ const TIMESPANS = [
     },
     {
         label: "last week",
-        value: "ONE_WEEK_AGO"
+        value: "LAST_WEEK"
     },
     {
         label: "this month",
@@ -23,7 +23,7 @@ const TIMESPANS = [
     },
     {
         label: "last month",
-        value: "ONE_MONTH_AGO"
+        value: "LAST_MONTH"
     },
     {
         label: "this quarter",

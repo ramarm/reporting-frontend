@@ -3,6 +3,7 @@ export const FUNCTIONS = [
         title: "Sum",
         value: "SUM",
         preview: "Sum column",
+        calculateEndpoint: "/insight/number",
         parts: [
             {
                 type: "text",
@@ -19,8 +20,9 @@ export const FUNCTIONS = [
     },
     {
         title: "Average",
-        value: "AVERAGE",
+        value: "AVG",
         preview: "Average column",
+        calculateEndpoint: "/insight/number",
         parts: [
             {
                 type: "text",
@@ -37,8 +39,9 @@ export const FUNCTIONS = [
     },
     {
         title: "Median",
-        value: "MEDIAN",
+        value: "MED",
         preview: "Median column",
+        calculateEndpoint: "/insight/number",
         parts: [
             {
                 type: "text",
@@ -57,6 +60,7 @@ export const FUNCTIONS = [
         title: "Minimum",
         value: "MIN",
         preview: "Minimum column",
+        calculateEndpoint: "/insight/number",
         parts: [
             {
                 type: "text",
@@ -75,6 +79,7 @@ export const FUNCTIONS = [
         title: "Maximum",
         value: "MAX",
         preview: "Maximum column",
+        calculateEndpoint: "/insight/number",
         parts: [
             {
                 type: "text",
@@ -89,22 +94,23 @@ export const FUNCTIONS = [
         ],
         configurationFields: ["column"]
     },
-    {
-        title: "List items",
-        value: "LIST_ITEMS",
-        preview: "List items",
-        parts: [
-            {
-                type: "text",
-                text: "List items"
-            }
-        ],
-        configurationFields: []
-    },
+    // {
+    //     title: "List items",
+    //     value: "LIST_ITEMS",
+    //     preview: "List items",
+    //     parts: [
+    //         {
+    //             type: "text",
+    //             text: "List items"
+    //         }
+    //     ],
+    //     configurationFields: []
+    // },
     {
         title: "Count items",
-        value: "COUNT_ITEMS",
+        value: "COUNT",
         preview: "Count items",
+        calculateEndpoint: "/insight/number",
         parts: [
             {
                 type: "text",
@@ -117,6 +123,7 @@ export const FUNCTIONS = [
         title: "Count items created",
         value: "COUNT_CREATED_ITEMS",
         preview: "Count items created in time",
+        calculateEndpoint: "/insight/created",
         parts: [
             {
                 type: "text",
@@ -132,6 +139,7 @@ export const FUNCTIONS = [
         title: "Count changed items",
         value: "COUNT_CHANGED_ITEMS",
         preview: "Count items where column changed to value in time",
+        calculateEndpoint: "/insight/changed",
         parts: [
             {
                 type: "text",
