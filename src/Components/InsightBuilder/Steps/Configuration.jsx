@@ -7,7 +7,9 @@ import TimespanCombobox from "../Chosers/Timespan.jsx";
 
 export default function Configuration({chosenFunction, insightData, setInsight}) {
     const partsComponents = {
-        text: ({key, part}) => <Heading key={key} type={Heading.types.H1}>
+        text: ({key, part}) => <Heading key={key}
+                                        type={Heading.types.H1}
+                                        weight={Heading.weights.LIGHT}>
             {part.text}
         </Heading>,
         column: ({key, part}) => <ChooseDialog key={key}
@@ -22,7 +24,6 @@ export default function Configuration({chosenFunction, insightData, setInsight})
                                         placeholder="value"
                                         component={ValueCombobox}
                                         childProps={{
-                                            includeAnything: true,
                                             selectedColumn: insightData.column
                                         }}/>,
         timespan: ({key}) => <ChooseDialog key={key}

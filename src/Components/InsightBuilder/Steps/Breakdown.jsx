@@ -21,7 +21,8 @@ export default function Breakdown({setInsight, breakdown, currentStep}) {
     }
     if (breakdown || (isEdit && isBreakdown)) {
         return <Flex justify={Flex.justify.CENTER} gap={Flex.gaps.SMALL} wrap={true}>
-            <Heading type={Heading.types.H4}>
+            <Heading type={Heading.types.H1}
+                     weight={Heading.weights.LIGHT}>
                 and break it down by
             </Heading>
             <ChooseDialog value={breakdown}

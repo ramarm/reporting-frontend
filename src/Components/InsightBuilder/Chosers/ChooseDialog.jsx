@@ -24,7 +24,8 @@ export default function ChooseDialog({value, setValue, placeholder, component, c
                    onDialogDidHide={() => setHoverValue()}>
         <Heading className={"insight-select-text"}
                  color={value ? Heading.colors.PRIMARY : Heading.colors.SECONDARY}
-                 type={Heading.types.H1}>
+                 type={Heading.types.H1}
+                 weight={Heading.weights.LIGHT}>
             {hoverValue ? hoverValue
                 : value ? value.label
                     : placeholder}

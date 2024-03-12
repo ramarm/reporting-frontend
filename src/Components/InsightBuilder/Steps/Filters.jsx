@@ -4,11 +4,12 @@ import {Add, Delete} from "monday-ui-react-core/icons";
 import ColumnCombobox from "../Chosers/Column.jsx";
 import ChooseDialog from "../Chosers/ChooseDialog.jsx";
 import ConditionCombobox from "../Chosers/Condition.jsx";
-import ValueCombobox from "../Chosers/Value.jsx";
+import FilterValueCombobox from "../Chosers/FilterValue.jsx";
 
 function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast, isEdit}) {
     return <Flex justify={Flex.justify.CENTER} gap={Flex.gaps.SMALL} wrap={true}>
-        <Heading type={Heading.types.H4}>
+        <Heading type={Heading.types.H1}
+                 weight={Heading.weights.LIGHT}>
             {isFirst ? "Where" : "and"}
         </Heading>
         <ChooseDialog value={filter.column}
@@ -29,7 +30,7 @@ function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast,
         <ChooseDialog value={filter.value}
                       setValue={(value) => updateFilter("value", value)}
                       placeholder="value"
-                      component={ValueCombobox}
+                      component={FilterValueCombobox}
                       childProps={{
                           selectedColumn: filter.column
                       }}/>

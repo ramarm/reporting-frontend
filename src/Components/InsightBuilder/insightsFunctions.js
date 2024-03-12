@@ -16,7 +16,9 @@ export const FUNCTIONS = [
                 }
             }
         ],
-        configurationFields: ["column"]
+        configurationFields: ["column"],
+        supportsFilter: true,
+        supportsBreakdown: true
     },
     {
         title: "Average",
@@ -35,7 +37,9 @@ export const FUNCTIONS = [
                 }
             }
         ],
-        configurationFields: ["column"]
+        configurationFields: ["column"],
+        supportsFilter: true,
+        supportsBreakdown: true
     },
     {
         title: "Median",
@@ -54,7 +58,9 @@ export const FUNCTIONS = [
                 }
             }
         ],
-        configurationFields: ["column"]
+        configurationFields: ["column"],
+        supportsFilter: true,
+        supportsBreakdown: true
     },
     {
         title: "Minimum",
@@ -73,7 +79,9 @@ export const FUNCTIONS = [
                 }
             }
         ],
-        configurationFields: ["column"]
+        configurationFields: ["column"],
+        supportsFilter: true,
+        supportsBreakdown: true
     },
     {
         title: "Maximum",
@@ -92,7 +100,9 @@ export const FUNCTIONS = [
                 }
             }
         ],
-        configurationFields: ["column"]
+        configurationFields: ["column"],
+        supportsFilter: true,
+        supportsBreakdown: true
     },
     // {
     //     title: "List items",
@@ -117,7 +127,9 @@ export const FUNCTIONS = [
                 text: "Count items"
             }
         ],
-        configurationFields: []
+        configurationFields: [],
+        supportsFilter: true,
+        supportsBreakdown: true
     },
     {
         title: "Count items created",
@@ -133,7 +145,9 @@ export const FUNCTIONS = [
                 type: "timespan"
             }
         ],
-        configurationFields: ["timespan"]
+        configurationFields: ["timespan"],
+        supportsFilter: false,
+        supportsBreakdown: false
     },
     {
         title: "Count changed items",
@@ -162,6 +176,8 @@ export const FUNCTIONS = [
                 type: "timespan"
             }
         ],
-        configurationFields: ["column", "value", "timespan"]
+        configurationFields: ["column", "value", "timespan"],
+        supportsFilter: false,
+        supportsBreakdown: false
     }
 ]

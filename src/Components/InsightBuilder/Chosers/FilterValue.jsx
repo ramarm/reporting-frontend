@@ -1,10 +1,10 @@
 import {Text, List, ListItem, DialogContentContainer, Loader} from 'monday-ui-react-core';
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {useQuery} from "@tanstack/react-query";
-import {getBoardColumns, getBoardUsers} from "../../../Queries/monday.js";
+import {getBoardColumns, getBoardGroups, getBoardUsers} from "../../../Queries/monday.js";
 import {useEffect, useState} from "react";
 
-export default function ValueCombobox({setHover, value, setValue, selectedColumn}) {
+export default function FilterValueCombobox({setHover, value, setValue, selectedColumn}) {
     const {boardId} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const [options, setOptions] = useState([]);
 
@@ -20,16 +20,25 @@ export default function ValueCombobox({setHover, value, setValue, selectedColumn
         enabled: selectedColumn?.type === "people"
     });
 
+    const {data: groups, isLoading: isLoadingGroups} = useQuery({
+        queryKey: ["groups", boardId],
+        queryFn: () => getBoardGroups({boardId}),
+        enabled: selectedColumn?.type === "group"
+    })
+
 
     const optionsGeneratorMapping = {
         people: generatePeopleOptions,
-        status: generateStatusOptions
+        status: generateStatusOptions,
+        dropdown: generateDropdownOptions,
+        group: generateGroupOptions,
+        date: generateDateOptions
     }
 
     function generatePeopleOptions() {
         return subscribers.map((subscriber) => ({
             label: subscriber.name,
-            value: {id: subscriber.id},
+            value: subscriber.id,
         }));
     }
 
@@ -48,7 +57,7 @@ export default function ValueCombobox({setHover, value, setValue, selectedColumn
             }
             tempOptions.push({
                 label: label,
-                value: {index: index}
+                value: index
             });
         });
         if (!Object.keys(columnSettings.labels).includes("5")) {
@@ -57,16 +66,49 @@ export default function ValueCombobox({setHover, value, setValue, selectedColumn
         return tempOptions;
     }
 
+    function generateDropdownOptions() {
+        const columnSettings = JSON.parse(column[0].settings_str);
+        return columnSettings.labels?.map((label) => ({
+            label: label.name,
+            value: label.id
+        }));
+    }
+
+    function generateGroupOptions() {
+        return groups.map((group) => ({
+            label: group.title,
+            value: group.id
+        }));
+    }
+
+    function generateDateOptions() {
+        return [
+            {label: "Today", value: "TODAY"},
+            {label: "Yesterday", value: "YESTERDAY"},
+            {label: "Tomorrow", value: "TOMORROW"},
+            {label: "This week", value: "THIS_WEEK"},
+            {label: "Last week", value: "ONE_WEEK_AGO"},
+            {label: "Next week", value: "ONE_WEEK_FROM_NOW"},
+            {label: "This month", value: "THIS_MONTH"},
+            {label: "Last month", value: "ONE_MONTH_AGO"},
+            {label: "Next month", value: "ONE_MONTH_FROM_NOW"},
+            {label: "Past dates", value: "PAST_DATETIME"},
+            {label: "Future dates", value: "FUTURE_DATETIME"},
+            {label: "Blank", value: "$$$blank$$$"}
+        ]
+    }
+
     useEffect(() => {
-        if ((["status"].includes(selectedColumn?.type) && column)
-            || (["people"].includes(selectedColumn?.type) && subscribers)) {
-            const tempOptions = [{label: "Anything", value: "__ANYTHING__"}];
-            setOptions(tempOptions.concat(optionsGeneratorMapping[selectedColumn.type]()));
+        if ((["status", "dropdown"].includes(selectedColumn?.type) && column)
+            || (["people"].includes(selectedColumn?.type) && subscribers)
+            || (["group"].includes(selectedColumn?.type) && groups)
+            || ["date"].includes(selectedColumn?.type)) {
+            setOptions(optionsGeneratorMapping[selectedColumn.type]());
         }
-    }, [column, subscribers]);
+    }, [column, subscribers, groups]);
 
     function isLoading() {
-        return isLoadingColumn || isLoadingSubscribers;
+        return isLoadingColumn || isLoadingSubscribers || isLoadingGroups;
     }
 
     function onClick(value) {

@@ -32,7 +32,7 @@ export default function InsightBuilder() {
         {
             key: "filter",
             titleText: "Filter",
-            status: isFilterDone ? "fulfilled" : "pending",
+            status: isFilterStepDone() ? "fulfilled" : "pending",
             nextText: insightData.filters?.length > 0 ? "Next" : "Skip",
             isNextDisabled: !verifyFilters(),
             onNext: () => setIsFilterDone(true)
@@ -40,7 +40,7 @@ export default function InsightBuilder() {
         {
             key: "breakdown",
             titleText: "Breakdown",
-            status: isBreakdownDone ? "fulfilled" : "pending",
+            status: isBreakdownStepDone() ? "fulfilled" : "pending",
             nextText: insightData.breakdown ? "Done" : "Skip",
             isNextDisabled: false,
             onNext: () => setIsBreakdownDone(true),
@@ -62,6 +62,26 @@ export default function InsightBuilder() {
         if (chosenFunction) {
             return chosenFunction.configurationFields.every((field) => insightData[field] !== undefined);
         }
+    }
+
+    function isFilterStepDone() {
+        if (isConfigurationStepDone()) {
+            if (!chosenFunction.supportsFilter) {
+                return true;
+            }
+            return isFilterDone;
+        }
+        return false;
+    }
+
+    function isBreakdownStepDone() {
+        if (isFilterStepDone()) {
+            if (!chosenFunction.supportsBreakdown) {
+                return true;
+            }
+            return isBreakdownDone;
+        }
+        return false;
     }
 
     function verifyFilters() {
