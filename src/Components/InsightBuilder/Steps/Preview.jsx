@@ -21,7 +21,14 @@ export default function Preview({chosenFunction, insightData}) {
                 timeSpan: insightData.timespan?.value,
                 changedColumnId: insightData.column?.value,
                 changedColumnType: insightData.column?.type,
-                changedValue: insightData.value?.value
+                changedValue: insightData.value?.value,
+                filters: insightData.filters
+                    .filter(filter => filter.column.type !== "group")
+                    .map(filter => ({
+                        column: filter.column.value,
+                        condition: filter.condition.value,
+                        value: filter.value.value
+                    }))
             }
         }),
         onSuccess: () => {
