@@ -1,4 +1,4 @@
-import {Modal, ModalHeader, ModalContent, Button, Flex} from 'monday-ui-react-core';
+import {Modal, ModalHeader, ModalContent, Button, Flex, MultiStepIndicator} from 'monday-ui-react-core';
 import {useRef, useState} from "react";
 import "./InsightBuilder.css";
 import "./VibeBugFix.css";
@@ -10,7 +10,6 @@ import {FUNCTIONS} from "./insightsFunctions.js";
 export default function InsightBuilder() {
     const [insightData, setInsightData] = useState({filters: []});
     const [isFilterDone, setIsFilterDone] = useState(false);
-    const [isBreakdownDone, setIsBreakdownDone] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const buttonRef = useRef(null);
 
@@ -20,68 +19,70 @@ export default function InsightBuilder() {
         {
             key: "function",
             titleText: "Function",
-            status: isFunctionStepDone() ? "fulfilled" : "pending",
+            status: functionStepStatus(),
             isNextDisabled: true
         },
         {
             key: "configuration",
             titleText: "Configuration",
-            status: isConfigurationStepDone() ? "fulfilled" : "pending",
+            status: configurationStepStatus(),
             isNextDisabled: true
         },
         {
             key: "filter",
             titleText: "Filter",
-            status: isFilterStepDone() ? "fulfilled" : "pending",
+            status: filterStepStatus(),
             nextText: insightData.filters?.length > 0 ? "Next" : "Skip",
             isNextDisabled: !verifyFilters(),
             onNext: () => setIsFilterDone(true)
         },
         {
-            key: "breakdown",
-            titleText: "Breakdown",
-            status: isBreakdownStepDone() ? "fulfilled" : "pending",
-            nextText: insightData.breakdown ? "Done" : "Skip",
-            isNextDisabled: false,
-            onNext: () => setIsBreakdownDone(true),
-            onBack: () => setIsFilterDone(false)
-        },
-        {
             key: "preview",
             titleText: "Preview",
-            status: "pending",
-            onBack: () => setIsBreakdownDone(false)
+            status: previewStepStatus(),
+            onBack: () => setIsFilterDone(false)
         }
     ]
 
-    function isFunctionStepDone() {
-        return insightData.function !== undefined;
+    function currentStep() {
+        return steps.find((step) => step.status === MultiStepIndicator.stepStatuses.ACTIVE);
     }
 
-    function isConfigurationStepDone() {
+    function functionStepStatus() {
+        if (insightData.function) {
+            return MultiStepIndicator.stepStatuses.FULFILLED;
+        }
+        return MultiStepIndicator.stepStatuses.ACTIVE;
+    }
+
+    function configurationStepStatus() {
         if (chosenFunction) {
-            return chosenFunction.configurationFields.every((field) => insightData[field] !== undefined);
+            if (chosenFunction.configurationFields.every((field) => insightData[field] !== undefined)) {
+                return MultiStepIndicator.stepStatuses.FULFILLED;
+            }
+            return MultiStepIndicator.stepStatuses.ACTIVE;
         }
+        return MultiStepIndicator.stepStatuses.PENDING;
     }
 
-    function isFilterStepDone() {
-        if (isConfigurationStepDone()) {
-            if (!chosenFunction.supportsFilter) {
-                return true;
+    function filterStepStatus() {
+        if (configurationStepStatus() === MultiStepIndicator.stepStatuses.FULFILLED) {
+            if (chosenFunction.supportsFilter || chosenFunction.supportsBreakdown) {
+                if (isFilterDone) {
+                    return MultiStepIndicator.stepStatuses.FULFILLED;
+                }
+                return MultiStepIndicator.stepStatuses.ACTIVE;
             }
-            return isFilterDone;
+            return MultiStepIndicator.stepStatuses.FULFILLED
         }
-        return false;
+        return MultiStepIndicator.stepStatuses.PENDING;
     }
 
-    function isBreakdownStepDone() {
-        if (isFilterStepDone()) {
-            if (!chosenFunction.supportsBreakdown) {
-                return true;
-            }
-            return isBreakdownDone;
+    function previewStepStatus() {
+        if (filterStepStatus() === MultiStepIndicator.stepStatuses.FULFILLED) {
+            return MultiStepIndicator.stepStatuses.ACTIVE;
         }
-        return false;
+        return MultiStepIndicator.stepStatuses.PENDING;
     }
 
     function verifyFilters() {
@@ -89,17 +90,11 @@ export default function InsightBuilder() {
             return true;
         }
         return insightData.filters.every((filter) => filter.column && filter.condition && filter.value);
-
-    }
-
-    function currentStep() {
-        return steps.find((step) => step.status === "pending");
     }
 
     function resetInsight() {
         setInsightData({filters: []});
         setIsFilterDone(false);
-        setIsBreakdownDone(false);
     }
 
     function setInsight(key, value) {
