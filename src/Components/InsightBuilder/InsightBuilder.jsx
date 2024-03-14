@@ -114,7 +114,11 @@ export default function InsightBuilder() {
     }
 
     return <div>
-        <Button ref={buttonRef} onClick={() => setIsOpen(true)}>Create Insight</Button>
+        <Button ref={buttonRef}
+                size={Button.sizes.SMALL}
+                onClick={() => setIsOpen(true)}>
+            Create Insight
+        </Button>
         <Modal id="add-insight-modal"
                width={Modal.width.FULL_WIDTH}
                onClose={closeModal}
