@@ -20,7 +20,6 @@ export default function Preview({chosenFunction, insightData}) {
                 accountId,
                 userId,
                 boardId,
-                mondayToken: import.meta.env.VITE_MONDAY_API_KEY,
                 func: insightData.function.value,
                 columnId: insightData.column?.value,
                 groupId: insightData.filters.find(filter => filter.column.type === "group")?.value.value,
