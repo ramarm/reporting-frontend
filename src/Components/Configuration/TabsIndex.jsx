@@ -29,9 +29,6 @@ export default function TabsIndex() {
             <TabPanel>
                 <h1>Pricing & Plans</h1>
             </TabPanel>
-            <TabPanel>
-                <InsightBuilder/>
-            </TabPanel>
         </TabPanels>
     </TabsContext>
 }
