@@ -24,7 +24,7 @@
     "lexical": "^0.13.1",
     "moment": "^2.30.1",
     "monday-sdk-js": "^0.5.3",
-    "monday-ui-react-core": "^2.93.0",
+    "monday-ui-react-core": "^2.94.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",

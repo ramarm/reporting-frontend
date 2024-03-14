@@ -1,0 +1,28 @@
+#floating-icon-container {
+    position: fixed;
+    inset-inline-end: 48px;
+    inset-block-end: 24px;
+}
+
+.floating-icon:hover {
+    box-shadow: var(--box-shadow-small);
+}
+
+.result-page {
+    margin: 50px auto;
+}
+
+.insights-tab-list ul {
+    padding-inline-start: 0;
+}
+
+.horizontal-space {
+    display: inline-flex;
+    column-gap: var(--spacing-small);
+}
+
+.vertical-space {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-small);
+}

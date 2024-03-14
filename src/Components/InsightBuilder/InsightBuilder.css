@@ -1,0 +1,51 @@
+.insight-modal-header {
+    display: none;
+}
+
+.insight-steps-divider {
+    min-width: 30px !important;
+    max-width: 50px !important;
+}
+
+.insight-builder-footer {
+    width: 100%;
+}
+
+.insight-dialog {
+    z-index: 20000;
+}
+
+.insight-list {
+    max-height: 150px;
+}
+
+.insight-list-item {
+    height: auto !important;
+}
+
+.insight-select-text {
+    text-decoration: underline;
+}
+
+.insight-modal-content {
+    width: 100%;
+    min-height: 100px;
+}
+
+#insight-preview-box {
+    height: 100px;
+    width: 200px;
+    padding: 10px 0;
+}
+
+.preview-align-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-ul {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 25px;
+}
