@@ -42,7 +42,7 @@ export default function InsightBuilder() {
             status: previewStepStatus(),
             onBack: () => setIsFilterDone(false)
         }
-    ]
+    ].filter((step) => step.key !== "filter" || (step.key === "filter" && functionHasFilterStep()))
 
     function currentStep() {
         return steps.find((step) => step.status === MultiStepIndicator.stepStatuses.ACTIVE);
@@ -65,9 +65,13 @@ export default function InsightBuilder() {
         return MultiStepIndicator.stepStatuses.PENDING;
     }
 
+    function functionHasFilterStep() {
+        return chosenFunction?.supportsFilter || chosenFunction?.supportsBreakdown;
+    }
+
     function filterStepStatus() {
         if (configurationStepStatus() === MultiStepIndicator.stepStatuses.FULFILLED) {
-            if (chosenFunction.supportsFilter || chosenFunction.supportsBreakdown) {
+            if (functionHasFilterStep()) {
                 if (isFilterDone) {
                     return MultiStepIndicator.stepStatuses.FULFILLED;
                 }
@@ -119,7 +123,7 @@ export default function InsightBuilder() {
             <ModalHeader title="" titleClassName="insight-modal-header"/>
             <ModalContent>
                 <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.MEDIUM}>
-                    <Steps steps={steps} insightData={insightData}/>
+                    <Steps steps={steps}/>
                     <MainContent insightData={insightData} setInsight={setInsight} currentStep={currentStep()}/>
                     <Footer step={currentStep()} resetInsight={resetInsight}/>
                 </Flex>

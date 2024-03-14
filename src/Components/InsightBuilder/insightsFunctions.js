@@ -104,18 +104,6 @@ export const FUNCTIONS = [
         supportsFilter: true,
         supportsBreakdown: true
     },
-    // {
-    //     title: "List items",
-    //     value: "LIST_ITEMS",
-    //     preview: "List items",
-    //     parts: [
-    //         {
-    //             type: "text",
-    //             text: "List items"
-    //         }
-    //     ],
-    //     configurationFields: []
-    // },
     {
         title: "Count items",
         value: "COUNT",
@@ -125,6 +113,21 @@ export const FUNCTIONS = [
             {
                 type: "text",
                 text: "Count items"
+            }
+        ],
+        configurationFields: [],
+        supportsFilter: true,
+        supportsBreakdown: true
+    },
+    {
+        title: "List items",
+        value: "LIST_ITEMS",
+        preview: "List items",
+        calculateEndpoint: "/insight/items",
+        parts: [
+            {
+                type: "text",
+                text: "List items"
             }
         ],
         configurationFields: [],

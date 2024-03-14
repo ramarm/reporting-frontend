@@ -14,7 +14,6 @@ import ImagePlugin from "./SpotnikEditor/Plugins/ImagePlugin.jsx";
 import EmojiPlugin from "./SpotnikEditor/Plugins/EmojiPlugin.jsx";
 import InsightsPlugin from "./InsightsPlugin/InsightsPlugin.jsx";
 import LinkPlugin from "./SpotnikEditor/Plugins/LinkPlugin.jsx";
-import InsightsPlugin2 from "./InsightsPlugin2/InsightsPlugin.jsx";
 
 export default function ReportingEditor({initialValue, disabled, onChange}) {
     const parser = new DOMParser();
@@ -25,7 +24,6 @@ export default function ReportingEditor({initialValue, disabled, onChange}) {
                           innerEditor={<ReportingPlugin onChange={onChange} toolbarPlugins/>}
                           toolbarPlugins={[
                               <InsightsPlugin key="insights"/>,
-                              <InsightsPlugin2 key="insights2"/>,
                               <UndoRedoPlugin key="undo-redo"/>,
                               <Divider key="div1" type={"vertical"}/>,
                               <FontsPlugin key="fonts"/>,
