@@ -46,15 +46,6 @@ export async function createUser(user) {
     }
 }
 
-export async function installApp({accountId, userId, userName, userEmail}) {
-    const url = new URL(`/api/v1/user/${userId}/app/${import.meta.env.VITE_MONDAY_APP_ID}/install`, MANAGEMENT_URL_BASE).href;
-    await axios.put(url, {
-        account_id: accountId.toString(),
-        user_name: userName,
-        user_email: userEmail,
-    });
-}
-
 export async function sendManagementRequest({method, uri, data, headers}) {
     return await sendRequest(MANAGEMENT_URL_BASE, {method, uri, data, headers});
 }
@@ -113,5 +104,12 @@ export async function deleteEmailAccount({email}) {
     return await sendManagementRequest({
         method: "DELETE",
         uri: `/api/v1/user/me/${import.meta.env.VITE_MONDAY_APP_ID}/email_accounts/${email}`
+    });
+}
+
+export async function checkMondayApiValidation() {
+    return await sendManagementRequest({
+        method: "GET",
+        uri: "/api/v1/auth/monday/check"
     });
 }

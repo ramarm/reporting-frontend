@@ -5,7 +5,12 @@ import {STORAGE_MONDAY_CONTEXT_KEY, STORAGE_SUBSCRIPTION_KEY} from "./consts.js"
 import Loader from "./Components/Loader/Loader.jsx";
 import ResultPage from "./Components/ResultPage.jsx";
 import {getMe} from "./Queries/monday.js";
-import {authorize, createUser, getSubscription, installApp, updateUserInformation} from "./Queries/management.js";
+import {
+    checkMondayApiValidation,
+    createUser,
+    getSubscription,
+    updateUserInformation
+} from "./Queries/management.js";
 import {AlertBanner, AlertBannerButton, AlertBannerText, IconButton} from "monday-ui-react-core";
 import {Upgrade, Help, Email} from "monday-ui-react-core/icons";
 import TabsIndex from "./Components/Configuration/TabsIndex.jsx";
@@ -37,29 +42,40 @@ function Reporting() {
         }
     }, []);
 
+    function redirectToAuthorization({slug, userId}) {
+        const state = JSON.stringify({
+            user_id: userId,
+            app_id: import.meta.env.VITE_MONDAY_APP_ID
+        });
+        window.location.replace(`https://${slug}.monday.com/oauth2/authorize?client_id=${import.meta.env.VITE_CLIENT_ID}&state=${state}`);
+    }
+
+    async function handleNewUser(user) {
+        try {
+            await createUser(user);
+            redirectToAuthorization({slug: user.account.slug, userId: user.id});
+        } catch (error) {
+            setResult({
+                status: "error",
+                title: "Couldn't create user"
+            });
+        }
+        return false;
+    }
+
     async function checkAuthorization(user) {
         try {
-            await authorize();
-            return true;
+            const isValid = await checkMondayApiValidation();
+            if (isValid) return true;
+            redirectToAuthorization({slug: user.account.slug, userId: user.id});
+            return false;
         } catch (error) {
             if (error.error_code === "USER_NOT_FOUND") {
-                await createUser(user);
-                await installApp({
-                    accountId: user.account.id,
-                    userId: user.id,
-                    userName: user.name,
-                    userEmail: user.email
-                });
-                return true;
+                return handleNewUser(user);
             }
-            if (error.error_code === "APP_NOT_FOUND_IN_USER") {
-                await installApp({
-                    accountId: user.account.id,
-                    userId: user.id,
-                    userName: user.name,
-                    userEmail: user.email
-                });
-                return true;
+            if (["MONDAY_API_KEY_NOT_VALID", "APP_NOT_FOUND_IN_USER"].includes(error.error_code)) {
+                redirectToAuthorization({slug: user.account.slug, userId: user.id});
+                return false;
             }
             setResult({
                 status: "error",
@@ -108,7 +124,8 @@ function Reporting() {
             throw err;
         }
 
-        await checkAuthorization(user);
+        const authStatus = await checkAuthorization(user);
+        if (!authStatus) return false;
 
         const res = await Promise.all([
             initializeUserInformation(user),
