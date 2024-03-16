@@ -66,7 +66,7 @@ export default function ColorPlugin({defaultColor, buttonIcon, targetStyle, prev
                 disabled={!editor.isEditable()}
                 style={{color: selectedColor}}
                 onClick={() => setIsDialogOpen(true)}>
-            <Icon icon={buttonIcon}/>
+            <Icon icon={buttonIcon} iconSize={20}/>
         </Button>
     </Dialog>
 }
