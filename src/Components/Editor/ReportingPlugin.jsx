@@ -24,11 +24,7 @@ export default function ReportingPlugin({onChange}) {
                 padding: "0 5px",
                 outline: 0
             }}/>}
-            placeholder={
-                <span className="editor-placeholder">
-                        Body
-                    </span>
-            }
+            placeholder={<span className="editor-placeholder">Body</span>}
             ErrorBoundary={LexicalErrorBoundary}/>
         <OnChangePlugin onChange={onChangeAdapter}/>
         <TabIndentationPlugin/>

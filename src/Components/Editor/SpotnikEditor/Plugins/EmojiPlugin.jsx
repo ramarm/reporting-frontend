@@ -1,9 +1,14 @@
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
-import {Button, Col, Row, Tooltip} from "antd";
-import {BsEmojiSmile} from "react-icons/bs";
-import {useRef, useState} from "react";
-import useOutsideClick from "./Toolbar/ClickOutsideHook";
+import {useState} from "react";
 import {$getSelection, $isRangeSelection} from "lexical";
+import {
+    IconButton,
+    Button,
+    Dialog,
+    DialogContentContainer,
+    Flex
+} from "monday-ui-react-core";
+import {Emoji} from "monday-ui-react-core/icons";
 
 const SUPPORTED_EMOJIS = [
     "😀", "😃", "😄", "😁", "😆", "😅", "🤣", "😂", "🙂", "🙃",
@@ -20,12 +25,7 @@ const SUPPORTED_EMOJIS = [
 
 export default function EmojiPlugin() {
     const [editor] = useLexicalComposerContext()
-    const ref = useRef();
-    const [visible, setVisible] = useState(false)
-
-    useOutsideClick(ref, () => {
-        setVisible(false);
-    });
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     function insertEmoji(emoji) {
         editor.update(() => {
@@ -36,40 +36,28 @@ export default function EmojiPlugin() {
         });
     }
 
-    function emojisChunks(emojis) {
-        const chunkSize = 6;
-        const chunks = [];
-        for (let i = 0; i < emojis.length; i += chunkSize) {
-            chunks.push(emojis.slice(i, i + chunkSize));
-        }
-        return chunks;
-    }
-
-    return (
-        <div ref={ref}>
-            <Tooltip title="Emoji" placement="bottom">
-                <Button className={"toolbar-button"}
-                        type="text"
-                        disabled={!editor.isEditable()}
-                        icon={<BsEmojiSmile/>}
-                        onClick={() => setVisible(!visible)}/>
-            </Tooltip>
-            {visible && (
-                <div className="toolbar-float" style={{height: "200px", overflow: "auto"}}>
-                    {emojisChunks(SUPPORTED_EMOJIS).map((chunk, i) => {
-                        return <Row key={i} gutter={[8, 8]}>
-                            {
-                                chunk.map((emoji, j) => {
-                                    return <Col key={j} span={4}>
-                                        <Button className="emoji-button"
-                                        onClick={() => insertEmoji(emoji)}>{emoji}</Button>
-                                    </Col>
-                                })
-                            }
-                        </Row>
-                    })}
-                </div>
-            )}
-        </div>
-    )
+    return <Dialog open={isDialogOpen}
+                   position={Dialog.positions.BOTTOM}
+                   onClickOutside={() => setIsDialogOpen(false)}
+                   showTrigger={[]}
+                   hideTrigger={[]}
+                   content={() => <DialogContentContainer>
+                       <Flex justify={Flex.justify.SPACE_AROUND}
+                             wrap={true}
+                             style={{height: 150, width: 200, overflow: "auto"}}>
+                           {SUPPORTED_EMOJIS.map((emoji, index) => {
+                               return <Button key={index}
+                                              kind={Button.kinds.TERTIARY}
+                                              size={Button.sizes.SMALL}
+                                              onClick={() => insertEmoji(emoji)}>
+                                   {emoji}
+                               </Button>
+                           })}
+                       </Flex>
+                   </DialogContentContainer>}>
+        <IconButton icon={Emoji}
+                    size={IconButton.sizes.SMALL}
+                    disabled={!editor.isEditable()}
+                    onClick={() => setIsDialogOpen(true)}/>
+    </Dialog>
 }

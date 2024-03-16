@@ -1,45 +1,24 @@
 #toolbar-container {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
     border-bottom: 1px solid #e0e0e0;
     padding: 5px;
 }
 
-#toolbar-container .ant-divider {
-    margin: 0;
-    height: 32px;
+.toolbar-divider {
+    height: 24px;
 }
 
-.toolbar-button {
-    border: none;
-    font-size: 16px;
+.toolbar-list {
+    max-height: 150px;
 }
 
-.toolbar-button.active {
-    background-color: rgba(0, 0, 0, 0.1);
+.toolbar-list-item {
+    height: auto !important;
 }
 
-.toolbar-button:hover {
-    background-color: #f5f5f5;
-}
-
-.toolbar-float {
+.upload-image-tab-panel {
     text-align: center;
-    background-color: white;
-    position: absolute;
-    z-index: 10;
-    padding: 10px 15px;
-    margin-top: 10px;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.emoji-button {
-    border: none;
-    padding: 4px 6px;
-}
-
-.emoji-button:hover {
-    background-color: #f5f5f5;
+.color-picker-dialog {
+    padding: 0 !important;
 }

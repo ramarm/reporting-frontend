@@ -1,23 +1,24 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {$getSelection, $isRangeSelection} from "lexical";
 import {$getSelectionStyleValueForProperty, $patchStyleText} from "@lexical/selection";
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
-import {Button, Dropdown, Tooltip} from "antd";
+import {Flex, Dialog, DialogContentContainer, Search, List, ListItem, Button, Text} from "monday-ui-react-core";
 
-const DEFAULT_FONT = "Ariel";
+const DEFAULT_FONT = "Arial";
 const FONT_PROPERTY = 'font-family';
 
 const SUPPORTED_FONTS = ['Arial', 'Helvetica', 'Times New Roman', 'Times', 'Courier New', 'Courier', 'Verdana', 'Georgia', 'Palatino', 'Garamond', 'Bookman', 'Comic Sans MS', 'Trebuchet MS', 'Avant Garde', 'Impact', 'Zapf Chancery', 'Apple Chancery', 'Optima', 'Hoefler Text', 'Florence', 'Brush Script', 'Sitka', 'Skia', 'Symbol', 'Webdings', 'Wingdings', 'Andale Mono', 'Consolas', 'Monaco', 'Lucida Console', 'Lucida Sans Unicode', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', 'FreeMono', 'Cutive Mono', 'Anonymous Pro', 'Inconsolata', 'Source Code Pro', 'Roboto', 'Open Sans', 'Lato', 'Oswald', 'PT Sans', 'PT Serif', 'Poppins', 'Raleway', 'Roboto Condensed', 'Ubuntu'];
 
 export default function FontsPlugin() {
     const [editor] = useLexicalComposerContext()
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [search, setSearch] = useState("");
+    const [filteredFonts, setFilteredFonts] = useState(SUPPORTED_FONTS);
     const [selectedFont, setSelectedFont] = useState(DEFAULT_FONT);
 
-    const fonts = SUPPORTED_FONTS.map((font, index) => {
-        return {
-            key: index, onClick: () => handleClick(font), label: (<span style={{fontFamily: font}}>{font}</span>)
-        }
-    });
+    useEffect(() => {
+        setFilteredFonts(SUPPORTED_FONTS.filter(font => font.toLowerCase().includes(search.toLowerCase())));
+    }, [search]);
 
     editor.registerUpdateListener(({editorState}) => {
         editorState.read(() => {
@@ -31,6 +32,7 @@ export default function FontsPlugin() {
     });
 
     function handleClick(font) {
+        setIsDialogOpen(false);
         setSelectedFont(font);
         editor.update(() => {
             const selection = $getSelection();
@@ -40,22 +42,35 @@ export default function FontsPlugin() {
         });
     }
 
-    return (
-        <Dropdown
-            trigger={editor.isEditable() ? 'click' : ''}
-            placement="bottom"
-            menu={{
-                items: fonts,
-                style: {maxHeight: "200px", overflow: "auto"}
-            }}>
-            <Tooltip title="Font" placement="bottom">
-                <Button className="toolbar-button"
-                        type="text"
-                        disabled={!editor.isEditable()}
-                        style={{
-                            fontFamily: selectedFont, width: "100px", overflow: "hidden", padding: "2px 4px"
-                        }}>{selectedFont}</Button>
-            </Tooltip>
-        </Dropdown>
-    );
+    return <Dialog open={isDialogOpen}
+                   position={Dialog.positions.BOTTOM}
+                   onClickOutside={() => setIsDialogOpen(false)}
+                   showTrigger={[]}
+                   hideTrigger={[]}
+                   content={() => <DialogContentContainer>
+                       <Flex gap={Flex.gaps.XS} direction={Flex.directions.COLUMN}>
+                           <Search size={Search.sizes.SMALL}
+                                   placeholder="Search"
+                                   debounceRate={100}
+                                   value={search}
+                                   onChange={setSearch}/>
+                           <List className="toolbar-list" style={{width: 200}}>
+                               {filteredFonts.map(font => (<ListItem key={font}
+                                                                     className="toolbar-list-item"
+                                                                     onClick={() => handleClick(font)}
+                                                                     selected={font === selectedFont}>
+                                   <Text type={Text.types.TEXT2} ellipsis={true}
+                                         style={{fontFamily: font}}>{font}</Text>
+                               </ListItem>))}
+                           </List>
+                       </Flex>
+                   </DialogContentContainer>}>
+        <Button kind={Button.kinds.TERTIARY}
+                size={Button.sizes.SMALL}
+                disabled={!editor.isEditable()}
+                style={{width: "80px"}}
+                onClick={() => setIsDialogOpen(true)}>
+            <Text type={Text.types.TEXT2} ellipsis={true} style={{fontFamily: selectedFont}}>{selectedFont}</Text>
+        </Button>
+    </Dialog>
 }

@@ -1,4 +1,4 @@
-import {Modal, ModalHeader, ModalContent, Button, Flex, MultiStepIndicator} from 'monday-ui-react-core';
+import {Modal, ModalHeader, ModalContent, Button, Flex, MultiStepIndicator, Icon} from 'monday-ui-react-core';
 import {useRef, useState} from "react";
 import "./InsightBuilder.css";
 import "./VibeBugFix.css";
@@ -114,7 +114,16 @@ export default function InsightBuilder() {
     }
 
     return <div>
-        <Button ref={buttonRef} onClick={() => setIsOpen(true)}>Create Insight</Button>
+        <Button id="add-insight-button"
+                ref={buttonRef}
+                size={Button.sizes.SMALL}
+                onClick={() => setIsOpen(true)}>
+            <Flex gap={Flex.gaps.SMALL}>
+                <Icon iconType={Icon.type.SRC}
+                      icon="insights-transparent.svg"/>
+                <span>Create Insight</span>
+            </Flex>
+        </Button>
         <Modal id="add-insight-modal"
                width={Modal.width.FULL_WIDTH}
                onClose={closeModal}
