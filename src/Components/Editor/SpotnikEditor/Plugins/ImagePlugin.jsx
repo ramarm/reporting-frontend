@@ -1,69 +1,35 @@
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
-import {Button, Input, InputNumber, Space, Tabs, Tooltip, Upload} from "antd";
-import {useRef, useState} from "react";
-import useOutsideClick from "./Toolbar/ClickOutsideHook";
+import {Upload} from "antd";
+import {useState} from "react";
 import {$createRangeSelection, $getSelection, $insertNodes} from "lexical";
-import {BiImageAdd} from "react-icons/bi";
 import {$createImageNode} from "../Nodes/ImageNode.jsx";
-import {InfoCircleTwoTone, UploadOutlined} from "@ant-design/icons";
 import {getClosestElementNode} from "./KeyboardPlugin";
 import {$createDivParagraphNode} from "../Nodes/DivParagraphNode.jsx";
 import {v4 as uuid} from "uuid";
+import {
+    Dialog,
+    DialogContentContainer,
+    IconButton,
+    TabsContext,
+    Tab,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Flex,
+    TextField,
+    Icon,
+    Tooltip,
+    Button
+} from "monday-ui-react-core";
+import {Image, Info, Upload as UploadIcon} from "monday-ui-react-core/icons";
 
-function UrlTab({setImageUrl}) {
-    return (
-        <Input placeholder="Public url"
-               onChange={(e) => setImageUrl(e.target.value)}/>
-    )
+function UrlTab({setImageInfo}) {
+    return <TextField placeholder="Public url"
+                      type={TextField.types.URL}
+                      onChange={(value) => setImageInfo((prev) => ({...prev, src: value}))}/>
 }
 
-function UploadTab({setImageUrl, uploadImage}) {
-    async function makeCustomRequest({file, onSuccess}) {
-        const res = await uploadImage({file})
-        setImageUrl(res)
-        onSuccess()
-    }
-
-    return (
-        <Upload customRequest={makeCustomRequest}
-                accept={".jpg,.jpeg,.png,.gif,.bmp,.svg,.webp"}>
-            <Button icon={<UploadOutlined/>}>Upload photo</Button>
-        </Upload>
-    )
-}
-
-export default function ImagePlugin() {
-    const [editor] = useLexicalComposerContext()
-    const ref = useRef();
-    const [visible, setVisible] = useState(false)
-    const [imageUrl, setImageUrl] = useState(null);
-    const [width, setWidth] = useState(null);
-    const [height, setHeight] = useState(null);
-
-    const tabs = [
-        {
-            key: "upload",
-            label: "Upload",
-            children: <UploadTab setImageUrl={setImageUrl} uploadImage={uploadImage}/>
-        },
-        {
-            key: "url",
-            label: "From the internet",
-            children: <UrlTab setImageUrl={setImageUrl}/>
-        }
-    ]
-
-    useOutsideClick(ref, () => {
-        handleCancel();
-    });
-
-    function handleCancel() {
-        setVisible(false);
-        setImageUrl(null);
-        setWidth(null);
-        setHeight(null);
-    }
-
+function UploadTab({setImageInfo}) {
     async function uploadImage({file}) {
         const fileKey = encodeURIComponent(`${uuid()}-${file.name}`);
         const url = `https://storage.googleapis.com/upload/storage/v1/b/${import.meta.env.VITE_PHOTOS_BUCKET}/o?uploadType=media&name=${fileKey}`;
@@ -82,6 +48,50 @@ export default function ImagePlugin() {
         }
     }
 
+    async function makeCustomRequest({file, onSuccess}) {
+        const res = await uploadImage({file});
+        setImageInfo((prev) => ({...prev, src: res}));
+        onSuccess();
+    }
+
+    return <Upload customRequest={makeCustomRequest}
+                   accept={".jpg,.jpeg,.png,.gif,.bmp,.svg,.webp"}>
+        <Button leftIcon={UploadIcon}
+                kind={Button.kinds.SECONDARY}
+                size={Button.sizes.SMALL}
+                style={{width: "100%"}}>Upload photo</Button>
+    </Upload>
+}
+
+function LinkDialog({infoImage, setImageInfo}) {
+    const [activeTab, setActiveTab] = useState(0);
+
+    return <TabsContext activeTabId={activeTab}>
+        <TabList className="insights-tab-list" onTabChange={setActiveTab}>
+            <Tab className="tab-vibe-bug-fix">Upload</Tab>
+            <Tab className="tab-vibe-bug-fix">From the internet</Tab>
+        </TabList>
+        <TabPanels>
+            <TabPanel className="upload-image-tab-panel">
+                <UploadTab infoImage={infoImage} setImageInfo={setImageInfo}/>
+            </TabPanel>
+            <TabPanel>
+                <UrlTab infoImage={infoImage} setImageInfo={setImageInfo}/>
+            </TabPanel>
+        </TabPanels>
+    </TabsContext>;
+}
+
+export default function ImagePlugin() {
+    const [editor] = useLexicalComposerContext();
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [data, setData] = useState({});
+
+    function handleCancel() {
+        setIsDialogOpen(false);
+        setData({});
+    }
+
     function insertImage() {
         editor.update(() => {
             let selection;
@@ -94,51 +104,64 @@ export default function ImagePlugin() {
             if (!hasElementNode) {
                 nodesToInsert.push($createDivParagraphNode());
             }
-            nodesToInsert.push($createImageNode({
-                src: imageUrl,
-                width: width,
-                height: height
-            }));
+            nodesToInsert.push($createImageNode(data));
             $insertNodes(nodesToInsert);
         });
         handleCancel();
     }
 
-    return (
-        <div ref={ref}>
-            <Tooltip title="Insert image" placement="bottom">
-                <Button className={"toolbar-button"}
-                        type="text"
-                        disabled={!editor.isEditable()}
-                        icon={<BiImageAdd/>}
-                        onClick={() => setVisible(!visible)}/>
-            </Tooltip>
-            {visible && (
-                <div className="toolbar-float">
-                    <Space direction="vertical">
-                        <Tabs defaultActiveKey="upload"
-                              items={tabs}/>
-                        <Space>
-                            <InputNumber placeholder="Width" min={1} onChange={setWidth}/>
-                            <InputNumber placeholder="Height" min={1} onChange={setHeight}/>
-                            <Tooltip title="We recommend setting only one of the ratio fields to save the image ratio">
-                                <InfoCircleTwoTone/>
-                            </Tooltip>
-                        </Space>
-                        <Space>
-                            <Button type="primary"
-                                    onClick={() => insertImage()}>
-                                Insert
-                            </Button>
-                            <Button type="primary"
-                                    onClick={handleCancel}
-                                    danger>
-                                Cancel
-                            </Button>
-                        </Space>
-                    </Space>
-                </div>
-            )}
-        </div>
-    )
+    function isImageReady() {
+        if (!data.src) {
+            return false;
+        }
+        return !(data.width <= 0 || data.height <= 0);
+
+    }
+
+    return <Dialog open={isDialogOpen}
+                   position={Dialog.positions.BOTTOM}
+                   onClickOutside={() => setIsDialogOpen(false)}
+                   showTrigger={[]}
+                   hideTrigger={[]}
+                   content={() => <DialogContentContainer>
+                       <Flex direction={Flex.directions.COLUMN}
+                             gap={Flex.gaps.SMALL}
+                             align={Flex.align.CENTER}
+                             style={{width: 250}}>
+                           <LinkDialog imageInfo={data} setImageInfo={setData}/>
+                           <Flex gap={Flex.gaps.SMALL}>
+                               <TextField placeholder="Width"
+                                          type={TextField.types.NUMBER}
+                                          onChange={(value) => setData((prev) => ({...prev, width: value}))}
+                                          validation={{
+                                              status: (data.width && data.width <= 0) && "error"
+                                          }}/>
+                               <TextField placeholder="Height"
+                                          type={TextField.types.NUMBER}
+                                          onChange={(value) => setData((prev) => ({...prev, height: value}))}
+                                          validation={{
+                                              status: (data.height && data.height <= 0) && "error"
+                                          }}/>
+                               <Tooltip
+                                   content="We recommend setting only one of the ratio fields to save the image ratio">
+                                   <Icon icon={Info}/>
+                               </Tooltip>
+                           </Flex>
+                           <Flex gap={Flex.gaps.SMALL} style={{width: "100%"}}>
+                               <Button size={Button.sizes.SMALL}
+                                       disabled={!isImageReady()}
+                                       onClick={insertImage}
+                                       style={{width: "100%"}}>Insert</Button>
+                               <Button size={Button.sizes.SMALL}
+                                       color={Button.colors.NEGATIVE}
+                                       onClick={handleCancel}
+                                       style={{width: "100%"}}>Cancel</Button>
+                           </Flex>
+                       </Flex>
+                   </DialogContentContainer>}>
+        <IconButton icon={Image}
+                    size={IconButton.sizes.SMALL}
+                    disabled={!editor.isEditable()}
+                    onClick={() => setIsDialogOpen(true)}/>
+    </Dialog>;
 }

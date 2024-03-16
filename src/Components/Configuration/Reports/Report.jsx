@@ -41,7 +41,7 @@ export default function Report({reportId}) {
     return <Space direction="vertical"
                   size={2}
                   split={<Divider style={{margin: 0}}/>}
-                  style={{width: "100%", lineHeight: "32px"}}>
+                  style={{width: "100%"}}>
         <Space direction="vertical"
                size={2}
                split={<Divider style={{margin: 0}}/>}

@@ -1,29 +1,29 @@
 import {$getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND} from "lexical";
 import {useState} from "react";
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
-import {Button, Space, Tooltip} from "antd";
-import {BoldOutlined, ItalicOutlined, StrikethroughOutlined, UnderlineOutlined} from "@ant-design/icons";
+import {IconButton} from "monday-ui-react-core";
+import {Bold, Italic, Underline, StrikethroughS} from "monday-ui-react-core/icons";
 
 const SUPPORTED_TEXT_FORMATS = [
     {
         type: "bold",
         tooltip: "Bold",
-        icon: <BoldOutlined/>
+        icon: Bold
     },
     {
         type: "italic",
         tooltip: "Italic",
-        icon: <ItalicOutlined/>
+        icon: Italic
     },
     {
         type: "underline",
         tooltip: "Underline",
-        icon: <UnderlineOutlined/>
+        icon: Underline
     },
     {
         type: "strikethrough",
         tooltip: "Strikethrough",
-        icon: <StrikethroughOutlined/>
+        icon: StrikethroughS
     }
 ];
 
@@ -61,17 +61,13 @@ export default function StylePlugin() {
         return selectedFormats.includes(formatType);
     }
 
-    return (
-        <Space>
-            {SUPPORTED_TEXT_FORMATS.map((format) => (
-                <Tooltip title={format.tooltip} placement="bottom" key={format.type}>
-                    <Button icon={format.icon}
-                            type="text"
-                            disabled={!editor.isEditable()}
-                            className={"toolbar-button " + (isFormatActive(format.type) ? "active" : "")}
-                            onClick={() => handleSelect(format.type)}/>
-                </Tooltip>
-            ))}
-        </Space>
+    return SUPPORTED_TEXT_FORMATS.map((format) => {
+            return <IconButton key={format.type}
+                               size={IconButton.sizes.SMALL}
+                               icon={format.icon}
+                               disabled={!editor.isEditable()}
+                               active={isFormatActive(format.type)}
+                               onClick={() => handleSelect(format.type)}/>
+        }
     );
 }

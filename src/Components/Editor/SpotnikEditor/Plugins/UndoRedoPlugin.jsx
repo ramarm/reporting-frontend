@@ -1,10 +1,10 @@
-import {CAN_REDO_COMMAND, CAN_UNDO_COMMAND, COMMAND_PRIORITY_CRITICAL, REDO_COMMAND, UNDO_COMMAND, } from "lexical";
+import {CAN_REDO_COMMAND, CAN_UNDO_COMMAND, COMMAND_PRIORITY_CRITICAL, REDO_COMMAND, UNDO_COMMAND,} from "lexical";
 import {useEffect, useState} from "react";
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {mergeRegister} from "@lexical/utils";
-import {Button, Space} from "antd";
 import {HistoryPlugin} from "@lexical/react/LexicalHistoryPlugin";
-import {RedoOutlined, UndoOutlined} from "@ant-design/icons";
+import {IconButton} from "monday-ui-react-core";
+import {Undo, Redo} from "monday-ui-react-core/icons";
 
 
 export default function UndoRedoPlugin() {
@@ -15,13 +15,13 @@ export default function UndoRedoPlugin() {
     const options = [
         {
             tooltip: "Undo",
-            icon: <UndoOutlined />,
+            icon: Undo,
             command: UNDO_COMMAND,
             disabled: !canUndo
         },
         {
             tooltip: "Redo",
-            icon: <RedoOutlined />,
+            icon: Redo,
             command: REDO_COMMAND,
             disabled: !canRedo
         }
@@ -48,20 +48,17 @@ export default function UndoRedoPlugin() {
         );
     });
 
-    return (
-        <Space>
-            <HistoryPlugin/>
-            {options.map((option, index) => {
-                return (
-                    <Button key={index} className="toolbar-button"
-                            type="text"
-                            icon={option.icon}
-                            disabled={option.disabled || !editor.isEditable()}
-                            onClick={() => {
-                                editor.dispatchCommand(option.command, undefined);
-                            }}/>
-                )
-            })}
-        </Space>
-    )
+    return [
+        <HistoryPlugin key="history-plugin"/>,
+        ...options.map((option, index) => {
+            return (
+                <IconButton key={index} size={IconButton.sizes.SMALL}
+                        icon={option.icon}
+                        disabled={option.disabled || !editor.isEditable()}
+                        onClick={() => {
+                            editor.dispatchCommand(option.command, undefined);
+                        }}/>
+            )
+        })
+    ]
 }

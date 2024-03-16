@@ -1,10 +1,9 @@
 import {$getSelection, $isRangeSelection} from "lexical";
 import {$isLinkNode, toggleLink} from "@lexical/link";
-import {useRef, useState} from "react";
+import {useState} from "react";
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
-import {Button, Form, Input, Space} from "antd";
-import {GoLink, GoUnlink} from "react-icons/go";
-import useOutsideClick from "./Toolbar/ClickOutsideHook";
+import {Dialog, DialogContentContainer, Flex, IconButton, TextField, Text, Button} from "monday-ui-react-core";
+import {Link} from "monday-ui-react-core/icons";
 
 
 function isLinkNode(node) {
@@ -22,9 +21,8 @@ function isLinkNode(node) {
 
 export default function LinkPlugin() {
     const [editor] = useLexicalComposerContext()
-    const [form] = Form.useForm();
-    const ref = useRef();
-    const [visible, setVisible] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [data, setData] = useState({});
     const [isLink, setIsLink] = useState(false);
 
     editor.registerUpdateListener(({editorState}) => {
@@ -34,21 +32,21 @@ export default function LinkPlugin() {
                 setIsLink(isLinkNode(selection.getNodes()));
             }
         });
-    })
-
-    useOutsideClick(ref, () => {
-        setVisible(false);
-        form.resetFields();
     });
 
-    function handleOpenButton() {
-        if (visible) {
-            form.resetFields();
+    function onOpen() {
+        if (isLink) {
+            handleLinkDelete();
         } else {
+            setIsDialogOpen(true);
             const selectedText = getSelection().toString();
-            form.setFieldValue("text", selectedText);
+            setData({text: selectedText});
         }
-        setVisible(!visible);
+    }
+
+    function onClose() {
+        setIsDialogOpen(false);
+        setData({});
     }
 
     function handleLinkDelete() {
@@ -57,70 +55,61 @@ export default function LinkPlugin() {
         });
     }
 
-    function handleLinkInsert(values) {
+    function handleLinkInsert() {
+        setIsDialogOpen(false);
         editor.update(() => {
             const selection = $getSelection();
             if (selection) {
                 if ($isRangeSelection(selection)) {
-                    if (values.text) {
-                        selection.insertRawText(values.text);
+                    if (data.text) {
+                        selection.insertRawText(data.text);
                     } else {
-                        selection.insertRawText(values.link);
+                        selection.insertRawText(data.link);
                     }
                 }
             }
-            if ((!values.link.startsWith("http://") && !values.link.startsWith("https://"))) {
-                values.link = "https://" + values.link;
+            if ((!data.link.startsWith("http://") && !data.link.startsWith("https://"))) {
+                data.link = "https://" + data.link;
             }
-            toggleLink(values.link);
+            toggleLink(data.link);
         });
-        setVisible(false);
-        form.resetFields();
     }
 
-
-    return (
-        <div ref={ref}>
-            {isLink ? <Button className={"toolbar-button"}
-                              type="text"
-                              disabled={!editor.isEditable()}
-                              icon={<GoUnlink/>}
-                              onClick={handleLinkDelete}/>
-                : <Button className={"toolbar-button"}
-                          type="text"
-                          disabled={!editor.isEditable()}
-                          icon={<GoLink/>}
-                          onClick={handleOpenButton}/>}
-            {visible && (
-                <div className="toolbar-float">
-                    <Form form={form}
-                          onFinish={handleLinkInsert}
-                          requiredMark={false}>
-                        <Form.Item name="link"
-                                   label="Link"
-                                   rules={[
-                                       {
-                                           required: true,
-                                           message: "Link must be filled"
-                                       }
-                                   ]}>
-                            <Input/>
-                        </Form.Item>
-                        <Form.Item name="text"
-                                   label="Text">
-                            <Input/>
-                        </Form.Item>
-                        <Space>
-                            <Button type="primary"
-                                    htmlType="submit">Insert</Button>
-                            <Button type="primary"
-                                    htmlType={"button"}
-                                    onClick={handleOpenButton}
-                                    danger>Cancel</Button>
-                        </Space>
-                    </Form>
-                </div>
-            )}
-        </div>
-    )
+    return <Dialog open={isDialogOpen}
+                   position={Dialog.positions.BOTTOM}
+                   onClickOutside={() => setIsDialogOpen(false)}
+                   showTrigger={[]}
+                   hideTrigger={[]}
+                   content={() => <DialogContentContainer>
+                       <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.SMALL}>
+                           <Flex gap={Flex.gaps.SMALL}>
+                               <Text type={Text.types.TEXT2} ellipsis={false}>Link</Text>
+                               <TextField placeholder="Url"
+                                          type={TextField.types.URL}
+                                          onChange={(value) => setData((prev) => ({...prev, link: value}))}/>
+                           </Flex>
+                           <Flex gap={Flex.gaps.SMALL}>
+                               <Text type={Text.types.TEXT2} ellipsis={false}>Text</Text>
+                               <TextField placeholder="Display text"
+                                          value={data.text ? data.text : data.link}
+                                          onChange={(value) => setData((prev) => ({...prev, text: value}))}/>
+                           </Flex>
+                           <Flex gap={Flex.gaps.SMALL} style={{width: "100%"}}>
+                               <Button size={Button.sizes.SMALL}
+                                       disabled={!data.link}
+                                       onClick={handleLinkInsert}
+                                       style={{width: "100%"}}>Insert</Button>
+                               <Button size={Button.sizes.SMALL}
+                                       color={Button.colors.NEGATIVE}
+                                       onClick={onClose}
+                                       style={{width: "100%"}}>Cancel</Button>
+                           </Flex>
+                       </Flex>
+                   </DialogContentContainer>}>
+        <IconButton icon={Link}
+                    active={isLink}
+                    size={IconButton.sizes.SMALL}
+                    disabled={!editor.isEditable()}
+                    onClick={onOpen}/>
+    </Dialog>
 }
