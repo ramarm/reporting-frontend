@@ -1,5 +1,5 @@
 import {List, ListItem, DialogContentContainer} from 'monday-ui-react-core';
-import {FUNCTIONS} from "../insightsFunctions.js";
+import {FUNCTIONS} from "../insightsFunctions.jsx";
 
 export default function FunctionCombobox({setHover, value, setValue}) {
     function onClick(value) {

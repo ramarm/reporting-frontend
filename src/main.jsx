@@ -5,7 +5,6 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import "monday-ui-react-core/tokens";
 import "./VibeHelper.css";
-import "./VibeOverride.css";
 
 const queryClient = new QueryClient()
 

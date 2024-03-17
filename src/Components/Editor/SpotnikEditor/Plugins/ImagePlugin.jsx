@@ -68,8 +68,8 @@ function LinkDialog({infoImage, setImageInfo}) {
 
     return <TabsContext activeTabId={activeTab}>
         <TabList className="insights-tab-list" onTabChange={setActiveTab}>
-            <Tab className="tab-vibe-bug-fix">Upload</Tab>
-            <Tab className="tab-vibe-bug-fix">From the internet</Tab>
+            <Tab>Upload</Tab>
+            <Tab>From the internet</Tab>
         </TabList>
         <TabPanels>
             <TabPanel className="upload-image-tab-panel">

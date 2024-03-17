@@ -1,6 +1,6 @@
 import {Flex} from "monday-ui-react-core";
-import ChooseDialog from "../Chosers/ChooseDialog.jsx";
-import FunctionCombobox from "../Chosers/Function.jsx";
+import ChooseDialog from "../Dropdowns/ChooseDialog.jsx";
+import FunctionCombobox from "../Dropdowns/Function.jsx";
 
 export default function Function({insightData, setInsight}) {
     return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.SMALL}>

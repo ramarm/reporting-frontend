@@ -2,10 +2,10 @@ import {Modal, ModalHeader, ModalContent, Button, Flex, MultiStepIndicator, Icon
 import {useRef, useState} from "react";
 import "./InsightBuilder.css";
 import "./VibeBugFix.css";
-import Steps from "./Steps.jsx";
-import MainContent from "./MainContent.jsx";
-import Footer from "./Footer.jsx";
-import {FUNCTIONS} from "./insightsFunctions.js";
+import {FUNCTIONS} from "./insightsFunctions.jsx";
+import Steps from "./Modal/Steps.jsx";
+import MainContent from "./Modal/MainContent.jsx";
+import Footer from "./Modal/Footer.jsx";
 
 export default function InsightBuilder() {
     const [insightData, setInsightData] = useState({filters: []});
@@ -40,7 +40,9 @@ export default function InsightBuilder() {
             key: "preview",
             titleText: "Preview",
             status: previewStepStatus(),
-            onBack: () => setIsFilterDone(false)
+            onBack: () => setIsFilterDone(false),
+            nextText: "Done",
+            onNext: injectInsight
         }
     ].filter((step) => step.key !== "filter" || (step.key === "filter" && functionHasFilterStep()))
 
@@ -111,6 +113,10 @@ export default function InsightBuilder() {
     function closeModal() {
         setIsOpen(false);
         resetInsight();
+    }
+
+    function injectInsight() {
+        console.log("injecttttt")
     }
 
     return <div>

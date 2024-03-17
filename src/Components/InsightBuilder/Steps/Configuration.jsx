@@ -1,9 +1,9 @@
 import {Flex} from "monday-ui-react-core";
 import {Heading} from "monday-ui-react-core/next";
-import ChooseDialog from "../Chosers/ChooseDialog.jsx";
-import ColumnCombobox from "../Chosers/Column.jsx";
-import ValueCombobox from "../Chosers/Value.jsx";
-import TimespanCombobox from "../Chosers/Timespan.jsx";
+import ChooseDialog from "../Dropdowns/ChooseDialog.jsx";
+import ColumnCombobox from "../Dropdowns/Column.jsx";
+import ValueCombobox from "../Dropdowns/Value.jsx";
+import TimespanCombobox from "../Dropdowns/Timespan.jsx";
 
 export default function Configuration({chosenFunction, insightData, setInsight}) {
     const partsComponents = {

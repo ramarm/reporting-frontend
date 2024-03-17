@@ -1,12 +1,12 @@
 import {Button, Flex, IconButton} from "monday-ui-react-core";
 import {Heading} from "monday-ui-react-core/next";
 import {Add, Delete} from "monday-ui-react-core/icons";
-import ColumnCombobox from "../Chosers/Column.jsx";
-import ChooseDialog from "../Chosers/ChooseDialog.jsx";
-import ConditionCombobox from "../Chosers/Condition.jsx";
-import FilterValueCombobox from "../Chosers/FilterValue.jsx";
+import ColumnCombobox from "../Dropdowns/Column.jsx";
+import ChooseDialog from "../Dropdowns/ChooseDialog.jsx";
+import ConditionCombobox from "../Dropdowns/Condition.jsx";
+import FilterValueCombobox from "../Dropdowns/FilterValue.jsx";
 import {useState} from "react";
-import {FUNCTIONS} from "../insightsFunctions.js";
+import {FUNCTIONS} from "../insightsFunctions.jsx";
 
 function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast, isFilterStep}) {
     return <Flex justify={Flex.justify.CENTER} gap={Flex.gaps.SMALL} wrap={true}>

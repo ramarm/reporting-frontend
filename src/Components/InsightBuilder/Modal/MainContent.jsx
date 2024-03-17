@@ -1,9 +1,9 @@
 import {Flex} from "monday-ui-react-core";
-import {FUNCTIONS} from "./insightsFunctions.js";
-import Function from "./Steps/Function.jsx";
-import Configuration from "./Steps/Configuration.jsx";
-import Filters from "./Steps/Filters.jsx";
-import Preview from "./Steps/Preview.jsx";
+import {FUNCTIONS} from "../insightsFunctions.jsx";
+import Function from "../Steps/Function.jsx";
+import Configuration from "../Steps/Configuration.jsx";
+import Filters from "../Steps/Filters.jsx";
+import Preview from "../Steps/Preview.jsx";
 
 export default function MainContent({insightData, setInsight, currentStep}) {
     const chosenFunction = FUNCTIONS.find((f) => f.value === insightData.function?.value);

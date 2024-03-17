@@ -9,10 +9,10 @@ export default function TabsIndex() {
 
     return <TabsContext activeTabId={activeTab}>
         <TabList className="insights-tab-list" onTabChange={setActiveTab}>
-            <Tab icon={Edit} className="tab-vibe-bug-fix">Reports</Tab>
-            <Tab icon={Help} className="tab-vibe-bug-fix">How to use</Tab>
-            <Tab icon={Dashboard} className="tab-vibe-bug-fix">Management</Tab>
-            <Tab icon={Upgrade} className="tab-vibe-bug-fix">Pricing & Plans</Tab>
+            <Tab icon={Edit}>Reports</Tab>
+            <Tab icon={Help}>How to use</Tab>
+            <Tab icon={Dashboard}>Management</Tab>
+            <Tab icon={Upgrade}>Pricing & Plans</Tab>
         </TabList>
         <TabPanels>
             <TabPanel>
