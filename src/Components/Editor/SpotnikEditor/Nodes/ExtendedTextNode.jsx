@@ -88,9 +88,16 @@ export class ExtendedTextNode extends TextNode {
         return serialized;
     }
 
+    cleanWhiteSpace(element) {
+        element.style.whiteSpace = null;
+        for (const child of element.children) {
+            this.cleanWhiteSpace(child);
+        }
+    }
+
     exportDOM(editor) {
         const {element} = super.exportDOM(editor);
-        element.style.whiteSpace = null;
+        this.cleanWhiteSpace(element);
         return {element};
     }
 }
