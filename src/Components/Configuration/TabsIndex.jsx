@@ -13,7 +13,6 @@ export default function TabsIndex() {
             <Tab icon={Help} className="tab-vibe-bug-fix">How to use</Tab>
             <Tab icon={Dashboard} className="tab-vibe-bug-fix">Management</Tab>
             <Tab icon={Upgrade} className="tab-vibe-bug-fix">Pricing & Plans</Tab>
-            <Tab className="tab-vibe-bug-fix">New builder</Tab>
         </TabList>
         <TabPanels>
             <TabPanel>
