@@ -20,7 +20,7 @@ function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast,
                       component={ColumnCombobox}
                       childProps={{
                           extraColumns: [{title: "Group", id: "__GROUP__", type: "group"}],
-                          columnTypes: ["status", "people", "date", "dropdown", "date"]
+                          columnTypes: ["status", "people", "date", "dropdown"]
                       }}/>
         <ChooseDialog value={filter.condition}
                       setValue={(value) => updateFilter("condition", value)}
