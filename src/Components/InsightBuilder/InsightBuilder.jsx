@@ -175,7 +175,7 @@ export default function InsightBuilder() {
             <ModalHeader title="" titleClassName="insight-modal-header">
                 <Steps steps={steps}/>
             </ModalHeader>
-            <ModalContent>
+            <ModalContent className="insight-modal-content">
                 <MainContent insightData={insightData} setInsight={setInsight} currentStep={currentStep()}/>
             </ModalContent>
             <ModalFooter>

@@ -1,6 +1,14 @@
 .ol-center {
     justify-content: center;
 }
+
+.insight-modal {
+    width: 60vw !important;
+    min-width: 700px;
+    max-width: 1000px;
+    min-height: 350px;
+}
+
 #add-insight-button {
     background-color: #203460;
 }
@@ -35,8 +43,9 @@
 }
 
 .insight-modal-content {
-    width: 100%;
-    min-height: 100px;
+    display: flex;
+    justify-content: safe center;
+    align-items: safe center;
 }
 
 #insight-preview-box {
