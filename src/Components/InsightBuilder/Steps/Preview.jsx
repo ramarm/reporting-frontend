@@ -49,7 +49,7 @@ export default function Preview({insightData, chosenFunction}) {
                     : item.text}
                 {item.result && Array.isArray(item.result)
                     ? parseArrayResult(item.result)
-                    : item.result}
+                    : typeof item.result === "number" ? (Math.round(item.result * 100) / 100).toLocaleString() : item.result}
             </li>)}
         </ul>
     }
@@ -60,7 +60,8 @@ export default function Preview({insightData, chosenFunction}) {
             if (Array.isArray(res)) {
                 setResult(parseArrayResult(res));
             } else {
-                setResult(<Text type={Text.types.TEXT1}>{res}</Text>);
+                setResult(<Text
+                    type={Text.types.TEXT1}>{typeof res === "number" ? (Math.round(res * 100) / 100).toLocaleString() : res}</Text>);
             }
         }
     }, [previewData]);
