@@ -1,4 +1,13 @@
-import {Modal, ModalHeader, ModalContent, Button, Flex, MultiStepIndicator, Icon} from 'monday-ui-react-core';
+import {
+    Modal,
+    ModalHeader,
+    ModalContent,
+    ModalFooter,
+    Button,
+    Flex,
+    MultiStepIndicator,
+    Icon
+} from 'monday-ui-react-core';
 import {useRef, useState} from "react";
 import "./InsightBuilder.css";
 import "./VibeBugFix.css";
@@ -159,18 +168,19 @@ export default function InsightBuilder() {
             </Flex>
         </Button>
         <Modal id="add-insight-modal"
-               width={Modal.width.FULL_WIDTH}
+               classNames={{modal: 'insight-modal'}}
                onClose={closeModal}
                show={isOpen}
                triggerElement={buttonRef.current}>
-            <ModalHeader title="" titleClassName="insight-modal-header"/>
+            <ModalHeader title="" titleClassName="insight-modal-header">
+                <Steps steps={steps}/>
+            </ModalHeader>
             <ModalContent>
-                <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.MEDIUM}>
-                    <Steps steps={steps}/>
-                    <MainContent insightData={insightData} setInsight={setInsight} currentStep={currentStep()}/>
-                    <Footer step={currentStep()} resetInsight={resetInsight}/>
-                </Flex>
+                <MainContent insightData={insightData} setInsight={setInsight} currentStep={currentStep()}/>
             </ModalContent>
+            <ModalFooter>
+                <Footer step={currentStep()} resetInsight={resetInsight}/>
+            </ModalFooter>
         </Modal>
     </div>
 }
