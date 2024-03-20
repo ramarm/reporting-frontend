@@ -20,6 +20,7 @@ import {getClosestElementNode} from "../Editor/SpotnikEditor/Plugins/KeyboardPlu
 import {$createDivParagraphNode} from "../Editor/SpotnikEditor/Nodes/DivParagraphNode.jsx";
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {$createInsightNode} from "./InsightNode.jsx";
+import {NavigationChevronLeft,NavigationChevronRight, Check} from "monday-ui-react-core/icons";
 
 export default function InsightBuilder() {
     const [editor] = useLexicalComposerContext();
@@ -34,30 +35,32 @@ export default function InsightBuilder() {
         {
             key: "function",
             titleText: "Function",
-            status: functionStepStatus(),
-            isNextDisabled: true
+            status: functionStepStatus()
         },
         {
             key: "configuration",
             titleText: "Configuration",
             status: configurationStepStatus(),
-            isNextDisabled: true
         },
         {
             key: "filter",
             titleText: "Filter",
             status: filterStepStatus(),
-            nextText: insightData.filters?.length > 0 ? "Next" : "Skip",
+            onNext: () => setIsFilterDone(true),
+            nextText: (insightData.filters?.length > 0 || insightData.breakdown) ? "Next" : "Skip",
             isNextDisabled: !verifyFilters(),
-            onNext: () => setIsFilterDone(true)
+            nextIcon: NavigationChevronRight
         },
         {
             key: "preview",
             titleText: "Preview",
             status: previewStepStatus(),
             onBack: () => setIsFilterDone(false),
-            nextText: "Done",
-            onNext: insertInsight
+            backIcon: NavigationChevronLeft,
+            onNext: insertInsight,
+            nextText: "Confirm",
+            nextColor: Button.colors.POSITIVE,
+            nextIcon: Check
         }
     ].filter((step) => step.key !== "filter" || (step.key === "filter" && functionHasFilterStep()))
 

@@ -1,10 +1,11 @@
-import {Box, Loader, Text} from "monday-ui-react-core";
+import {Flex, Box, Loader, Text} from "monday-ui-react-core";
+import {Heading} from "monday-ui-react-core/next";
 import {useQuery} from "@tanstack/react-query";
 import {calculateInsight} from "../../../Queries/insights.js";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {useEffect, useState} from "react";
 
-export default function Preview({chosenFunction, insightData}) {
+export default function Preview({insightData, chosenFunction}) {
     const {
         boardId,
         account: {id: accountId},
@@ -64,14 +65,81 @@ export default function Preview({chosenFunction, insightData}) {
         }
     }, [previewData]);
 
-    return <Box id="insight-preview-box"
-                className={(Array.isArray(previewData?.result) && !isFetchingPreview) ? null : "preview-align-center"}
-                border={Box.borders.DEFAULT}
-                shadow={Box.shadows.SMALL}
-                rounded={Box.roundeds.MEDIUM}
-                scrollable={true}>
-        {isFetchingPreview
-            ? <Loader size={Loader.sizes.MEDIUM}/>
-            : result}
-    </Box>
+    function getSentence() {
+        return <Flex gap={Flex.gaps.SMALL} wrap={true}>
+            {chosenFunction.parts?.map((part, index) => {
+                if (part.type === "text") {
+                    return <Heading key={index}
+                                    type={Heading.types.H1}
+                                    weight={Heading.weights.LIGHT}>
+                        {part.text}
+                    </Heading>
+                }
+                return <Heading key={index}
+                                type={Heading.types.H1}
+                                weight={Heading.weights.LIGHT}
+                                style={{textDecoration: "underline"}}>
+                    {insightData[part.type]?.label}
+                </Heading>
+            })}
+        </Flex>
+    }
+
+    function getFilters() {
+        return [insightData.filters.map((filter, index) => {
+            return <Flex key={index} gap={Flex.gaps.SMALL} wrap={true}>
+                <Heading type={Heading.types.H1}
+                         weight={Heading.weights.LIGHT}>
+                    {index === 0 ? "where" : "and"}
+                </Heading>
+                <Heading type={Heading.types.H1}
+                         weight={Heading.weights.LIGHT}
+                         style={{textDecoration: "underline"}}>
+                    {filter.column.label}
+                </Heading>
+                <Heading type={Heading.types.H1}
+                         weight={Heading.weights.LIGHT}
+                         style={{textDecoration: "underline"}}>
+                    {filter.condition.label}
+                </Heading>
+                <Heading type={Heading.types.H1}
+                         weight={Heading.weights.LIGHT}
+                         style={{textDecoration: "underline"}}>
+                    {filter.value.label}
+                </Heading>
+            </Flex>
+        })]
+    }
+
+    function getBreakdown() {
+        return <Flex gap={Flex.gaps.SMALL} wrap={true}>
+            <Heading type={Heading.types.H1}
+                     weight={Heading.weights.LIGHT}>
+                and break it down by
+            </Heading>
+            <Heading type={Heading.types.H1}
+                     weight={Heading.weights.LIGHT}
+                     style={{textDecoration: "underline"}}>
+                {insightData.breakdown.label}
+            </Heading>
+        </Flex>
+    }
+
+    return <Flex gap={Flex.gaps.LARGE} style={{width: "100%"}}>
+        <Flex gap={Flex.gaps.SMALL} direction={Flex.directions.COLUMN} align={Flex.align.START} style={{width: "50%"}}>
+            {getSentence()}
+            {insightData.filters.length > 0 && getFilters()}
+            {insightData.breakdown && getBreakdown()}
+        </Flex>
+        <Box id="insight-preview-box"
+             className={(Array.isArray(previewData?.result) && !isFetchingPreview) ? null : "preview-align-center"}
+             border={Box.borders.DEFAULT}
+             shadow={Box.shadows.SMALL}
+             rounded={Box.roundeds.MEDIUM}
+             scrollable={true}>
+            {isFetchingPreview
+                ? <Loader size={Loader.sizes.MEDIUM}/>
+                : result}
+        </Box>
+    </Flex>
 }

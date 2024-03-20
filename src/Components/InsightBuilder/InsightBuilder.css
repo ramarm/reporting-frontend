@@ -49,9 +49,9 @@
 }
 
 #insight-preview-box {
-    height: 100px;
-    width: 200px;
     padding: 10px 0;
+    min-height: 100px;
+    width: 50%;
 }
 
 .preview-align-center {

@@ -7,13 +7,14 @@ import Preview from "../Steps/Preview.jsx";
 
 export default function MainContent({insightData, setInsight, currentStep}) {
     const chosenFunction = FUNCTIONS.find((f) => f.value === insightData.function?.value);
+    const isPreview = currentStep.key === "preview";
 
     if (!chosenFunction) {
         return <Function insightData={insightData} setInsight={setInsight}/>
     }
 
-    if (currentStep.key === "preview") {
-        return <Preview chosenFunction={chosenFunction} insightData={insightData}/>
+    if (isPreview) {
+        return <Preview insightData={insightData} chosenFunction={chosenFunction}/>
     }
 
     return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.XS}>
