@@ -6,8 +6,14 @@ import {FUNCTIONS} from "./insightsFunctions.jsx";
 import Steps from "./Modal/Steps.jsx";
 import MainContent from "./Modal/MainContent.jsx";
 import Footer from "./Modal/Footer.jsx";
+import {$createRangeSelection, $getSelection, $insertNodes} from "lexical";
+import {getClosestElementNode} from "../Editor/SpotnikEditor/Plugins/KeyboardPlugin.js";
+import {$createDivParagraphNode} from "../Editor/SpotnikEditor/Nodes/DivParagraphNode.jsx";
+import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
+import {$createInsightNode} from "./InsightNode.jsx";
 
 export default function InsightBuilder() {
+    const [editor] = useLexicalComposerContext();
     const [insightData, setInsightData] = useState({filters: []});
     const [isFilterDone, setIsFilterDone] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +48,7 @@ export default function InsightBuilder() {
             status: previewStepStatus(),
             onBack: () => setIsFilterDone(false),
             nextText: "Done",
-            onNext: injectInsight
+            onNext: insertInsight
         }
     ].filter((step) => step.key !== "filter" || (step.key === "filter" && functionHasFilterStep()))
 
@@ -115,8 +121,30 @@ export default function InsightBuilder() {
         resetInsight();
     }
 
-    function injectInsight() {
-        console.log("injecttttt")
+    function insertInsight() {
+        editor.update(() => {
+            let selection;
+            selection = $getSelection();
+            if (selection === null) {
+                selection = $createRangeSelection();
+            }
+            const hasElementNode = selection.getNodes().map(getClosestElementNode).some((node) => node);
+            const nodesToInsert = [];
+            if (!hasElementNode) {
+                nodesToInsert.push($createDivParagraphNode());
+            }
+            nodesToInsert.push($createInsightNode({
+                title: "{insight}",
+                func: insightData.function.value,
+                column: insightData.column,
+                value: insightData.value,
+                timespan: insightData.timespan,
+                filters: insightData.filters,
+                breakdown: insightData.breakdown
+            }));
+            $insertNodes(nodesToInsert);
+        })
+        closeModal();
     }
 
     return <div>

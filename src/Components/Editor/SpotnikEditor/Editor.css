@@ -17,6 +17,6 @@
     position: absolute;
     top: 0;
     left: 5px;
-    color: gray;
+    color: rgb(128, 128, 128);
     pointer-events: none;
 }

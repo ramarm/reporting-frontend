@@ -1,6 +1,13 @@
 import {$isTextNode, TextNode} from "lexical";
 
 
+export function cleanWhiteSpace(element) {
+    element.style.whiteSpace = null;
+    for (const child of element.children) {
+        cleanWhiteSpace(child);
+    }
+}
+
 function patchStyleConversion(originalDOMConverter) {
     return (node) => {
         const original = originalDOMConverter?.(node);
@@ -88,16 +95,9 @@ export class ExtendedTextNode extends TextNode {
         return serialized;
     }
 
-    cleanWhiteSpace(element) {
-        element.style.whiteSpace = null;
-        for (const child of element.children) {
-            this.cleanWhiteSpace(child);
-        }
-    }
-
     exportDOM(editor) {
         const {element} = super.exportDOM(editor);
-        this.cleanWhiteSpace(element);
+        cleanWhiteSpace(element);
         return {element};
     }
 }
