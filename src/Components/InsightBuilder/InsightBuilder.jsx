@@ -21,7 +21,6 @@ import {$createDivParagraphNode} from "../Editor/SpotnikEditor/Nodes/DivParagrap
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {$createInsightNode} from "./InsightNode.jsx";
 import {NavigationChevronLeft,NavigationChevronRight, Check} from "monday-ui-react-core/icons";
-import {NavigationChevronLeft, NavigationChevronRight, Check} from "monday-ui-react-core/icons";
 
 export default function InsightBuilder() {
     const [editor] = useLexicalComposerContext();
@@ -184,8 +183,6 @@ export default function InsightBuilder() {
             <ModalFooter className="insight-modal-footer">
                 <Footer step={currentStep()} resetInsight={resetInsight}/>
             </ModalFooter>
-        </Modal>
-    </div>
         </Modal>,
     ]
 }
