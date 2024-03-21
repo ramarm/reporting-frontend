@@ -17,7 +17,7 @@ export default function MainContent({insightData, setInsight, currentStep}) {
         return <Preview insightData={insightData} chosenFunction={chosenFunction}/>
     }
 
-    return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.XS}>
+    return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.SMALL}>
         <Configuration insightData={insightData} setInsight={setInsight} chosenFunction={chosenFunction}/>
         <Filters insightData={insightData} setInsight={setInsight} currentStep={currentStep}/>
     </Flex>

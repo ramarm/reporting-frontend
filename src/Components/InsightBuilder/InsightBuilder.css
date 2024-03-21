@@ -14,7 +14,16 @@
 }
 
 .insight-modal-header {
+    margin-block-start: 0;
+    margin-block-end: var(--spacing-medium)
+}
+
+.insight-modal-header-title {
     display: none;
+}
+
+.insight-modal-footer {
+    margin-block-start: var(--spacing-medium);
 }
 
 .insight-steps-divider {

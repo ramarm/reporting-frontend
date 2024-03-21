@@ -21,6 +21,7 @@ import {$createDivParagraphNode} from "../Editor/SpotnikEditor/Nodes/DivParagrap
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {$createInsightNode} from "./InsightNode.jsx";
 import {NavigationChevronLeft,NavigationChevronRight, Check} from "monday-ui-react-core/icons";
+import {NavigationChevronLeft, NavigationChevronRight, Check} from "monday-ui-react-core/icons";
 
 export default function InsightBuilder() {
     const [editor] = useLexicalComposerContext();
@@ -159,31 +160,32 @@ export default function InsightBuilder() {
         closeModal();
     }
 
-    return <div>
-        <Button id="add-insight-button"
-                ref={buttonRef}
-                size={Button.sizes.SMALL}
-                onClick={() => setIsOpen(true)}>
-            <Flex gap={Flex.gaps.SMALL}>
-                <Icon iconType={Icon.type.SRC}
-                      icon="insights-transparent.svg"/>
-                <span>Create Insight</span>
-            </Flex>
-        </Button>
-        <Modal id="add-insight-modal"
+    return [<Button key="button" id="add-insight-button"
+                    ref={buttonRef}
+                    size={Button.sizes.SMALL}
+                    onClick={() => setIsOpen(true)}>
+        <Flex gap={Flex.gaps.SMALL}>
+            <Icon iconType={Icon.type.SRC}
+                  icon="insights-transparent.svg"/>
+            <span>Create Insight</span>
+        </Flex>
+    </Button>,
+        <Modal key="modal" id="add-insight-modal"
                classNames={{modal: 'insight-modal'}}
                onClose={closeModal}
                show={isOpen}
                triggerElement={buttonRef.current}>
-            <ModalHeader title="" titleClassName="insight-modal-header">
+            <ModalHeader className="insight-modal-header" title="" titleClassName="insight-modal-header-title">
                 <Steps steps={steps}/>
             </ModalHeader>
             <ModalContent className="insight-modal-content">
                 <MainContent insightData={insightData} setInsight={setInsight} currentStep={currentStep()}/>
             </ModalContent>
-            <ModalFooter>
+            <ModalFooter className="insight-modal-footer">
                 <Footer step={currentStep()} resetInsight={resetInsight}/>
             </ModalFooter>
         </Modal>
     </div>
+        </Modal>,
+    ]
 }

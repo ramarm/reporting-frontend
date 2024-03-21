@@ -10,7 +10,7 @@ import {FUNCTIONS} from "../insightsFunctions.jsx";
 
 function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast, isFilterStep}) {
     return <Flex justify={Flex.justify.CENTER} gap={Flex.gaps.SMALL} wrap={true}>
-        <Heading type={Heading.types.H1}
+        <Heading type={Heading.types.H2}
                  weight={Heading.weights.LIGHT}>
             {isFirst ? "Where" : "and"}
         </Heading>
@@ -43,7 +43,7 @@ function Filter({filter, updateFilter, addFilter, removeFilter, isFirst, isLast,
 
 function Breakdown({breakdown, setBreakdown, removeBreakdown}) {
     return <Flex justify={Flex.justify.CENTER} gap={Flex.gaps.SMALL} wrap={true}>
-        <Heading type={Heading.types.H1}
+        <Heading type={Heading.types.H2}
                  weight={Heading.weights.LIGHT}>
             and break it down by
         </Heading>
@@ -99,7 +99,7 @@ export default function Filters({insightData, setInsight, currentStep}) {
         setHasBreakdown(false);
     }
 
-    return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.XS}>
+    return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.SMALL}>
         {filters.map((filter, index) => <Filter key={index}
                                                 filter={filter}
                                                 updateFilter={(key, value) => updateFilter(index, key, value)}

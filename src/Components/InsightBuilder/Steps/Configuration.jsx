@@ -8,7 +8,7 @@ import TimespanCombobox from "../Dropdowns/Timespan.jsx";
 export default function Configuration({chosenFunction, insightData, setInsight}) {
     const partsComponents = {
         text: ({key, part}) => <Heading key={key}
-                                        type={Heading.types.H1}
+                                        type={Heading.types.H2}
                                         weight={Heading.weights.LIGHT}>
             {part.text}
         </Heading>,

@@ -67,23 +67,21 @@ export default function Preview({insightData, chosenFunction}) {
     }, [previewData]);
 
     function getSentence() {
-        return <Flex gap={Flex.gaps.SMALL} wrap={true}>
-            {chosenFunction.parts?.map((part, index) => {
-                if (part.type === "text") {
-                    return <Heading key={index}
-                                    type={Heading.types.H1}
-                                    weight={Heading.weights.LIGHT}>
-                        {part.text}
-                    </Heading>
-                }
+        return chosenFunction.parts?.map((part, index) => {
+            if (part.type === "text") {
                 return <Heading key={index}
-                                type={Heading.types.H1}
-                                weight={Heading.weights.LIGHT}
-                                style={{textDecoration: "underline"}}>
-                    {insightData[part.type]?.label}
+                                type={Heading.types.H2}
+                                weight={Heading.weights.LIGHT}>
+                    {part.text}
                 </Heading>
-            })}
-        </Flex>
+            }
+            return <Heading key={index}
+                            type={Heading.types.H2}
+                            weight={Heading.weights.LIGHT}
+                            style={{textDecoration: "underline"}}>
+                {insightData[part.type]?.label}
+            </Heading>
+        })
     }
 
     function getFilters() {
