@@ -59,9 +59,14 @@
 }
 
 #insight-preview-box {
-    padding: 10px 0;
+    padding: 10px;
+    width: 300px;
     min-height: 100px;
-    width: 50%;
+    max-height: 200px;
+}
+
+#insight-preview-sentence {
+    max-width: calc(100% - 350px);
 }
 
 .preview-align-center {

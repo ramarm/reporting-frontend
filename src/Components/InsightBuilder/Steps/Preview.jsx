@@ -70,13 +70,13 @@ export default function Preview({insightData, chosenFunction}) {
         return chosenFunction.parts?.map((part, index) => {
             if (part.type === "text") {
                 return <Heading key={index}
-                                type={Heading.types.H2}
+                                type={Heading.types.H3}
                                 weight={Heading.weights.LIGHT}>
                     {part.text}
                 </Heading>
             }
             return <Heading key={index}
-                            type={Heading.types.H2}
+                            type={Heading.types.H3}
                             weight={Heading.weights.LIGHT}
                             style={{textDecoration: "underline"}}>
                 {insightData[part.type]?.label}
@@ -86,21 +86,21 @@ export default function Preview({insightData, chosenFunction}) {
 
     function getFilters() {
         return [insightData.filters.map((filter, index) => {
-            return [<Heading key={index + "type"} type={Heading.types.H2}
+            return [<Heading key={index + "type"} type={Heading.types.H3}
                              weight={Heading.weights.LIGHT}>
                 {index === 0 ? "where" : "and"}
             </Heading>,
-                <Heading key={index + "column"} type={Heading.types.H2}
+                <Heading key={index + "column"} type={Heading.types.H3}
                          weight={Heading.weights.LIGHT}
                          style={{textDecoration: "underline"}}>
                     {filter.column.label}
                 </Heading>,
-                <Heading key={index + "condition"} type={Heading.types.H2}
+                <Heading key={index + "condition"} type={Heading.types.H3}
                          weight={Heading.weights.LIGHT}
                          style={{textDecoration: "underline"}}>
                     {filter.condition.label}
                 </Heading>,
-                <Heading key={index + "value"} type={Heading.types.H2}
+                <Heading key={index + "value"} type={Heading.types.H3}
                          weight={Heading.weights.LIGHT}
                          style={{textDecoration: "underline"}}>
                     {filter.value.label}
@@ -109,19 +109,21 @@ export default function Preview({insightData, chosenFunction}) {
     }
 
     function getBreakdown() {
-        return [<Heading key="breakdown-text" type={Heading.types.H2}
+        return [<Heading key="breakdown-text"
+                         type={Heading.types.H3}
                          weight={Heading.weights.LIGHT}>
             and break it down by
         </Heading>,
-            <Heading key="breakdown-value" type={Heading.types.H2}
+            <Heading key="breakdown-value"
+                     type={Heading.types.H3}
                      weight={Heading.weights.LIGHT}
                      style={{textDecoration: "underline"}}>
                 {insightData.breakdown.label}
             </Heading>]
     }
 
-    return <Flex gap={Flex.gaps.LARGE} style={{width: "100%"}}>
-        <Flex gap={Flex.gaps.SMALL} wrap={true} align={Flex.align.START} style={{width: "50%"}}>
+    return <Flex gap={Flex.gaps.LARGE} justify={Flex.justify.SPACE_AROUND} style={{width: "100%"}}>
+        <Flex id="insight-preview-sentence" gap={Flex.gaps.XS} wrap={true}>
             {getSentence()}
             {insightData.filters.length > 0 && getFilters()}
             {insightData.breakdown && getBreakdown()}
