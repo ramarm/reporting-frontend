@@ -75,3 +75,12 @@
     margin-block-end: 0;
     padding-inline-start: 25px;
 }
+
+.report-modal {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.insight-modal-container {
+    z-index: 20000
+}

@@ -170,7 +170,7 @@ export default function InsightBuilder() {
         </Flex>
     </Button>,
         <Modal key="modal" id="add-insight-modal"
-               classNames={{modal: 'insight-modal'}}
+               classNames={{container: "insight-modal-container", modal: 'insight-modal'}}
                onClose={closeModal}
                show={isOpen}
                triggerElement={buttonRef.current}>

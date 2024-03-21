@@ -1,12 +1,14 @@
 import {useState} from "react";
 import Loader from "../../Loader/Loader.jsx";
-import {Button, Collapse, Divider, Space, Typography} from "antd";
+import {Collapse, Divider, Space, Typography} from "antd";
 import ReportExtra from "./ReportExtra.jsx";
 import Report from "./Report.jsx";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {createReport, getReports} from "../../../Queries/reporting.js";
 import {convert as htmlConvert} from "html-to-text";
+import {Flex, Button, Modal, ModalHeader, ModalContent} from "monday-ui-react-core";
+import {Heading} from "monday-ui-react-core/next";
 
 const {Text} = Typography;
 
@@ -14,6 +16,7 @@ export default function ReportsView() {
     const queryClient = useQueryClient();
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const [activeKey, setActiveKey] = useState([]);
+    const [activeReport, setActiveReport] = useState();
 
     const {data: reports, isLoading: isLoadingReports} = useQuery({
         enabled: !!context.boardId,
@@ -63,32 +66,34 @@ export default function ReportsView() {
     }
 
     if (reports.length === 0) {
-        return <div style={{
-            textAlign: "center"
-        }}>
-            <h1>You don&apos;t have any reports</h1>
+        return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.LARGE}>
+            <Heading type={Heading.types.H1}>You don&apos;t have any reports</Heading>
             <Button type="primary"
                     onClick={createNewReport}>Create new report</Button>
-        </div>
+        </Flex>
     }
 
-    return (
-        <div style={{
-            margin: "0 20px"
-        }}>
+    return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.LARGE} style={{padding: "0 20px", width: "auto"}}>
+        <Flex justify={Flex.justify.SPACE_BETWEEN} style={{width: "100%"}}>
+            <Heading type={Heading.types.H1}>Your reports</Heading>
             <Button type="primary"
-                    style={{
-                        float: "right"
-                    }}
                     onClick={createNewReport}>Create new report</Button>
-            <h1>Your reports</h1>
-            <Collapse style={{marginBottom: "100px"}}
-                      items={generateCollapseItems()}
-                      activeKey={activeKey}
-                      bordered={false}
-                      onChange={(newActiveKeys) => {
-                          setActiveKey(newActiveKeys);
-                      }}/>
-        </div>
-    )
+        </Flex>
+        <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.SMALL} style={{width: "100%"}}>
+            {reports.map((report, index) => {
+                return <Button key={index} kind={Button.kinds.SECONDARY} style={{width: "100%"}}
+                               onClick={() => setActiveReport(report.id)}>
+                    {report.subject || "new"}
+                </Button>
+            })}
+        </Flex>
+        {activeReport && <Modal show={activeReport}
+                                classNames={{modal: 'report-modal'}}
+               onClose={() => setActiveReport(undefined)}>
+            <ModalHeader title="Report"/>
+            <ModalContent>
+                <Report reportId={activeReport}/>
+            </ModalContent>
+        </Modal>}
+    </Flex>
 }
