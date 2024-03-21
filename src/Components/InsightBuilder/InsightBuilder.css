@@ -48,6 +48,7 @@
 }
 
 .insight-select-text {
+    max-width: 250px;
     text-decoration: underline;
 }
 
