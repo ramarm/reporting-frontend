@@ -65,6 +65,10 @@
     max-height: 200px;
 }
 
+#insight-preview-sentence {
+    max-width: calc(100% - 350px);
+}
+
 .preview-align-center {
     display: flex;
     align-items: center;

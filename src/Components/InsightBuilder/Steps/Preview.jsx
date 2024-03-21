@@ -123,7 +123,7 @@ export default function Preview({insightData, chosenFunction}) {
     }
 
     return <Flex gap={Flex.gaps.LARGE} justify={Flex.justify.SPACE_AROUND} style={{width: "100%"}}>
-        <Flex gap={Flex.gaps.SMALL} wrap={true} align={Flex.align.START}>
+        <Flex id="insight-preview-sentence" gap={Flex.gaps.XS} wrap={true}>
             {getSentence()}
             {insightData.filters.length > 0 && getFilters()}
             {insightData.breakdown && getBreakdown()}
