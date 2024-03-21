@@ -86,46 +86,42 @@ export default function Preview({insightData, chosenFunction}) {
 
     function getFilters() {
         return [insightData.filters.map((filter, index) => {
-            return <Flex key={index} gap={Flex.gaps.SMALL} wrap={true}>
-                <Heading type={Heading.types.H1}
-                         weight={Heading.weights.LIGHT}>
-                    {index === 0 ? "where" : "and"}
-                </Heading>
-                <Heading type={Heading.types.H1}
+            return [<Heading key={index + "type"} type={Heading.types.H2}
+                             weight={Heading.weights.LIGHT}>
+                {index === 0 ? "where" : "and"}
+            </Heading>,
+                <Heading key={index + "column"} type={Heading.types.H2}
                          weight={Heading.weights.LIGHT}
                          style={{textDecoration: "underline"}}>
                     {filter.column.label}
-                </Heading>
-                <Heading type={Heading.types.H1}
+                </Heading>,
+                <Heading key={index + "condition"} type={Heading.types.H2}
                          weight={Heading.weights.LIGHT}
                          style={{textDecoration: "underline"}}>
                     {filter.condition.label}
-                </Heading>
-                <Heading type={Heading.types.H1}
+                </Heading>,
+                <Heading key={index + "value"} type={Heading.types.H2}
                          weight={Heading.weights.LIGHT}
                          style={{textDecoration: "underline"}}>
                     {filter.value.label}
-                </Heading>
-            </Flex>
+                </Heading>]
         })]
     }
 
     function getBreakdown() {
-        return <Flex gap={Flex.gaps.SMALL} wrap={true}>
-            <Heading type={Heading.types.H1}
-                     weight={Heading.weights.LIGHT}>
-                and break it down by
-            </Heading>
-            <Heading type={Heading.types.H1}
+        return [<Heading key="breakdown-text" type={Heading.types.H2}
+                         weight={Heading.weights.LIGHT}>
+            and break it down by
+        </Heading>,
+            <Heading key="breakdown-value" type={Heading.types.H2}
                      weight={Heading.weights.LIGHT}
                      style={{textDecoration: "underline"}}>
                 {insightData.breakdown.label}
-            </Heading>
-        </Flex>
+            </Heading>]
     }
 
     return <Flex gap={Flex.gaps.LARGE} style={{width: "100%"}}>
-        <Flex gap={Flex.gaps.SMALL} direction={Flex.directions.COLUMN} align={Flex.align.START} style={{width: "50%"}}>
+        <Flex gap={Flex.gaps.SMALL} wrap={true} align={Flex.align.START} style={{width: "50%"}}>
             {getSentence()}
             {insightData.filters.length > 0 && getFilters()}
             {insightData.breakdown && getBreakdown()}
