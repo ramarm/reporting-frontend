@@ -6,7 +6,7 @@ import {TabIndentationPlugin} from "@lexical/react/LexicalTabIndentationPlugin.j
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary.js";
 import {ContentEditable} from "@lexical/react/LexicalContentEditable.js";
 
-export default function ReportingPlugin({onChange}) {
+export default function ReportingPlugin({onContentRef, onChange}) {
     const [editor] = useLexicalComposerContext();
 
     function onChangeAdapter() {
@@ -17,13 +17,15 @@ export default function ReportingPlugin({onChange}) {
 
     return <>
         <RichTextPlugin
-            contentEditable={<ContentEditable style={{
-                minHeight: "100px",
-                maxHeight: "600px",
-                overflow: "auto",
-                padding: "0 5px",
-                outline: 0
-            }}/>}
+            contentEditable={<div ref={onContentRef}>
+                <ContentEditable style={{
+                    minHeight: "100px",
+                    maxHeight: "600px",
+                    overflow: "auto",
+                    padding: "0 5px",
+                    outline: 0
+                }}/>
+            </div>}
             placeholder={<span className="editor-placeholder">Body</span>}
             ErrorBoundary={LexicalErrorBoundary}/>
         <OnChangePlugin onChange={onChangeAdapter}/>

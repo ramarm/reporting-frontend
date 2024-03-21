@@ -20,10 +20,10 @@ import {getClosestElementNode} from "../Editor/SpotnikEditor/Plugins/KeyboardPlu
 import {$createDivParagraphNode} from "../Editor/SpotnikEditor/Nodes/DivParagraphNode.jsx";
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {$createInsightNode} from "./InsightNode.jsx";
-import {NavigationChevronLeft,NavigationChevronRight, Check} from "monday-ui-react-core/icons";
 import {NavigationChevronLeft, NavigationChevronRight, Check} from "monday-ui-react-core/icons";
+import FloatingInsightEditorPlugin from "./FloatingInsightEditorPlugin.jsx";
 
-export default function InsightBuilder() {
+export default function InsightBuilder({contentRef}) {
     const [editor] = useLexicalComposerContext();
     const [insightData, setInsightData] = useState({filters: []});
     const [isFilterDone, setIsFilterDone] = useState(false);
@@ -184,8 +184,7 @@ export default function InsightBuilder() {
             <ModalFooter className="insight-modal-footer">
                 <Footer step={currentStep()} resetInsight={resetInsight}/>
             </ModalFooter>
-        </Modal>
-    </div>
         </Modal>,
+        <FloatingInsightEditorPlugin key="floating-insight" contentRef={contentRef}/>
     ]
 }
