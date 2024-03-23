@@ -35,10 +35,6 @@
     width: 100%;
 }
 
-.insight-dialog {
-    z-index: 20000;
-}
-
 .insight-list {
     max-height: 150px;
 }

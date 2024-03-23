@@ -10,8 +10,7 @@ export default function ChooseDialog({value, setValue, placeholder, component, c
         setValue(value);
     }
 
-    return <Dialog wrapperClassName="insight-dialog"
-                   containerSelector="#add-insight-modal"
+    return <Dialog containerSelector="#add-insight-modal"
                    position={Dialog.positions.BOTTOM}
                    content={createElement(component, {
                        ...childProps,

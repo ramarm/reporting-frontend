@@ -16,6 +16,7 @@ function Recipient({prefix, value, setValue, extra, editable}) {
         value: user.email,
         leftAvatar: user.photo_tiny
     }));
+
     if (/^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]+)$/.test(searchValue)) {
         options.push({
             label: searchValue,
@@ -44,7 +45,10 @@ function Recipient({prefix, value, setValue, extra, editable}) {
                   noOptionsMessage={() => "No monday users found.. But you can add a custom email!"}
                   options={options}
                   value={generateValue()}
-                  onChange={(newValue) => setValue(newValue.map(({value}) => value))}
+                  onChange={(newValue) => {
+                      if (newValue) setValue(newValue.map(({value}) => value))
+                      else setValue([])
+                  }}
                   onInputChange={setSearchValue}/>
         {extra && extra}
     </Flex>,
@@ -59,6 +63,7 @@ export default function Recipients({reportId, setReport, editable}) {
     function ccButtons() {
         return [
             <Button key="cc" active={report.cc}
+                    size={Button.sizes.MEDIUM}
                     disabled={!editable}
                     onClick={() => {
                         if (report.cc) {
@@ -71,6 +76,7 @@ export default function Recipients({reportId, setReport, editable}) {
                 Cc
             </Button>,
             <Button key="bcc" active={report.bcc}
+                    size={Button.sizes.MEDIUM}
                     disabled={!editable}
                     onClick={() => {
                         if (report.bcc) {

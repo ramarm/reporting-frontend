@@ -120,8 +120,7 @@ export default function From({editable, from, updateFrom}) {
         </Flex>
     }
 
-    return [<Dialog key="from-dialog" wrapperClassName="from-dialog"
-                    containerSelector="#report-modal"
+    return [<Dialog key="from-dialog" containerSelector="#report-modal"
                     content={<DialogContentContainer>
                         <FromDialogContent setSender={setSender}
                                            currentEmailAccount={emailAccount}

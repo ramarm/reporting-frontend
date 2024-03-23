@@ -38,10 +38,6 @@
     z-index: 20000;
 }
 
-.from-dialog {
-    z-index: 20000;
-}
-
 .report-modal-content {
     padding: var(--spacing-medium);
     height: 100%;
@@ -49,4 +45,8 @@
 
 .recipient-dropdown {
     width: inherit;
+}
+
+.monday-style-dialog-content-wrapper {
+    z-index: 50000
 }

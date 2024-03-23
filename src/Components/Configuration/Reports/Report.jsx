@@ -11,7 +11,8 @@ import {
     ModalHeader,
     EditableHeading,
     IconButton,
-    TextField
+    TextField,
+    Divider
 } from "monday-ui-react-core";
 import {Heading} from "monday-ui-react-core/next";
 import {CloseSmall} from "monday-ui-react-core/icons";
@@ -88,6 +89,7 @@ export default function Report({setReportId, reportId}) {
                            disabled={!editable}
                            value={report.subject}
                            onChange={setReportSubject}/>
+                <Divider key="divider"/>
                 <ReportingEditor initialValue={report.body} disabled={!editable}
                                  onChange={(value) => setReport("body", value)}/>
             </Flex>
