@@ -50,3 +50,7 @@
 .monday-style-dialog-content-wrapper {
     z-index: 50000
 }
+
+.subject-input {
+    border: none !important;
+}

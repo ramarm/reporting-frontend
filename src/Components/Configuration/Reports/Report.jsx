@@ -9,12 +9,11 @@ import {
     Modal,
     ModalContent,
     ModalHeader,
-    EditableHeading,
+    EditableText,
     IconButton,
     TextField,
     Divider
 } from "monday-ui-react-core";
-import {Heading} from "monday-ui-react-core/next";
 import {CloseSmall} from "monday-ui-react-core/icons";
 
 export default function Report({setReportId, reportId}) {
@@ -66,11 +65,11 @@ export default function Report({setReportId, reportId}) {
                      title=""
                      icon={null}>
             <Flex style={{height: "100%"}} justify={Flex.justify.SPACE_BETWEEN}>
-                <EditableHeading type={Heading.types.H3} style={{width: "auto"}}
-                                 disabled={!editable}
-                                 placeholder="Report name"
-                                 value={report.name}
-                                 onChange={setReportName}/>
+                <EditableText type={EditableText.types.TEXT1}
+                              disabled={!editable}
+                              placeholder="Report name"
+                              value={report.name}
+                              onChange={setReportName}/>
                 <Flex gap={Flex.gaps.SMALL}>
                     <From editable={editable}
                           from={report.sender}
@@ -87,6 +86,8 @@ export default function Report({setReportId, reportId}) {
                             setReport={setReport}
                             editable={editable}/>
                 <TextField placeholder="Subject"
+                           className="subject-input"
+                           debounceRate={500}
                            size={TextField.sizes.MEDIUM}
                            disabled={!editable}
                            value={report.subject}

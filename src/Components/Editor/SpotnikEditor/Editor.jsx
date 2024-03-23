@@ -13,6 +13,7 @@ import {ExtendedListItemNode} from "./Nodes/ExtendedListItemNode.jsx";
 import {ExtendedListNode} from "./Nodes/ExtendedListNode.jsx";
 import DivParagraphNode from "./Nodes/DivParagraphNode.jsx";
 import {InsightNode} from "../../InsightBuilder/InsightNode.jsx";
+import {Flex} from "monday-ui-react-core";
 
 
 export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, disabled}) {
@@ -47,10 +48,11 @@ export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, 
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
-            <div id="editor-container">
+            <Flex direction={Flex.directions.COLUMN} align={Flex.align.START} style={{width: "100%"}}
+                  id="editor-container">
                 {toolbarPlugins?.length > 0 && <ToolbarPlugin toolbarPlugins={toolbarPlugins}/>}
                 {innerEditor}
-            </div>
+            </Flex>
         </LexicalComposer>
     );
 }
