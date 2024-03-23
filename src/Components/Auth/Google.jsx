@@ -1,4 +1,4 @@
-import {Avatar, Button} from "antd";
+import {Flex, Avatar, Text, Button} from "monday-ui-react-core";
 import {useGoogleLogin} from "@react-oauth/google";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../consts.js";
 import {authGoogle} from "../../Queries/management.js";
@@ -10,7 +10,7 @@ const SCOPES = [
     `${GOOGLE_API_URL}/auth/userinfo.email`,
     `${GOOGLE_API_URL}/auth/gmail.send`
 ]
-export default function GoogleAuth({refetchAccounts, setSender, closeModal}) {
+export default function GoogleAuth({setSender, closeModal}) {
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const loginHook = useGoogleLogin({
         flow: "auth-code",
@@ -30,14 +30,18 @@ export default function GoogleAuth({refetchAccounts, setSender, closeModal}) {
             scopes: SCOPES,
             code: code
         })).data;
-        refetchAccounts();
-        setSender(newEmail);
+        await setSender(newEmail);
     }
 
-    return <Button icon={<Avatar shape="square" style={{borderRadius: 0}}
-                                 src="https://www.vectorlogo.zone/logos/google/google-icon.svg"/>}
-                   style={{height: "50px", width: "220px"}}
+    return <Button style={{height: "50px", width: "250px"}}
+                   kind={Button.kinds.SECONDARY}
                    onClick={handleLogin}>
-        Sign in with Google
+        <Flex gap={Flex.gaps.SMALL} justify={Flex.justify.SPACE_BETWEEN} style={{width: "100%"}}>
+            <Avatar square={true} withoutBorder
+                    type={Avatar.types.IMG}
+                    size={Avatar.sizes.MEDIUM}
+                    src="https://www.vectorlogo.zone/logos/google/google-icon.svg"/>
+            <Text type={Text.types.TEXT1} style={{flexGrow: 1, textAlign: "center"}}>Sign in with Google</Text>
+        </Flex>
     </Button>;
 }

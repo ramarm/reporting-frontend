@@ -14,6 +14,7 @@ import {
 import {AlertBanner, AlertBannerButton, AlertBannerText, IconButton} from "monday-ui-react-core";
 import {Upgrade, Help, Email} from "monday-ui-react-core/icons";
 import TabsIndex from "./Components/Configuration/TabsIndex.jsx";
+import "./VibeBug.css";
 
 const monday = mondaySdk();
 monday.setApiVersion(import.meta.env.VITE_MONDAY_API_VERSION);

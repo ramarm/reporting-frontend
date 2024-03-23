@@ -1,0 +1,47 @@
+#report-list {
+    width: 100%;
+}
+
+.report-list-divider {
+    margin: 0;
+}
+
+.report-list-item {
+    height: 50px;
+}
+
+.report-modal-container {
+    height: 100%;
+    width: 100%;
+    align-items: end;
+}
+
+.report-modal {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 95vh;
+    border-bottom-left-radius: unset;
+    border-bottom-right-radius: unset;
+    padding: 0;
+}
+
+.report-modal-header {
+    margin: 0;
+    border-top-left-radius: var(--border-radius-big);
+    border-top-right-radius: var(--border-radius-big);
+    background-color: var(--allgrey-background-color);
+    height: 48px;
+    padding: var(--spacing-small) var(--spacing-medium);
+}
+
+.add-account-modal-container {
+    z-index: 20000;
+}
+
+.closeButton {
+    display: none;
+}
+
+.from-dialog {
+    z-index: 20000;
+}

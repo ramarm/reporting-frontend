@@ -1,134 +1,148 @@
-import {Button, Col, Divider, Row, Select, Space, Typography} from "antd";
-import AuthModal from "../../Auth/AuthModal.jsx";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {useEffect, useState} from "react";
+import {
+    Flex,
+    Divider,
+    Text,
+    Dialog,
+    DialogContentContainer,
+    Button,
+    Loader,
+    List,
+    ListItem,
+    Avatar,
+    Icon,
+} from "monday-ui-react-core";
+import {Delete, Email, DropdownChevronUp, DropdownChevronDown} from "monday-ui-react-core/icons";
+import {useState} from "react";
+import {useQuery} from "@tanstack/react-query";
 import {deleteEmailAccount, getEmailAccounts} from "../../../Queries/management.js";
+import AuthModal from "../../Auth/AuthModal.jsx";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
-import {renderOption} from "./GeneralComponents.jsx";
-import {DeleteOutlined, PlusOutlined} from "@ant-design/icons";
 
-const {Title, Text} = Typography;
+function getInitials(text) {
+    return text.split(" ").map((n) => n[0]).join("");
+}
 
-export default function From({reportId, setReport, editable}) {
-    const queryClient = useQueryClient();
+function FromDialogContent({currentEmailAccount, setSender, refetchEmailAccounts, openAddAccount, emailAccounts}) {
+    if (emailAccounts === undefined) {
+        return <Loader/>
+    }
+
+    function emailAccountComponent(emailAccount) {
+        return <Flex justify={Flex.justify.SPACE_BETWEEN} style={{width: "100%"}}>
+            <Flex gap={Flex.gaps.SMALL}>
+                <Avatar type={emailAccount.picture ? Avatar.types.IMG : Avatar.types.TEXT}
+                        size={Avatar.sizes.SMALL}
+                        src={emailAccount.picture}
+                        text={getInitials(emailAccount.name)}/>
+                <Text type={Text.types.TEXT2}>{emailAccount.name}</Text>
+            </Flex>
+            <Button size={Button.sizes.SMALL}
+                    kind={Button.kinds.TERTIARY}
+                    onClick={async (e) => {
+                        e.stopPropagation();
+                        if (currentEmailAccount?.email === emailAccount.email) {
+                            setSender();
+                        }
+                        await deleteEmailAccount({email: emailAccount.email});
+                        await refetchEmailAccounts();
+                    }}>
+                <Icon icon={Delete}/>
+            </Button>
+        </Flex>
+    }
+
+    return <Flex direction={Flex.directions.COLUMN}>
+        <List component={List.components.DIV}>
+            {emailAccounts.map((emailAccount, index) => <ListItem key={index}
+                                                                  onClick={() => setSender(emailAccount.email)}>
+                {emailAccountComponent(emailAccount)}
+            </ListItem>)}
+        </List>
+        {emailAccounts.length > 0 && <Divider/>}
+        <Button style={{width: "100%"}}
+                kind={Button.kinds.TERTIARY}
+                size={Button.sizes.SMALL}
+                onClick={openAddAccount}>
+            Add email account
+        </Button>
+    </Flex>
+}
+
+export default function From({editable, from, updateFrom}) {
     const {user} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
-    const [sender, setSender] = useState(report?.sender?.email);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isAddAccountOpen, setIsAddAccountOpen] = useState(false);
 
     const {
         data: emailAccounts,
-        isLoading: isLoadingEmailAccounts,
-        refetch: refetchEmailAccount
+        refetch: refetchEmailAccounts
     } = useQuery({
         queryKey: ["emailAccounts"],
         queryFn: getEmailAccounts
     });
 
-    useEffect(() => {
+    const emailAccount = emailAccounts?.find((emailAccount) => emailAccount.email === from?.email);
+
+    async function setSender(email) {
         if (editable) {
-            if (emailAccounts && sender) {
+            if (email) {
+                const {data: refetchedEmailAccounts} = await refetchEmailAccounts();
                 let account;
-                if (sender === "__LAST_EMAIL_ACCOUNT__") {
-                    account = emailAccounts.sort((a, b) => new Date(b.last_update) - new Date(a.last_update))[0];
-                    setSender(account.email)
+                if (email === "__LAST_EMAIL_ACCOUNT__") {
+                    account = refetchedEmailAccounts.sort((a, b) => new Date(b.last_update) - new Date(a.last_update))[0];
                 } else {
-                    account = emailAccounts.find((emailAccount) => emailAccount.email === sender)
+                    account = refetchedEmailAccounts.find((emailAccount) => emailAccount.email === email);
                 }
-                setReport("sender", {
+                updateFrom({
                     user_id: Number(user.id),
                     name: account.name,
                     email: account.email
                 });
+            } else {
+                updateFrom(null)
             }
         }
-    }, [emailAccounts]);
-
-    const options = emailAccounts?.map((emailAccount) => {
-        let name;
-        if (emailAccount.name.trim()) {
-            name = emailAccount.name;
-        } else {
-            name = emailAccount.email;
-        }
-        return {
-            label: emailAccount.email,
-            value: emailAccount.email,
-            customLabel: renderOption({
-                picture: emailAccount.picture,
-                name: name
-            }),
-            email: emailAccount.email,
-            name: name,
-            picture: emailAccount.picture
-        }
-    });
-
-    function emptyResult() {
-        return <Space direction="vertical"
-                      style={{
-                          width: "100%",
-                          textAlign: "center",
-                          marginBottom: "10px"
-                      }}>
-            <Title level={4}>No email accounts associated with this user</Title>
-            <Button type="primary" onClick={() => setIsModalOpen(true)}>Add account</Button>
-        </Space>
     }
 
-    return <>
-        <Row style={{padding: "4px 11px", width: "100%"}}>
-            <Col>
-                <Text style={{lineHeight: "24px"}}>From</Text>
-            </Col>
-            <Col flex="auto">
-                <Select style={{width: "100%"}}
-                        disabled={!editable}
-                        optionLabelProp="customLabel"
-                        loading={isLoadingEmailAccounts}
-                        variant="borderless"
-                        options={options}
-                        value={report?.sender?.email}
-                        onChange={(_, option) => setReport("sender", {
-                            user_id: Number(user.id),
-                            name: option.name,
-                            email: option.email
-                        })}
-                        notFoundContent={emptyResult()}
-                        optionRender={(option) => {
-                            return renderOption({
-                                picture: option.data.picture,
-                                name: option.data.name,
-                                extra: <Button size="small"
-                                               type="text"
-                                               icon={<DeleteOutlined/>}
-                                               onClick={(e) => {
-                                                   e.stopPropagation();
-                                                   if (report.sender?.email === option.data.email) {
-                                                       setSender(null);
-                                                       setReport("sender", null);
-                                                   }
-                                                   deleteEmailAccount({email: option.data.email})
-                                                       .then(() => refetchEmailAccount())
-                                               }}/>
-                            })
-                        }}
-                        dropdownRender={(menu) => <Space direction="vertical"
-                                                         split={<Divider style={{margin: 0}}/>}
-                                                         style={{width: "100%"}}>
-                            {menu}
-                            <Button style={{float: "right", width: "100%", textAlign: "left"}}
-                                    disabled={!editable}
-                                    type="text"
-                                    icon={<PlusOutlined/>}
-                                    onClick={() => setIsModalOpen(true)}>Add account</Button>
-                        </Space>
-                        }/>
-            </Col>
-        </Row>
-        <AuthModal isOpen={isModalOpen}
-                   refetchAccount={refetchEmailAccount}
+    function generateSender() {
+        if (emailAccount) {
+            return <Flex gap={Flex.gaps.SMALL}>
+                <Avatar type={emailAccount.picture ? Avatar.types.IMG : Avatar.types.TEXT}
+                        size={Avatar.sizes.SMALL}
+                        src={emailAccount.picture}
+                        text={getInitials(emailAccount.name)}/>
+                <Text type={Text.types.TEXT2}>{emailAccount.name}</Text>
+            </Flex>
+        }
+        return <Flex gap={Flex.gaps.SMALL}>
+            <Icon icon={Email} iconSize={20}/>
+            <Text type={Text.types.TEXT2}>Select sender account</Text>
+        </Flex>
+    }
+
+    return [<Dialog key="from-dialog" wrapperClassName="from-dialog"
+                    containerSelector="#report-modal"
+                    content={<DialogContentContainer>
+                        <FromDialogContent setSender={setSender}
+                                           currentEmailAccount={emailAccount}
+                                           refetchEmailAccounts={refetchEmailAccounts}
+                                           openAddAccount={() => setIsAddAccountOpen(true)}
+                                           emailAccounts={emailAccounts}/>
+                    </DialogContentContainer>}
+                    position={Dialog.positions.BOTTOM_START}
+                    onDialogDidShow={() => setIsDialogOpen(true)}
+                    onDialogDidHide={() => setIsDialogOpen(false)}
+                    showTrigger={editable ? [Dialog.hideShowTriggers.CLICK] : []}
+                    hideTrigger={[Dialog.hideShowTriggers.CLICK, Dialog.hideShowTriggers.CLICK_OUTSIDE, Dialog.hideShowTriggers.CONTENT_CLICK]}>
+        <Button size={Button.sizes.SMALL}
+                kind={Button.kinds.SECONDARY}
+                rightIcon={isDialogOpen ? DropdownChevronUp : DropdownChevronDown}
+                active={isDialogOpen}>
+            {generateSender()}
+        </Button>
+    </Dialog>,
+        <AuthModal key="add-account-modal" isOpen={isAddAccountOpen}
                    setSender={setSender}
-                   closeModal={() => setIsModalOpen(false)}/>
-    </>
+                   closeModal={() => setIsAddAccountOpen(false)}/>
+    ]
 }
