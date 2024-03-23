@@ -15,18 +15,16 @@ export default function ReportingPlugin({onChange}) {
         });
     }
 
-    return <>
-        <RichTextPlugin
+    return [<RichTextPlugin key="rich-text"
             contentEditable={<ContentEditable style={{
-                minHeight: "100px",
-                maxHeight: "600px",
+                height: "100%",
                 overflow: "auto",
                 padding: "0 5px",
                 outline: 0
             }}/>}
             placeholder={<span className="editor-placeholder">Body</span>}
-            ErrorBoundary={LexicalErrorBoundary}/>
-        <OnChangePlugin onChange={onChangeAdapter}/>
-        <TabIndentationPlugin/>
-    </>
+            ErrorBoundary={LexicalErrorBoundary}/>,
+        <OnChangePlugin key="on-change-plugin" onChange={onChangeAdapter}/>,
+        <TabIndentationPlugin key="tab-plugin"/>
+    ]
 }

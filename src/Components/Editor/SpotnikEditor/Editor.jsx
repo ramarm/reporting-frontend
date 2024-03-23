@@ -1,5 +1,4 @@
 import "./Editor.css";
-import React from "react";
 import {LexicalComposer} from '@lexical/react/LexicalComposer';
 import ToolbarPlugin from "./Plugins/Toolbar/ToolbarPlugin.jsx";
 import {$generateNodesFromDOM} from "@lexical/html";
@@ -16,7 +15,7 @@ import DivParagraphNode from "./Nodes/DivParagraphNode.jsx";
 import {InsightNode} from "../../InsightBuilder/InsightNode.jsx";
 
 
-export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, footerPlugins, disabled}) {
+export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, disabled}) {
     const initialConfig = {
         namespace: "reporting-editor",
         editable: !disabled,
@@ -50,15 +49,7 @@ export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, 
         <LexicalComposer initialConfig={initialConfig}>
             <div id="editor-container">
                 {toolbarPlugins?.length > 0 && <ToolbarPlugin toolbarPlugins={toolbarPlugins}/>}
-                <div id="inner-editor-container">
-                    {innerEditor}
-                </div>
-            </div>
-            <div id="footer-plugins-container">
-                {footerPlugins?.map((plugin, index) => {
-                        return (React.cloneElement(plugin, {key: index}))
-                    })
-                }
+                {innerEditor}
             </div>
         </LexicalComposer>
     );

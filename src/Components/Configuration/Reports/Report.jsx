@@ -6,13 +6,12 @@ import ReportingEditor from "../../Editor/ReportingEditor.jsx";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {
     Flex,
-    Divider,
     Modal,
     ModalContent,
     ModalHeader,
-    ModalFooter,
     EditableHeading,
-    IconButton
+    IconButton,
+    TextField
 } from "monday-ui-react-core";
 import {Heading} from "monday-ui-react-core/next";
 import {CloseSmall} from "monday-ui-react-core/icons";
@@ -80,31 +79,18 @@ export default function Report({setReportId, reportId}) {
             </Flex>
         </ModalHeader>
         <ModalContent className="report-modal-content">
-            <Flex direction={Flex.directions.COLUMN}>
+            <Flex direction={Flex.directions.COLUMN} style={{height: "100%"}}>
                 <Recipients reportId={reportId}
                             setReport={setReport}
                             editable={editable}/>
-                {/*<ReportingEditor initialValue={report.body} disabled={!editable}*/}
-                {/*                 onChange={(value) => setReport("body", value)}/>*/}
+                <TextField placeholder="Subject"
+                           size={TextField.sizes.MEDIUM}
+                           disabled={!editable}
+                           value={report.subject}
+                           onChange={setReportSubject}/>
+                <ReportingEditor initialValue={report.body} disabled={!editable}
+                                 onChange={(value) => setReport("body", value)}/>
             </Flex>
         </ModalContent>
-        <ModalFooter className="report-modal-footer">
-            <Divider/>
-            <span>footer</span>
-        </ModalFooter>
     </Modal>
 }
-
-// <Space direction="vertical"
-//        size={2}
-//        split={<Divider style={{margin: 0}}/>}
-//        style={{width: "100%"}}>
-//     <Input style={{lineHeight: "32px"}}
-//            placeholder="Subject"
-//            variant="borderless"
-//            disabled={!editable}
-//            value={report.subject}
-//            onChange={(e) => updateReport("subject", e.target.value)}
-//            onBlur={(e) => setReportSubject(e.target.value)}/>
-//
-// </Space>

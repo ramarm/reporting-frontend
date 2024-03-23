@@ -44,6 +44,7 @@
 
 .report-modal-content {
     padding: var(--spacing-medium);
+    height: 100%;
 }
 
 .recipient-dropdown {
