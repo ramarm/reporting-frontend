@@ -75,7 +75,9 @@ export default function Report({setReportId, reportId}) {
                     <From editable={editable}
                           from={report.sender}
                           updateFrom={(from) => setReport("sender", from)}/>
-                    <IconButton size={IconButton.sizes.SMALL} icon={CloseSmall}/>
+                    <IconButton size={IconButton.sizes.SMALL}
+                                icon={CloseSmall}
+                                onClick={closeModal}/>
                 </Flex>
             </Flex>
         </ModalHeader>
