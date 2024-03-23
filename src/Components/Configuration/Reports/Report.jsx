@@ -1,16 +1,29 @@
-import {Divider, Input, Space} from "antd";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {patchReport} from "../../../Queries/reporting.js";
 import From from "./From.jsx";
 import Recipients from "./Recipients.jsx";
 import ReportingEditor from "../../Editor/ReportingEditor.jsx";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
+import {
+    Flex,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    EditableText,
+    IconButton,
+    TextField,
+    Divider,
+    Button,
+} from "monday-ui-react-core";
+import {CloseSmall} from "monday-ui-react-core/icons";
 
-export default function Report({reportId}) {
+export default function Report({setReportId, reportId, openActivateModal}) {
     const queryClient = useQueryClient();
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
     const editable = report.owner === Number(context.user.id);
+
 
     const {mutate: patchReportMutation} = useMutation({
         mutationFn: ({reportId, key, value}) => patchReport({reportId, key, value}),
@@ -34,33 +47,69 @@ export default function Report({reportId}) {
         });
     }
 
+    function setReportName(name) {
+        setReport("name", name);
+    }
+
     function setReportSubject(subject) {
         setReport("subject", subject);
     }
 
-    return <Space direction="vertical"
-                  size={2}
-                  split={<Divider style={{margin: 0}}/>}
-                  style={{width: "100%"}}>
-        <Space direction="vertical"
-               size={2}
-               split={<Divider style={{margin: 0}}/>}
-               style={{width: "100%"}}>
-            <From reportId={reportId}
-                  setReport={setReport}
-                  editable={editable}/>
-            <Recipients reportId={reportId}
-                        setReport={setReport}
-                        editable={editable}/>
-        </Space>
-        <Input style={{lineHeight: "32px"}}
-               placeholder="Subject"
-               variant="borderless"
-               disabled={!editable}
-               value={report.subject}
-               onChange={(e) => updateReport("subject", e.target.value)}
-               onBlur={(e) => setReportSubject(e.target.value)}/>
-        <ReportingEditor initialValue={report.body} disabled={!editable}
-                         onChange={(value) => setReport("body", value)}/>
-    </Space>
+    function closeModal() {
+        setReportId();
+    }
+    return <Modal id="report-modal"
+                   classNames={{container: "report-modal-container", modal: 'report-modal'}}
+                   show={reportId}
+                   onClose={closeModal}>
+        <ModalHeader className="report-modal-header"
+                     title=""
+                     icon={null}>
+            <Flex style={{height: "100%"}} justify={Flex.justify.SPACE_BETWEEN}>
+                <EditableText type={EditableText.types.TEXT1}
+                              disabled={!editable}
+                              placeholder="Report name"
+                              value={report.name}
+                              onChange={setReportName}/>
+                <Flex gap={Flex.gaps.SMALL}>
+                    <From editable={editable}
+                          from={report.sender}
+                          updateFrom={(from) => setReport("sender", from)}/>
+                    <IconButton size={IconButton.sizes.SMALL}
+                                icon={CloseSmall}
+                                onClick={closeModal}/>
+                </Flex>
+            </Flex>
+        </ModalHeader>
+        <ModalContent className="report-modal-content">
+            <Flex direction={Flex.directions.COLUMN} style={{height: "100%"}}>
+                <Recipients reportId={reportId}
+                            setReport={setReport}
+                            editable={editable}/>
+                <TextField placeholder="Subject"
+                           className="subject-input"
+                           debounceRate={500}
+                           size={TextField.sizes.MEDIUM}
+                           disabled={!editable}
+                           value={report.subject}
+                           onChange={setReportSubject}/>
+                <Divider key="divider"/>
+                <ReportingEditor initialValue={report.body} disabled={!editable}
+                                 onChange={(value) => setReport("body", value)}/>
+            </Flex>
+        </ModalContent>
+        <ModalFooter>
+            <Flex justify={Flex.justify.END} style={{padding: "10px 15px"}}>
+                <Button onClick={() => {
+                    if (localStorage.getItem("dontShowActivateModal")?.toUpperCase() === "TRUE") closeModal();
+                    else {
+                        openActivateModal();
+                        closeModal();
+                    }
+                }}>
+                    Done
+                </Button>
+            </Flex>
+        </ModalFooter>
+    </Modal>
 }

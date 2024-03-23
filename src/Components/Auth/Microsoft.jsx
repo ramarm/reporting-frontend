@@ -1,13 +1,13 @@
-import {Avatar, Button} from "antd";
+import {Flex, Avatar, Text, Button} from "monday-ui-react-core";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../consts.js";
 
 const BASE_URL = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`;
 const SCOPES = ["openid", "profile", "offline_access", "User.Read", "Mail.Send"];
 
-export default function MicrosoftAuth({refetchAccounts, setSender, closeModal}) {
+export default function MicrosoftAuth({setSender, closeModal}) {
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
 
-    function handleLogin() {
+    async function handleLogin() {
         closeModal();
         const redirectUrl = new URL("/api/v1/auth/microsoft", import.meta.env.VITE_MANAGEMENT_API).href;
         const queryParams = {
@@ -26,19 +26,23 @@ export default function MicrosoftAuth({refetchAccounts, setSender, closeModal}) 
         const query = Object.keys(queryParams).map(key => `${key}=${queryParams[key]}`).join("&");
         const url = `${BASE_URL}?${query}`;
         const popup = window.open(url, "loginPopup", "width=600,height=600");
-        const popupListener = setInterval(() => {
+        const popupListener = setInterval(async () => {
             if (!popup || popup.closed) {
-                refetchAccounts();
-                setSender("__LAST_EMAIL_ACCOUNT__");
+                await setSender("__LAST_EMAIL_ACCOUNT__");
                 clearInterval(popupListener);
             }
         }, 500);
     }
 
-    return <Button icon={<Avatar shape="square" style={{borderRadius: 0}}
-                                 src="https://www.vectorlogo.zone/logos/microsoft/microsoft-icon.svg"/>}
-                   style={{height: "50px", width: "220px"}}
+    return <Button style={{height: "50px", width: "250px"}}
+                   kind={Button.kinds.SECONDARY}
                    onClick={handleLogin}>
-        Sign in with Microsoft
+        <Flex gap={Flex.gaps.SMALL} justify={Flex.justify.SPACE_BETWEEN} style={{width: "100%"}}>
+            <Avatar square={true} withoutBorder
+                    type={Avatar.types.IMG}
+                    size={Avatar.sizes.MEDIUM}
+                    src="https://www.vectorlogo.zone/logos/microsoft/microsoft-icon.svg"/>
+            <Text type={Text.types.TEXT1} style={{flexGrow: 1, textAlign: "center"}}>Sign in with Microsoft</Text>
+        </Flex>
     </Button>;
 }

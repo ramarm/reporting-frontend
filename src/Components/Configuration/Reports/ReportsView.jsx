@@ -1,19 +1,54 @@
 import {useState} from "react";
 import Loader from "../../Loader/Loader.jsx";
-import {Button, Collapse, Divider, Space, Typography} from "antd";
-import ReportExtra from "./ReportExtra.jsx";
-import Report from "./Report.jsx";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {createReport, getReports} from "../../../Queries/reporting.js";
-import {convert as htmlConvert} from "html-to-text";
+import {
+    Flex,
+    Button,
+    List,
+    ListItem,
+    Text,
+    ModalHeader,
+    ModalContent,
+    Checkbox,
+    Modal,
+    ModalFooter
+} from "monday-ui-react-core";
+import {Heading} from "monday-ui-react-core/next";
+import "./Report.css";
+import Report from "./Report.jsx";
+import ReportHeader from "./ReportHeader.jsx";
 
-const {Text} = Typography;
+
+function ActivateModal({isOpen, closeModal}) {
+    return <Modal key="activate-modal"
+                  show={isOpen}
+                  onClose={closeModal}>
+        <ModalHeader title="Activate your template"/>
+        <ModalContent>
+            <Text type={Text.types.TEXT2}>Bla bla bla</Text>
+        </ModalContent>
+        <ModalFooter>
+            <Flex justify={Flex.justify.END} gap={Flex.gaps.SMALL}>
+                <Checkbox label="Don't show this again"
+                          onChange={(e) => {
+                              if (e.target.checked) localStorage.setItem("dontShowActivateModal", "TRUE");
+                              else localStorage.removeItem("dontShowActivateModal");
+                          }}/>
+                <Button onClick={closeModal}>
+                    Close
+                </Button>
+            </Flex>
+        </ModalFooter>
+    </Modal>
+}
 
 export default function ReportsView() {
     const queryClient = useQueryClient();
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
-    const [activeKey, setActiveKey] = useState([]);
+    const [activeReportId, setActiveReportId] = useState();
+    const [isActivateModalOpen, setIsActivateModalOpen] = useState(false);
 
     const {data: reports, isLoading: isLoadingReports} = useQuery({
         enabled: !!context.boardId,
@@ -32,30 +67,7 @@ export default function ReportsView() {
                 newReport
             ];
         });
-        setActiveKey((prevState) => [...prevState, newReport.id]);
-    }
-
-    function generateCollapseItems() {
-        return reports.map((report) => {
-            return {
-                key: report.id,
-                label: <Space split={<Divider type="vertical" style={{margin: 0}}/>}>
-                    <Text ellipsis={true}
-                          style={{
-                              width: "150px",
-                              fontWeight: 600
-                          }}>{report.subject ? report.subject : "No subject"}</Text>
-                    <Text ellipsis={true}
-                          style={{maxWidth: "50vw"}}>{report.body ? htmlConvert(report.body, {
-                        selectors: [
-                            {selector: "img", format: "skip"}
-                        ]
-                    }) : "No body"}</Text>
-                </Space>,
-                children: <Report reportId={report.id}/>,
-                extra: <ReportExtra reportId={report.id}/>
-            }
-        });
+        setActiveReportId(newReport.id);
     }
 
     if (reports === undefined || reports === null || isLoadingReports) {
@@ -63,32 +75,31 @@ export default function ReportsView() {
     }
 
     if (reports.length === 0) {
-        return <div style={{
-            textAlign: "center"
-        }}>
-            <h1>You don&apos;t have any reports</h1>
+        return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.LARGE}>
+            <Heading type={Heading.types.H1}>You don&apos;t have any reports</Heading>
             <Button type="primary"
                     onClick={createNewReport}>Create new report</Button>
-        </div>
+        </Flex>
     }
 
-    return (
-        <div style={{
-            margin: "0 20px"
-        }}>
+    return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.LARGE} style={{padding: "0 20px", width: "auto"}}>
+        <Flex justify={Flex.justify.SPACE_BETWEEN} style={{width: "100%"}}>
+            <Heading type={Heading.types.H1}>Your reports</Heading>
             <Button type="primary"
-                    style={{
-                        float: "right"
-                    }}
                     onClick={createNewReport}>Create new report</Button>
-            <h1>Your reports</h1>
-            <Collapse style={{marginBottom: "100px"}}
-                      items={generateCollapseItems()}
-                      activeKey={activeKey}
-                      bordered={false}
-                      onChange={(newActiveKeys) => {
-                          setActiveKey(newActiveKeys);
-                      }}/>
-        </div>
-    )
+        </Flex>
+        <List id="report-list" component={List.components.DIV}>
+            {reports.map(report => {
+                return <ListItem key={report.id}
+                                 className="report-list-item"
+                                 onClick={() => setActiveReportId(report.id)}>
+                    <ReportHeader reportId={report.id}/>
+                </ListItem>
+            })}
+        </List>
+        {activeReportId && <Report reportId={activeReportId} setReportId={setActiveReportId}
+                                   openActivateModal={() => setIsActivateModalOpen(true)}/>}
+        {isActivateModalOpen && <ActivateModal isOpen={isActivateModalOpen}
+                                               closeModal={() => setIsActivateModalOpen(false)}/>}
+    </Flex>
 }

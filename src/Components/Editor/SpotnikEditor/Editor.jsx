@@ -1,5 +1,4 @@
 import "./Editor.css";
-import React from "react";
 import {LexicalComposer} from '@lexical/react/LexicalComposer';
 import ToolbarPlugin from "./Plugins/Toolbar/ToolbarPlugin.jsx";
 import {$generateNodesFromDOM} from "@lexical/html";
@@ -14,9 +13,10 @@ import {ExtendedListItemNode} from "./Nodes/ExtendedListItemNode.jsx";
 import {ExtendedListNode} from "./Nodes/ExtendedListNode.jsx";
 import DivParagraphNode from "./Nodes/DivParagraphNode.jsx";
 import {InsightNode} from "../../InsightBuilder/InsightNode.jsx";
+import {Flex} from "monday-ui-react-core";
 
 
-export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, footerPlugins, disabled}) {
+export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, disabled}) {
     const initialConfig = {
         namespace: "reporting-editor",
         editable: !disabled,
@@ -48,18 +48,11 @@ export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, 
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
-            <div id="editor-container">
+            <Flex direction={Flex.directions.COLUMN} align={Flex.align.START} style={{width: "100%"}}
+                  id="editor-container">
                 {toolbarPlugins?.length > 0 && <ToolbarPlugin toolbarPlugins={toolbarPlugins}/>}
-                <div id="inner-editor-container">
-                    {innerEditor}
-                </div>
-            </div>
-            <div id="footer-plugins-container">
-                {footerPlugins?.map((plugin, index) => {
-                        return (React.cloneElement(plugin, {key: index}))
-                    })
-                }
-            </div>
+                {innerEditor}
+            </Flex>
         </LexicalComposer>
     );
 }
