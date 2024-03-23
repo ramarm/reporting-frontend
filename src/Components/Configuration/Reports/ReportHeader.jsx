@@ -81,7 +81,7 @@ export default function ReportHeader({reportId}) {
         const buttons = [];
         buttons.push(generateOwner());
 
-        if (editable) {
+        if (!editable) {
             buttons.push(<Tooltip key="take-report-ownership"
                                   content="When taking ownership you will need to select the report sender again">
                 <Button kind={Button.kinds.TERTIARY}
