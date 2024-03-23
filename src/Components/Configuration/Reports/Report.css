@@ -38,10 +38,14 @@
     z-index: 20000;
 }
 
-.closeButton {
-    display: none;
-}
-
 .from-dialog {
     z-index: 20000;
+}
+
+.report-modal-content {
+    padding: var(--spacing-medium);
+}
+
+.recipient-dropdown {
+    width: inherit;
 }

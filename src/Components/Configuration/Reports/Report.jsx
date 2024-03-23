@@ -79,9 +79,11 @@ export default function Report({setReportId, reportId}) {
                 </Flex>
             </Flex>
         </ModalHeader>
-        <ModalContent>
+        <ModalContent className="report-modal-content">
             <Flex direction={Flex.directions.COLUMN}>
-                <span>Body</span>
+                <Recipients reportId={reportId}
+                            setReport={setReport}
+                            editable={editable}/>
                 {/*<ReportingEditor initialValue={report.body} disabled={!editable}*/}
                 {/*                 onChange={(value) => setReport("body", value)}/>*/}
             </Flex>
@@ -97,17 +99,6 @@ export default function Report({setReportId, reportId}) {
 //        size={2}
 //        split={<Divider style={{margin: 0}}/>}
 //        style={{width: "100%"}}>
-//     <Space direction="vertical"
-//            size={2}
-//            split={<Divider style={{margin: 0}}/>}
-//            style={{width: "100%"}}>
-//         <From reportId={reportId}
-//               setReport={setReport}
-//               editable={editable}/>
-//         <Recipients reportId={reportId}
-//                     setReport={setReport}
-//                     editable={editable}/>
-//     </Space>
 //     <Input style={{lineHeight: "32px"}}
 //            placeholder="Subject"
 //            variant="borderless"
