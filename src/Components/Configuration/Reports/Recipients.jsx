@@ -25,6 +25,7 @@ function Recipient({prefix, value, setValue, extra, editable}) {
     }
 
     function generateValue() {
+        if (!value) return [];
         return value.map(email => {
             const option = options?.find(option => option.value === email)
             if (option) return option;
