@@ -3,15 +3,52 @@ import Loader from "../../Loader/Loader.jsx";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {createReport, getReports} from "../../../Queries/reporting.js";
-import {Divider, Flex, Button, List, ListItem} from "monday-ui-react-core";
+import {
+    Flex,
+    Button,
+    List,
+    ListItem,
+    Text,
+    ModalHeader,
+    ModalContent,
+    Checkbox,
+    Modal,
+    ModalFooter
+} from "monday-ui-react-core";
 import {Heading} from "monday-ui-react-core/next";
 import "./Report.css";
 import Report from "./Report.jsx";
+import ReportHeader from "./ReportHeader.jsx";
+
+
+function ActivateModal({isOpen, closeModal}) {
+    return <Modal key="activate-modal"
+                  show={isOpen}
+                  onClose={closeModal}>
+        <ModalHeader title="Activate your template"/>
+        <ModalContent>
+            <Text type={Text.types.TEXT2}>Bla bla bla</Text>
+        </ModalContent>
+        <ModalFooter>
+            <Flex justify={Flex.justify.END} gap={Flex.gaps.SMALL}>
+                <Checkbox label="Don't show this again"
+                          onChange={(e) => {
+                              if (e.target.checked) localStorage.setItem("dontShowActivateModal", "TRUE");
+                              else localStorage.removeItem("dontShowActivateModal");
+                          }}/>
+                <Button onClick={closeModal}>
+                    Close
+                </Button>
+            </Flex>
+        </ModalFooter>
+    </Modal>
+}
 
 export default function ReportsView() {
     const queryClient = useQueryClient();
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const [activeReportId, setActiveReportId] = useState();
+    const [isActivateModalOpen, setIsActivateModalOpen] = useState(false);
 
     const {data: reports, isLoading: isLoadingReports} = useQuery({
         enabled: !!context.boardId,
@@ -52,22 +89,17 @@ export default function ReportsView() {
                     onClick={createNewReport}>Create new report</Button>
         </Flex>
         <List id="report-list" component={List.components.DIV}>
-            {reports.map((report, index) => {
-                return [index !== 0 && <Divider key={`${report.id}-divider`} className="report-list-divider"/>,
-                    <ListItem key={report.id}
-                              className="report-list-item"
-                              onClick={() => setActiveReportId(report.id)}>
-                        <Flex justify={Flex.justify.SPACE_BETWEEN} style={{width: "100%"}}>
-                            <Heading type={Heading.types.H2}
-                                     weight={Heading.weights.LIGHT}>
-                                {report.name || "New report"}
-                            </Heading>
-                            <span>owner</span>
-                        </Flex>
-                    </ListItem>
-                ]
+            {reports.map(report => {
+                return <ListItem key={report.id}
+                                 className="report-list-item"
+                                 onClick={() => setActiveReportId(report.id)}>
+                    <ReportHeader reportId={report.id}/>
+                </ListItem>
             })}
         </List>
-        {activeReportId && <Report reportId={activeReportId} setReportId={setActiveReportId}/>}
+        {activeReportId && <Report reportId={activeReportId} setReportId={setActiveReportId}
+                                   openActivateModal={() => setIsActivateModalOpen(true)}/>}
+        {isActivateModalOpen && <ActivateModal isOpen={isActivateModalOpen}
+                                               closeModal={() => setIsActivateModalOpen(false)}/>}
     </Flex>
 }

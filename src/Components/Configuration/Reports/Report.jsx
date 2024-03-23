@@ -9,14 +9,16 @@ import {
     Modal,
     ModalContent,
     ModalHeader,
+    ModalFooter,
     EditableText,
     IconButton,
     TextField,
-    Divider
+    Divider,
+    Button,
 } from "monday-ui-react-core";
 import {CloseSmall} from "monday-ui-react-core/icons";
 
-export default function Report({setReportId, reportId}) {
+export default function Report({setReportId, reportId, openActivateModal}) {
     const queryClient = useQueryClient();
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
@@ -56,11 +58,10 @@ export default function Report({setReportId, reportId}) {
     function closeModal() {
         setReportId();
     }
-
     return <Modal id="report-modal"
-                  classNames={{container: "report-modal-container", modal: 'report-modal'}}
-                  show={reportId}
-                  onClose={closeModal}>
+                   classNames={{container: "report-modal-container", modal: 'report-modal'}}
+                   show={reportId}
+                   onClose={closeModal}>
         <ModalHeader className="report-modal-header"
                      title=""
                      icon={null}>
@@ -97,5 +98,18 @@ export default function Report({setReportId, reportId}) {
                                  onChange={(value) => setReport("body", value)}/>
             </Flex>
         </ModalContent>
+        <ModalFooter>
+            <Flex justify={Flex.justify.END} style={{padding: "10px 15px"}}>
+                <Button onClick={() => {
+                    if (localStorage.getItem("dontShowActivateModal")?.toUpperCase() === "TRUE") closeModal();
+                    else {
+                        openActivateModal();
+                        closeModal();
+                    }
+                }}>
+                    Done
+                </Button>
+            </Flex>
+        </ModalFooter>
     </Modal>
 }
