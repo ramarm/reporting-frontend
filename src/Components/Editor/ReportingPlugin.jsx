@@ -12,7 +12,9 @@ export default function ReportingPlugin({onChange}) {
     const [editorState, setEditorState] = useState();
 
     useEffect(() => {
-        const timeoutId = setTimeout(() => onChange(editorState), 500);
+        const timeoutId = setTimeout(() => {
+            if (editorState) onChange(editorState)
+        }, 500);
         return () => clearTimeout(timeoutId);
     }, [editorState]);
 
