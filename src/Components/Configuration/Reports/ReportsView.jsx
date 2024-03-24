@@ -19,6 +19,8 @@ import {Heading} from "monday-ui-react-core/next";
 import "./Report.css";
 import Report from "./Report.jsx";
 import ReportHeader from "./ReportHeader.jsx";
+import NoReportsAnimation from "./NoReportsAnimation.json";
+import Lottie from "lottie-react";
 
 
 function ActivateModal({isOpen, closeModal}) {
@@ -76,7 +78,10 @@ export default function ReportsView() {
 
     if (reports.length === 0) {
         return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.LARGE}>
-            <Heading type={Heading.types.H1}>You don&apos;t have any reports</Heading>
+            <Heading type={Heading.types.H1}>Welcome to insights</Heading>
+            <Text type={Text.types.TEXT1}>First create you report</Text>
+            <Lottie animationData={NoReportsAnimation} loop={true}/>
+            <Text type={Text.types.TEXT1}>You can do that by clicking this button</Text>
             <Button type="primary"
                     onClick={createNewReport}>Create new report</Button>
         </Flex>
