@@ -1,4 +1,4 @@
-import {Text, List, ListItem, DialogContentContainer, Loader} from 'monday-ui-react-core';
+import {Text, List, ListItem, DialogContentContainer, Loader, Flex, Search} from 'monday-ui-react-core';
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {useQuery} from "@tanstack/react-query";
 import {getBoardColumns, getBoardUsers} from "../../../Queries/monday.js";
@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 export default function ValueCombobox({setHover, value, setValue, selectedColumn}) {
     const {boardId} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const [options, setOptions] = useState([]);
+    const [search, setSearch] = useState("")
 
     const {data: column, isLoading: isLoadingColumn} = useQuery({
         queryKey: ["column", selectedColumn?.value],
@@ -73,13 +74,21 @@ export default function ValueCombobox({setHover, value, setValue, selectedColumn
         setValue(value);
     }
 
-    return <DialogContentContainer>
-        {!selectedColumn
-            ? <Text type={Text.types.TEXT2} style={{padding: "5px 15px"}}>Select column first</Text>
-            : isLoading()
-                ? <Loader size={Loader.sizes.SMALL}/>
-                : <List className="insight-list" component={List.components.DIV}>
-                    {options.map((option) => {
+    function generateList() {
+        if (options.length === 0) {
+            return <Text type={Text.types.TEXT1} style={{padding: "5px 15px"}}>No values</Text>;
+        }
+
+        return <Flex gap={Flex.gaps.XS} direction={Flex.directions.COLUMN}>
+            <Search size={Search.sizes.SMALL}
+                    placeholder="Search"
+                    debounceRate={100}
+                    value={search}
+                    onChange={setSearch}/>
+            <List className="insight-list" component={List.components.DIV} style={{width: 200}}>
+                {options
+                    .filter((option) => option.label.toLowerCase().includes(search.toLowerCase()))
+                    .map((option) => {
                         return <ListItem key={option.label}
                                          className="insight-list-item"
                                          onHover={() => setHover(option.label)}
@@ -88,6 +97,15 @@ export default function ValueCombobox({setHover, value, setValue, selectedColumn
                             {option.label}
                         </ListItem>
                     })}
-                </List>}
+            </List>
+        </Flex>
+    }
+
+    return <DialogContentContainer>
+        {!selectedColumn
+            ? <Text type={Text.types.TEXT1} style={{padding: "5px 15px"}}>Select column first</Text>
+            : isLoading()
+                ? <Loader size={Loader.sizes.SMALL}/>
+                : generateList()}
     </DialogContentContainer>
 }

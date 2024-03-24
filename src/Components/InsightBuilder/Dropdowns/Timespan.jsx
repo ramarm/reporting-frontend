@@ -1,4 +1,5 @@
-import {List, ListItem, DialogContentContainer} from 'monday-ui-react-core';
+import {List, ListItem, DialogContentContainer, Flex, Search} from 'monday-ui-react-core';
+import {useState} from "react";
 
 const TIMESPANS = [
     {
@@ -56,21 +57,36 @@ const TIMESPANS = [
 ]
 
 export default function TimespanCombobox({setHover, value, setValue}) {
+    const [search, setSearch] = useState("")
+
     function onClick(value) {
         setValue(value)
     }
 
+    function generateList() {
+        return <Flex gap={Flex.gaps.XS} direction={Flex.directions.COLUMN}>
+            <Search size={Search.sizes.SMALL}
+                    placeholder="Search"
+                    debounceRate={100}
+                    value={search}
+                    onChange={setSearch}/>
+            <List className="insight-list" component={List.components.DIV} style={{width: 200}}>
+                {TIMESPANS
+                    .filter((timespan) => timespan.label.toLowerCase().includes(search.toLowerCase()))
+                    .map((timespan) => {
+                        return <ListItem key={timespan.value}
+                                         className="insight-list-item"
+                                         onHover={() => setHover(timespan.label)}
+                                         onClick={() => onClick(timespan)}
+                                         selected={value?.value === timespan.value}>
+                            {timespan.label}
+                        </ListItem>
+                    })}
+            </List>
+        </Flex>
+    }
+
     return <DialogContentContainer>
-        <List className="insight-list" component={List.components.DIV}>
-            {TIMESPANS.map((timespan) => {
-                return <ListItem key={timespan.value}
-                                 className="insight-list-item"
-                                 onHover={() => setHover(timespan.label)}
-                                 onClick={() => onClick(timespan)}
-                                 selected={value?.value === timespan.value}>
-                    {timespan.label}
-                </ListItem>
-            })}
-        </List>
+        {generateList()}
     </DialogContentContainer>
 }

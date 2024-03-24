@@ -31,7 +31,7 @@ export default function ConditionCombobox({setHover, value, setValue, columnType
 
     return <DialogContentContainer>
         {!columnType
-            ? <Text type={Text.types.TEXT2} style={{padding: "5px 15px"}}>Select column first</Text>
+            ? <Text type={Text.types.TEXT1} style={{padding: "5px 15px"}}>Select column first</Text>
             : <List className="insight-list" component={List.components.DIV}>
                 {CONDITION_MAP[columnType].map((condition) => {
                     return <ListItem key={condition.value}
