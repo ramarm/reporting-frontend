@@ -120,26 +120,29 @@ export default function From({editable, from, updateFrom}) {
         </Flex>
     }
 
-    return [<Dialog key="from-dialog" containerSelector="#report-modal"
-                    content={<DialogContentContainer>
-                        <FromDialogContent setSender={setSender}
-                                           currentEmailAccount={emailAccount}
-                                           refetchEmailAccounts={refetchEmailAccounts}
-                                           openAddAccount={() => setIsAddAccountOpen(true)}
-                                           emailAccounts={emailAccounts}/>
-                    </DialogContentContainer>}
-                    position={Dialog.positions.BOTTOM_START}
-                    onDialogDidShow={() => setIsDialogOpen(true)}
-                    onDialogDidHide={() => setIsDialogOpen(false)}
-                    showTrigger={editable ? [Dialog.hideShowTriggers.CLICK] : []}
-                    hideTrigger={[Dialog.hideShowTriggers.CLICK, Dialog.hideShowTriggers.CLICK_OUTSIDE, Dialog.hideShowTriggers.CONTENT_CLICK]}>
-        <Button size={Button.sizes.SMALL}
-                kind={Button.kinds.SECONDARY}
-                rightIcon={isDialogOpen ? DropdownChevronUp : DropdownChevronDown}
-                active={isDialogOpen}>
-            {generateSender()}
-        </Button>
-    </Dialog>,
+    return [<Flex key="from" gap={Flex.gaps.SMALL} className="form-input" style={{width: "100%"}}>
+        <Text type={Text.types.TEXT1} color={Text.colors.SECONDARY}>From</Text>
+        <Dialog key="from-dialog" containerSelector="#report-modal"
+                content={<DialogContentContainer>
+                    <FromDialogContent setSender={setSender}
+                                       currentEmailAccount={emailAccount}
+                                       refetchEmailAccounts={refetchEmailAccounts}
+                                       openAddAccount={() => setIsAddAccountOpen(true)}
+                                       emailAccounts={emailAccounts}/>
+                </DialogContentContainer>}
+                position={Dialog.positions.BOTTOM_START}
+                onDialogDidShow={() => setIsDialogOpen(true)}
+                onDialogDidHide={() => setIsDialogOpen(false)}
+                showTrigger={editable ? [Dialog.hideShowTriggers.CLICK] : []}
+                hideTrigger={[Dialog.hideShowTriggers.CLICK, Dialog.hideShowTriggers.CLICK_OUTSIDE, Dialog.hideShowTriggers.CONTENT_CLICK]}>
+            <Button size={Button.sizes.SMALL}
+                    kind={Button.kinds.TERTIARY}
+                    rightIcon={isDialogOpen ? DropdownChevronUp : DropdownChevronDown}
+                    active={isDialogOpen}>
+                {generateSender()}
+            </Button>
+        </Dialog>
+    </Flex>,
         <AuthModal key="add-account-modal" isOpen={isAddAccountOpen}
                    setSender={setSender}
                    closeModal={() => setIsAddAccountOpen(false)}/>

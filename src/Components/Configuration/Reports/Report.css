@@ -39,12 +39,21 @@
 }
 
 .report-modal-content {
-    padding: var(--spacing-medium);
+    padding: 0 var(--spacing-medium);
     height: 100%;
 }
 
 .recipient-dropdown {
+    border: none !important;
     width: inherit;
+}
+
+.recipient-dropdown-menu {
+    margin-top: -4px !important;
+}
+
+.recipient-dropdown [class$="control"] {
+    box-shadow: none !important;
 }
 
 .monday-style-dialog-content-wrapper {
@@ -52,6 +61,7 @@
 }
 
 .subject-input {
+    padding: var(--spacing-small) 0 !important;
     border: none !important;
 }
 
@@ -61,4 +71,8 @@
 
 .report-divider {
     margin: 0;
+}
+
+.form-input {
+    padding: var(--spacing-xs) 0;
 }

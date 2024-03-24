@@ -64,7 +64,7 @@ export default function Recipients({reportId, setReport, editable}) {
     function ccButtons() {
         return [
             <Button key="cc" active={report.cc}
-                    size={Button.sizes.MEDIUM}
+                    size={Button.sizes.SMALL}
                     disabled={!editable}
                     onClick={() => {
                         if (report.cc) {
@@ -77,7 +77,7 @@ export default function Recipients({reportId, setReport, editable}) {
                 Cc
             </Button>,
             <Button key="bcc" active={report.bcc}
-                    size={Button.sizes.MEDIUM}
+                    size={Button.sizes.SMALL}
                     disabled={!editable}
                     onClick={() => {
                         if (report.bcc) {

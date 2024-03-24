@@ -17,6 +17,8 @@ import {
     Button,
 } from "monday-ui-react-core";
 import {CloseSmall} from "monday-ui-react-core/icons";
+import Owner from "./Owner.jsx";
+import {DeleteReport, TakeOwnership} from "./ReportActionButtons.jsx";
 
 export default function Report({setReportId, reportId, openActivateModal}) {
     const queryClient = useQueryClient();
@@ -30,7 +32,7 @@ export default function Report({setReportId, reportId, openActivateModal}) {
         onSuccess: ({key, value}) => {
             updateReport(key, value);
         }
-    })
+    });
 
     function setReport(key, value) {
         patchReportMutation({reportId, key, value});
@@ -73,9 +75,9 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                               value={report.name}
                               onChange={setReportName}/>
                 <Flex gap={Flex.gaps.SMALL}>
-                    <From editable={editable}
-                          from={report.sender}
-                          updateFrom={(from) => setReport("sender", from)}/>
+                    <Owner reportId={reportId}/>
+                    {!editable && <TakeOwnership reportId={reportId}/>}
+                    {editable && <DeleteReport reportId={reportId} onClick={closeModal}/>}
                     <IconButton size={IconButton.sizes.SMALL}
                                 icon={CloseSmall}
                                 onClick={closeModal}/>
@@ -84,6 +86,10 @@ export default function Report({setReportId, reportId, openActivateModal}) {
         </ModalHeader>
         <ModalContent className="report-modal-content">
             <Flex direction={Flex.directions.COLUMN} style={{height: "100%"}}>
+                <From editable={editable}
+                      from={report.sender}
+                      updateFrom={(from) => setReport("sender", from)}/>
+                <Divider className="report-divider"/>
                 <Recipients reportId={reportId}
                             setReport={setReport}
                             editable={editable}/>
