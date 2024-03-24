@@ -58,3 +58,7 @@
 .report-footer {
     margin-block-start: 0;
 }
+
+.report-divider {
+    margin: 0;
+}

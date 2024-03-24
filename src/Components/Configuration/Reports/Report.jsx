@@ -94,7 +94,7 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                            disabled={!editable}
                            value={report.subject}
                            onChange={setReportSubject}/>
-                <Divider key="divider"/>
+                <Divider key="divider" className="report-divider"/>
                 <ReportingEditor initialValue={report.body} disabled={!editable}
                                  onChange={(value) => setReport("body", value)}
                                  containerSelector="#report-modal"/>

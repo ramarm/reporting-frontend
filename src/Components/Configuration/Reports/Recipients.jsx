@@ -53,7 +53,7 @@ function Recipient({prefix, value, setValue, extra, editable}) {
                   onInputChange={setSearchValue}/>
         {extra && extra}
     </Flex>,
-        <Divider key="divider"/>
+        <Divider key="divider" className="report-divider"/>
     ]
 }
 
