@@ -100,18 +100,20 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                                  containerSelector="#report-modal"/>
             </Flex>
         </ModalContent>
-        <ModalFooter>
-            <Flex justify={Flex.justify.END} style={{padding: "10px 15px"}}>
-                {editable ? <Button onClick={() => {
-                        if (localStorage.getItem("dontShowActivateModal")?.toUpperCase() === "TRUE") closeModal();
-                        else {
-                            openActivateModal();
-                            closeModal();
-                        }
-                    }}>
+        <ModalFooter className="report-footer">
+            <Flex justify={Flex.justify.END} style={{padding: "0 15px 10px 15px"}}>
+                {editable ? <Button size={Button.sizes.LARGE}
+                                    onClick={() => {
+                                        if (localStorage.getItem("dontShowActivateModal")?.toUpperCase() === "TRUE") closeModal();
+                                        else {
+                                            openActivateModal();
+                                            closeModal();
+                                        }
+                                    }}>
                         Done
                     </Button>
                     : <Button kind={Button.kinds.SECONDARY}
+                              size={Button.sizes.LARGE}
                               onClick={closeModal}>
                         Close
                     </Button>}

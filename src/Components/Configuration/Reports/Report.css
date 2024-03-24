@@ -54,3 +54,7 @@
 .subject-input {
     border: none !important;
 }
+
+.report-footer {
+    margin-block-start: 0;
+}
