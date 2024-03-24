@@ -89,13 +89,15 @@ export default function ReportsView() {
                     onClick={createNewReport}>Create new report</Button>
         </Flex>
         <List id="report-list" component={List.components.DIV}>
-            {reports.map(report => {
-                return <ListItem key={report.id}
-                                 className="report-list-item"
-                                 onClick={() => setActiveReportId(report.id)}>
-                    <ReportHeader reportId={report.id}/>
-                </ListItem>
-            })}
+            {reports
+                .sort((a, b) => new Date(b.create_date) - new Date(a.create_date))
+                .map(report => {
+                    return <ListItem key={report.id}
+                                     className="report-list-item"
+                                     onClick={() => setActiveReportId(report.id)}>
+                        <ReportHeader reportId={report.id}/>
+                    </ListItem>
+                })}
         </List>
         {activeReportId && <Report reportId={activeReportId} setReportId={setActiveReportId}
                                    openActivateModal={() => setIsActivateModalOpen(true)}/>}
