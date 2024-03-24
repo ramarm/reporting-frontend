@@ -114,7 +114,7 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                                  containerSelector="#report-modal"/>
                 <Toast open={isSaveNotifyOpen} className="auto-save-toast" autoHideDuration={5000}
                        onClose={() => setIsSaveNotifyOpen(false)}>
-                    You changes will be saved automatically
+                    Your changes will be saved automatically
                 </Toast>
             </Flex>
         </ModalContent>

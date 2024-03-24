@@ -5,8 +5,7 @@ import {
     ModalFooter,
     Button,
     Flex,
-    MultiStepIndicator,
-    Icon
+    MultiStepIndicator
 } from 'monday-ui-react-core';
 import {useRef, useState} from "react";
 import "./InsightBuilder.css";
@@ -21,6 +20,8 @@ import {$createDivParagraphNode} from "../Editor/SpotnikEditor/Nodes/DivParagrap
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {$createInsightNode} from "./InsightNode.jsx";
 import {NavigationChevronLeft, NavigationChevronRight, Check} from "monday-ui-react-core/icons";
+import Lottie from "lottie-react";
+import InsightAnimation from "./InsightAnimation.json";
 
 export default function InsightBuilder() {
     const [editor] = useLexicalComposerContext();
@@ -28,6 +29,7 @@ export default function InsightBuilder() {
     const [isFilterDone, setIsFilterDone] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const buttonRef = useRef(null);
+    const animationRef = useRef(null);
 
     const chosenFunction = FUNCTIONS.find((f) => f.value === insightData.function?.value);
 
@@ -159,18 +161,25 @@ export default function InsightBuilder() {
         closeModal();
     }
 
-    return [<Button key="button" id="add-insight-button"
-                    ref={buttonRef}
-                    size={Button.sizes.SMALL}
-                    onClick={() => {
-                        if (editor.isEditable()) setIsOpen(true);
-                    }}>
-        <Flex gap={Flex.gaps.SMALL}>
-            <Icon iconType={Icon.type.SRC}
-                  icon="insights-transparent.svg"/>
-            <span>Create Insight</span>
-        </Flex>
-    </Button>,
+    return [<div key="button"
+                 onMouseEnter={() => animationRef.current.play()}
+                 onMouseLeave={() => animationRef.current.stop()}>
+        <Button id="add-insight-button"
+                ref={buttonRef}
+                size={Button.sizes.SMALL}
+                onClick={() => {
+                    if (editor.isEditable()) setIsOpen(true);
+                }}>
+            <Flex gap={Flex.gaps.XS}>
+                <Lottie lottieRef={animationRef}
+                        animationData={InsightAnimation}
+                        loop={false}
+                        autoplay={false}
+                        style={{width: "25px", height: "25px"}}/>
+                <span>Create Insight</span>
+            </Flex>
+        </Button>
+    </div>,
         <Modal key="modal" id="add-insight-modal"
                classNames={{container: "insight-modal-container", modal: 'insight-modal'}}
                onClose={closeModal}
