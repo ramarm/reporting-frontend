@@ -7,7 +7,7 @@ import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary.js";
 import {ContentEditable} from "@lexical/react/LexicalContentEditable.js";
 import {useEffect, useState} from "react";
 
-export default function ReportingPlugin({onChange}) {
+export default function ReportingPlugin({onRef, onChange}) {
     const [editor] = useLexicalComposerContext();
     const [editorState, setEditorState] = useState();
 
@@ -25,11 +25,13 @@ export default function ReportingPlugin({onChange}) {
     }
 
     return [<RichTextPlugin key="rich-text"
-                            contentEditable={<ContentEditable style={{
-                                width: "100%",
-                                flexGrow: 1,
-                                outline: 0
-                            }}/>}
+                            contentEditable={<div ref={onRef} style={{width: "100%", flexGrow: 1}}>
+                                <ContentEditable style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    outline: 0
+                                }}/>
+                            </div>}
                             ErrorBoundary={LexicalErrorBoundary}/>,
         <OnChangePlugin key="on-change-plugin" onChange={onChangeAdapter}/>,
         <TabIndentationPlugin key="tab-plugin"/>

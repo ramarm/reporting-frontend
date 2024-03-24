@@ -14,17 +14,23 @@ import EmojiPlugin from "./SpotnikEditor/Plugins/EmojiPlugin.jsx";
 import LinkPlugin from "./SpotnikEditor/Plugins/LinkPlugin.jsx";
 import InsightBuilder from "../InsightBuilder/InsightBuilder.jsx";
 import {Textcolor, HighlightColorBucket} from "monday-ui-react-core/icons";
+import {useState} from "react";
 
 export default function ReportingEditor({initialValue, disabled, onChange, containerSelector}) {
+    const [editorElement, setEditorElement] = useState(null);
     const parser = new DOMParser();
     const initialDom = parser.parseFromString(initialValue, "text/html");
+
+    function onRef(_editorElement) {
+        setEditorElement(_editorElement);
+    }
 
     return <SpotnikEditor initialDom={initialDom}
                           containerSelector={containerSelector}
                           disabled={disabled}
-                          innerEditor={<ReportingPlugin onChange={onChange} toolbarPlugins/>}
+                          innerEditor={<ReportingPlugin onRef={onRef} onChange={onChange} toolbarPlugins/>}
                           toolbarPlugins={[
-                              <InsightBuilder key="insight-builder"/>,
+                              <InsightBuilder key="insight-builder" editorElement={editorElement}/>,
                               <Divider key="div1" className="toolbar-divider" direction={Divider.directions.VERTICAL}/>,
                               <UndoRedoPlugin key="undo-redo"/>,
                               <Divider key="div2" className="toolbar-divider" direction={Divider.directions.VERTICAL}/>,

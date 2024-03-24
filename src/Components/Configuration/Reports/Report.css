@@ -18,7 +18,7 @@
 
 .report-modal {
     width: 100% !important;
-    height: 100% !important;
+    height: 100%;
     max-height: 95vh;
     border-bottom-left-radius: unset;
     border-bottom-right-radius: unset;

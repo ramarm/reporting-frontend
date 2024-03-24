@@ -22,8 +22,9 @@ import {$createInsightNode} from "./InsightNode.jsx";
 import {NavigationChevronLeft, NavigationChevronRight, Check} from "monday-ui-react-core/icons";
 import Lottie from "lottie-react";
 import InsightAnimation from "./InsightAnimation.json";
+import FloatingInsightEditorPlugin from "./FloatingInsightEditor.jsx";
 
-export default function InsightBuilder() {
+export default function InsightBuilder({editorElement}) {
     const [editor] = useLexicalComposerContext();
     const [insightData, setInsightData] = useState({filters: []});
     const [isFilterDone, setIsFilterDone] = useState(false);
@@ -195,5 +196,6 @@ export default function InsightBuilder() {
                 <Footer step={currentStep()} resetInsight={resetInsight}/>
             </ModalFooter>
         </Modal>,
+        editorElement && <FloatingInsightEditorPlugin key="floating-insight-editor" editorElement={editorElement}/>
     ]
 }
