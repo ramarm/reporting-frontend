@@ -10,7 +10,7 @@ const COLOR_LIST = ["#037f4c", "#00c875", "#9cd326", "#cab641", "#ffcb00", "#fda
     "#5559df", "#225091", "#579bfc", "#0086c0", "#4eccc6", "#66ccff", "#68a1bd", "#e1e1e1", "#808080", "#7f5347"];
 
 
-export default function ColorPlugin({defaultColor, buttonIcon, targetStyle, previewStyleTarget}) {
+export default function ColorPlugin({containerSelector, defaultColor, buttonIcon, targetStyle, previewStyleTarget}) {
     const [editor] = useLexicalComposerContext()
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedColor, setSelectedColor] = useState(defaultColor);
@@ -37,6 +37,7 @@ export default function ColorPlugin({defaultColor, buttonIcon, targetStyle, prev
     }
 
     return <Dialog open={isDialogOpen}
+                   containerSelector={containerSelector}
                    position={Dialog.positions.BOTTOM}
                    onClickOutside={() => setIsDialogOpen(false)}
                    showTrigger={[]}

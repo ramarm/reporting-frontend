@@ -133,7 +133,7 @@ function getBlockType(node) {
     return getBlockType(node.getParent())
 }
 
-export default function BlockPlugin() {
+export default function BlockPlugin({containerSelector}) {
     const [editor] = useLexicalComposerContext();
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
     const [selectedBlockType, setSelectedBlockType] = React.useState(SUPPORTED_BLOCK_TYPES.filter(block => block.key === "paragraph")[0]);
@@ -159,6 +159,7 @@ export default function BlockPlugin() {
 
     return [<ListPlugin key="block-list-plugin"/>,
         <Dialog key="block-dialog" open={isDialogOpen}
+                containerSelector={containerSelector}
                 position={Dialog.positions.BOTTOM}
                 onClickOutside={() => setIsDialogOpen(false)}
                 showTrigger={[]}

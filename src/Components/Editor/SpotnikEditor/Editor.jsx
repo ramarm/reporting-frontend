@@ -16,7 +16,7 @@ import {InsightNode} from "../../InsightBuilder/InsightNode.jsx";
 import {Flex} from "monday-ui-react-core";
 
 
-export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, disabled}) {
+export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, disabled, containerSelector}) {
     const initialConfig = {
         namespace: "reporting-editor",
         editable: !disabled,
@@ -50,7 +50,7 @@ export default function SpotnikEditor({initialDom, innerEditor, toolbarPlugins, 
         <LexicalComposer initialConfig={initialConfig}>
             <Flex direction={Flex.directions.COLUMN} align={Flex.align.START} style={{width: "100%"}}
                   id="editor-container">
-                {toolbarPlugins?.length > 0 && <ToolbarPlugin toolbarPlugins={toolbarPlugins}/>}
+                {toolbarPlugins?.length > 0 && <ToolbarPlugin toolbarPlugins={toolbarPlugins} containerSelector={containerSelector}/>}
                 {innerEditor}
             </Flex>
         </LexicalComposer>

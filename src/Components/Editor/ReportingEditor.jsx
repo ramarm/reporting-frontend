@@ -15,11 +15,12 @@ import LinkPlugin from "./SpotnikEditor/Plugins/LinkPlugin.jsx";
 import InsightBuilder from "../InsightBuilder/InsightBuilder.jsx";
 import {Textcolor, HighlightColorBucket} from "monday-ui-react-core/icons";
 
-export default function ReportingEditor({initialValue, disabled, onChange}) {
+export default function ReportingEditor({initialValue, disabled, onChange, containerSelector}) {
     const parser = new DOMParser();
     const initialDom = parser.parseFromString(initialValue, "text/html");
 
     return <SpotnikEditor initialDom={initialDom}
+                          containerSelector={containerSelector}
                           disabled={disabled}
                           innerEditor={<ReportingPlugin onChange={onChange} toolbarPlugins/>}
                           toolbarPlugins={[

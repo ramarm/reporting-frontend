@@ -23,7 +23,7 @@ const SUPPORTED_EMOJIS = [
     "👻", "👽", "👾", "🤖"];
 
 
-export default function EmojiPlugin() {
+export default function EmojiPlugin({containerSelector}) {
     const [editor] = useLexicalComposerContext()
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -37,6 +37,7 @@ export default function EmojiPlugin() {
     }
 
     return <Dialog open={isDialogOpen}
+                   containerSelector={containerSelector}
                    position={Dialog.positions.BOTTOM}
                    onClickOutside={() => setIsDialogOpen(false)}
                    showTrigger={[]}

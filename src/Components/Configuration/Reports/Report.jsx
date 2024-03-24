@@ -58,10 +58,11 @@ export default function Report({setReportId, reportId, openActivateModal}) {
     function closeModal() {
         setReportId();
     }
+
     return <Modal id="report-modal"
-                   classNames={{container: "report-modal-container", modal: 'report-modal'}}
-                   show={reportId}
-                   onClose={closeModal}>
+                  classNames={{container: "report-modal-container", modal: 'report-modal'}}
+                  show={reportId}
+                  onClose={closeModal}>
         <ModalHeader className="report-modal-header"
                      title=""
                      icon={null}>
@@ -95,7 +96,8 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                            onChange={setReportSubject}/>
                 <Divider key="divider"/>
                 <ReportingEditor initialValue={report.body} disabled={!editable}
-                                 onChange={(value) => setReport("body", value)}/>
+                                 onChange={(value) => setReport("body", value)}
+                                 containerSelector="#report-modal"/>
             </Flex>
         </ModalContent>
         <ModalFooter>

@@ -9,7 +9,7 @@ const FONT_PROPERTY = 'font-family';
 
 const SUPPORTED_FONTS = ['Arial', 'Helvetica', 'Times New Roman', 'Times', 'Courier New', 'Courier', 'Verdana', 'Georgia', 'Palatino', 'Garamond', 'Bookman', 'Comic Sans MS', 'Trebuchet MS', 'Avant Garde', 'Impact', 'Zapf Chancery', 'Apple Chancery', 'Optima', 'Hoefler Text', 'Florence', 'Brush Script', 'Sitka', 'Skia', 'Symbol', 'Webdings', 'Wingdings', 'Andale Mono', 'Consolas', 'Monaco', 'Lucida Console', 'Lucida Sans Unicode', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', 'FreeMono', 'Cutive Mono', 'Anonymous Pro', 'Inconsolata', 'Source Code Pro', 'Roboto', 'Open Sans', 'Lato', 'Oswald', 'PT Sans', 'PT Serif', 'Poppins', 'Raleway', 'Roboto Condensed', 'Ubuntu'];
 
-export default function FontsPlugin() {
+export default function FontsPlugin({containerSelector}) {
     const [editor] = useLexicalComposerContext()
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [search, setSearch] = useState("");
@@ -43,6 +43,7 @@ export default function FontsPlugin() {
     }
 
     return <Dialog open={isDialogOpen}
+                   containerSelector={containerSelector}
                    position={Dialog.positions.BOTTOM}
                    onClickOutside={() => setIsDialogOpen(false)}
                    showTrigger={[]}

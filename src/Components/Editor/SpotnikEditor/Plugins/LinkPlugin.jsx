@@ -19,7 +19,7 @@ function isLinkNode(node) {
     return isLinkNode(node.getParent())
 }
 
-export default function LinkPlugin() {
+export default function LinkPlugin({containerSelector}) {
     const [editor] = useLexicalComposerContext()
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [data, setData] = useState({});
@@ -76,6 +76,7 @@ export default function LinkPlugin() {
     }
 
     return <Dialog open={isDialogOpen}
+                   containerSelector={containerSelector}
                    position={Dialog.positions.BOTTOM}
                    onClickOutside={() => setIsDialogOpen(false)}
                    showTrigger={[]}

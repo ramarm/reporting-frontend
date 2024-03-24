@@ -82,7 +82,7 @@ function LinkDialog({infoImage, setImageInfo}) {
     </TabsContext>;
 }
 
-export default function ImagePlugin() {
+export default function ImagePlugin({containerSelector}) {
     const [editor] = useLexicalComposerContext();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [data, setData] = useState({});
@@ -119,6 +119,7 @@ export default function ImagePlugin() {
     }
 
     return <Dialog open={isDialogOpen}
+                   containerSelector={containerSelector}
                    position={Dialog.positions.BOTTOM}
                    onClickOutside={() => setIsDialogOpen(false)}
                    showTrigger={[]}

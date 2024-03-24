@@ -10,7 +10,7 @@ const DEFAULT_FONT_SIZE = '12px';
 const FONT_SIZE_OPTIONS = ['10px', '11px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px',
     '36px', '48px']
 
-export default function FontSizePlugin() {
+export default function FontSizePlugin({containerSelector}) {
     const [editor] = useLexicalComposerContext();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedFontSize, setSelectedFontSize] = useState(DEFAULT_FONT_SIZE);
@@ -42,6 +42,7 @@ export default function FontSizePlugin() {
 
 
     return <Dialog open={isDialogOpen}
+                   containerSelector={containerSelector}
                    position={Dialog.positions.BOTTOM}
                    onClickOutside={() => setIsDialogOpen(false)}
                    showTrigger={[]}
