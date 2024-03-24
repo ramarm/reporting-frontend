@@ -80,3 +80,7 @@
 .insight-modal-container {
     z-index: 20000
 }
+
+.insight-editor-hover {
+    width: fit-content;
+}

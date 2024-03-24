@@ -149,6 +149,46 @@ export class InsightNode extends TextNode {
     isToken() {
         return true;
     }
+
+    getTitle() {
+        const self = this.getLatest()
+        return self.__text.slice(1, -1);
+    }
+
+    setTitle(title) {
+        const self = this.getWritable();
+        self.__text = `{${title}}`;
+    }
+
+    getFunction() {
+        const self = this.getLatest()
+        return self.__function;
+    }
+
+    getColumn() {
+        const self = this.getLatest()
+        return self.__column;
+    }
+
+    getValue() {
+        const self = this.getLatest()
+        return self.__value;
+    }
+
+    getTimespan() {
+        const self = this.getLatest()
+        return self.__timespan
+    }
+
+    getFilters() {
+        const self = this.getLatest()
+        return self.__filters;
+    }
+
+    getBreakdown() {
+        const self = this.getLatest()
+        return self.__breakdown;
+    }
 }
 
 export function $createInsightNode({title, func, column, value, timespan, filters, breakdown}) {
