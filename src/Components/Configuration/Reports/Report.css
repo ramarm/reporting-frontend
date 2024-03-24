@@ -70,9 +70,13 @@
 }
 
 .report-divider {
-    margin: 0;
+    margin: 1px;
 }
 
 .form-input {
     padding: var(--spacing-xs) 0;
+}
+
+.auto-save-toast {
+    width: 330px;
 }

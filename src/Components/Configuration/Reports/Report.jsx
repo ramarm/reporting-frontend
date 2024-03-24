@@ -15,13 +15,17 @@ import {
     TextField,
     Divider,
     Button,
+    Toast
 } from "monday-ui-react-core";
 import {CloseSmall} from "monday-ui-react-core/icons";
 import Owner from "./Owner.jsx";
 import {DeleteReport, TakeOwnership} from "./ReportActionButtons.jsx";
+import {useState} from "react";
 
 export default function Report({setReportId, reportId, openActivateModal}) {
     const queryClient = useQueryClient();
+    const [didSaveNotified, setDidSaveNotified] = useState(false);
+    const [isSaveNotifyOpen, setIsSaveNotifyOpen] = useState(false);
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
     const editable = report.owner === Number(context.user.id);
@@ -35,6 +39,10 @@ export default function Report({setReportId, reportId, openActivateModal}) {
     });
 
     function setReport(key, value) {
+        if (!didSaveNotified) {
+            setIsSaveNotifyOpen(true);
+            setDidSaveNotified(true);
+        }
         patchReportMutation({reportId, key, value});
     }
 
@@ -104,6 +112,10 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                 <ReportingEditor initialValue={report.body} disabled={!editable}
                                  onChange={(value) => setReport("body", value)}
                                  containerSelector="#report-modal"/>
+                <Toast open={isSaveNotifyOpen} className="auto-save-toast" autoHideDuration={5000}
+                       onClose={() => setIsSaveNotifyOpen(false)}>
+                    You changes will be saved automatically
+                </Toast>
             </Flex>
         </ModalContent>
         <ModalFooter className="report-footer">
