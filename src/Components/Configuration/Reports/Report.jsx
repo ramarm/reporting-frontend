@@ -68,7 +68,7 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                      icon={null}>
             <Flex style={{height: "100%"}} justify={Flex.justify.SPACE_BETWEEN}>
                 <EditableText type={EditableText.types.TEXT1}
-                              disabled={!editable}
+                              readOnly={!editable}
                               placeholder="Report name"
                               value={report.name}
                               onChange={setReportName}/>
@@ -102,15 +102,19 @@ export default function Report({setReportId, reportId, openActivateModal}) {
         </ModalContent>
         <ModalFooter>
             <Flex justify={Flex.justify.END} style={{padding: "10px 15px"}}>
-                <Button onClick={() => {
-                    if (localStorage.getItem("dontShowActivateModal")?.toUpperCase() === "TRUE") closeModal();
-                    else {
-                        openActivateModal();
-                        closeModal();
-                    }
-                }}>
-                    Done
-                </Button>
+                {editable ? <Button onClick={() => {
+                        if (localStorage.getItem("dontShowActivateModal")?.toUpperCase() === "TRUE") closeModal();
+                        else {
+                            openActivateModal();
+                            closeModal();
+                        }
+                    }}>
+                        Done
+                    </Button>
+                    : <Button kind={Button.kinds.SECONDARY}
+                              onClick={closeModal}>
+                        Close
+                    </Button>}
             </Flex>
         </ModalFooter>
     </Modal>

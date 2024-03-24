@@ -20,7 +20,7 @@ import {getClosestElementNode} from "../Editor/SpotnikEditor/Plugins/KeyboardPlu
 import {$createDivParagraphNode} from "../Editor/SpotnikEditor/Nodes/DivParagraphNode.jsx";
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {$createInsightNode} from "./InsightNode.jsx";
-import {NavigationChevronLeft,NavigationChevronRight, Check} from "monday-ui-react-core/icons";
+import {NavigationChevronLeft, NavigationChevronRight, Check} from "monday-ui-react-core/icons";
 
 export default function InsightBuilder() {
     const [editor] = useLexicalComposerContext();
@@ -162,7 +162,9 @@ export default function InsightBuilder() {
     return [<Button key="button" id="add-insight-button"
                     ref={buttonRef}
                     size={Button.sizes.SMALL}
-                    onClick={() => setIsOpen(true)}>
+                    onClick={() => {
+                        if (editor.isEditable()) setIsOpen(true);
+                    }}>
         <Flex gap={Flex.gaps.SMALL}>
             <Icon iconType={Icon.type.SRC}
                   icon="insights-transparent.svg"/>
