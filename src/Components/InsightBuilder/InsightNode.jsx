@@ -112,6 +112,18 @@ export class InsightNode extends TextNode {
         }
     }
 
+    createDOM(config, editor) {
+        const element = super.createDOM(config, editor);
+        element.setAttribute("insight-title", this.__text);
+        element.setAttribute("insight-function", this.__function);
+        if (this.__column) element.setAttribute("insight-column", JSON.stringify(this.__column));
+        if (this.__value) element.setAttribute("insight-value", JSON.stringify(this.__value));
+        if (this.__timespan) element.setAttribute("insight-timespan", JSON.stringify(this.__timespan));
+        if (this.__filters && this.__filters.length > 0) element.setAttribute("insight-filters", JSON.stringify(this.__filters));
+        if (this.__breakdown) element.setAttribute("insight-breakdown", JSON.stringify(this.__breakdown));
+        return element;
+    }
+
     exportDOM() {
         const element = document.createElement("insight");
         element.setAttribute("insight-title", this.__text);
