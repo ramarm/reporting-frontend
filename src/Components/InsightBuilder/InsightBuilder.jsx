@@ -18,7 +18,7 @@ import {$createRangeSelection, $getSelection, $insertNodes} from "lexical";
 import {getClosestElementNode} from "../Editor/SpotnikEditor/Plugins/KeyboardPlugin.js";
 import {$createDivParagraphNode} from "../Editor/SpotnikEditor/Nodes/DivParagraphNode.jsx";
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
-import {$createInsightNode} from "./InsightNode.jsx";
+import {$createInsightNode, $isInsightNode} from "./InsightNode.jsx";
 import {NavigationChevronLeft, NavigationChevronRight, Check} from "monday-ui-react-core/icons";
 import Lottie from "lottie-react";
 import InsightAnimation from "./InsightAnimation.json";
@@ -27,6 +27,7 @@ import FloatingInsightEditorPlugin from "./FloatingInsightEditor.jsx";
 export default function InsightBuilder({editorElement}) {
     const [editor] = useLexicalComposerContext();
     const [insightData, setInsightData] = useState({filters: []});
+    const [insightNode, setInsightNode] = useState(null);
     const [isFilterDone, setIsFilterDone] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const buttonRef = useRef(null);
@@ -121,6 +122,7 @@ export default function InsightBuilder({editorElement}) {
 
     function resetInsight() {
         setInsightData({filters: []});
+        setInsightNode(null);
         setIsFilterDone(false);
     }
 
@@ -136,28 +138,64 @@ export default function InsightBuilder({editorElement}) {
         resetInsight();
     }
 
+    function getSentence() {
+        const func = FUNCTIONS.find(f => f.value === insightData.function?.value);
+        if (func) {
+            const sentenceParts = [];
+            func.parts.forEach(part => {
+                if (part.type === "text") {
+                    sentenceParts.push(part.text);
+                } else if (part.type === "column") {
+                    sentenceParts.push(insightData.column?.label);
+                } else if (part.type === "value") {
+                    sentenceParts.push(insightData.value?.label);
+                } else if (part.type === "timespan") {
+                    sentenceParts.push(insightData.timespan?.label);
+                }
+            });
+            insightData.filters?.forEach((filter, index) => {
+                sentenceParts.push(index === 0 ? "where" : "and");
+                sentenceParts.push(filter.column?.label);
+                sentenceParts.push(filter.condition?.label);
+                sentenceParts.push(filter.value?.label);
+            })
+            insightData.breakdown && sentenceParts.push("and break it down by", insightData.breakdown.label);
+            return sentenceParts.join(" ");
+        }
+    }
+
     function insertInsight() {
         editor.update(() => {
-            let selection;
-            selection = $getSelection();
-            if (selection === null) {
-                selection = $createRangeSelection();
+            if (insightNode) {
+                insightNode.setInsightData(insightData);
+            } else {
+                let selection;
+                selection = $getSelection();
+                if (selection === null) {
+                    selection = $createRangeSelection();
+                }
+                const newInsightNode = $createInsightNode({
+                    title: `{${getSentence()}}`,
+                    func: insightData.function.value,
+                    column: insightData.column,
+                    value: insightData.value,
+                    timespan: insightData.timespan,
+                    filters: insightData.filters,
+                    breakdown: insightData.breakdown
+                });
+
+                if (selection.getNodes().length === 1 && $isInsightNode(selection.getNodes()[0])) {
+                    selection.getNodes()[0].insertAfter(newInsightNode);
+                } else {
+                    const hasElementNode = selection.getNodes().map(getClosestElementNode).some((node) => node);
+                    const nodesToInsert = [];
+                    if (!hasElementNode) {
+                        nodesToInsert.push($createDivParagraphNode());
+                    }
+                    nodesToInsert.push(newInsightNode);
+                    $insertNodes(nodesToInsert);
+                }
             }
-            const hasElementNode = selection.getNodes().map(getClosestElementNode).some((node) => node);
-            const nodesToInsert = [];
-            if (!hasElementNode) {
-                nodesToInsert.push($createDivParagraphNode());
-            }
-            nodesToInsert.push($createInsightNode({
-                title: "{insight}",
-                func: insightData.function.value,
-                column: insightData.column,
-                value: insightData.value,
-                timespan: insightData.timespan,
-                filters: insightData.filters,
-                breakdown: insightData.breakdown
-            }));
-            $insertNodes(nodesToInsert);
         })
         closeModal();
     }
@@ -169,6 +207,7 @@ export default function InsightBuilder({editorElement}) {
                 ref={buttonRef}
                 size={Button.sizes.SMALL}
                 onClick={() => {
+                    resetInsight();
                     if (editor.isEditable()) setIsOpen(true);
                 }}>
             <Flex gap={Flex.gaps.XS}>
@@ -181,6 +220,14 @@ export default function InsightBuilder({editorElement}) {
             </Flex>
         </Button>
     </div>,
+        editorElement && <FloatingInsightEditorPlugin key="floating-insight-editor"
+                                                      resetInsight={resetInsight}
+                                                      openModal={() => setIsOpen(true)}
+                                                      setInsightData={setInsightData}
+                                                      getSentence={getSentence}
+                                                      insightNode={insightNode}
+                                                      setInsightNode={setInsightNode}
+                                                      editorElement={editorElement}/>,
         <Modal key="modal" id="add-insight-modal"
                classNames={{container: "insight-modal-container", modal: 'insight-modal'}}
                onClose={closeModal}
@@ -195,7 +242,6 @@ export default function InsightBuilder({editorElement}) {
             <ModalFooter className="insight-modal-footer">
                 <Footer step={currentStep()} resetInsight={resetInsight}/>
             </ModalFooter>
-        </Modal>,
-        editorElement && <FloatingInsightEditorPlugin key="floating-insight-editor" editorElement={editorElement}/>
+        </Modal>
     ]
 }

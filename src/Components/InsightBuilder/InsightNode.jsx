@@ -154,6 +154,16 @@ export class InsightNode extends TextNode {
         return true;
     }
 
+    setInsightData(insightData) {
+        const self = this.getWritable();
+        self.__function = insightData.function.value;
+        self.__column = insightData.column;
+        self.__value = insightData.value;
+        self.__timespan = insightData.timespan;
+        self.__filters = insightData.filters;
+        self.__breakdown = insightData.breakdown;
+    }
+
     getTitle() {
         const self = this.getLatest()
         return self.__text.slice(1, -1);
