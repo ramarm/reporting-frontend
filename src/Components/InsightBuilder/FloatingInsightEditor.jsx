@@ -53,7 +53,7 @@ function FloatingInsightEditor({editor, openModal, title, setTitle, getSentence,
         });
     }
 
-    if (insightNode && isOpen) {
+    if (insightNode && isOpen && editor.isEditable()) {
         return <div style={{
             position: "absolute",
             left: position.left,
