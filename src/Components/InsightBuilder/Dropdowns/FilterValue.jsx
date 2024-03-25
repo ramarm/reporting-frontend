@@ -39,7 +39,7 @@ export default function FilterValueCombobox({setHover, value, setValue, selected
     function generatePeopleOptions() {
         return subscribers.map((subscriber) => ({
             label: subscriber.name,
-            value: subscriber.id,
+            value: `person-${subscriber.id}`,
         }));
     }
 
@@ -131,14 +131,14 @@ export default function FilterValueCombobox({setHover, value, setValue, selected
                 {options
                     .filter(option => option.label.toLowerCase().includes(search.toLowerCase()))
                     .map((option) => {
-                    return <ListItem key={option.label}
-                                     className="insight-list-item"
-                                     onHover={() => setHover(option.label)}
-                                     onClick={() => onClick(option)}
-                                     selected={value?.value === option.value}>
-                        {option.label}
-                    </ListItem>
-                })}
+                        return <ListItem key={option.label}
+                                         className="insight-list-item"
+                                         onHover={() => setHover(option.label)}
+                                         onClick={() => onClick(option)}
+                                         selected={value?.value === option.value}>
+                            {option.label}
+                        </ListItem>
+                    })}
             </List>
         </Flex>
     }
