@@ -66,8 +66,7 @@ export class InsightNode extends TextNode {
             value: node.__value,
             timespan: node.__timespan,
             filters: node.__filters,
-            breakdown: node.__breakdown,
-            key: node.__key
+            breakdown: node.__breakdown
         });
     }
 
