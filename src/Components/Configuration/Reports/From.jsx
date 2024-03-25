@@ -114,6 +114,11 @@ export default function From({editable, from, updateFrom}) {
                 <Text type={Text.types.TEXT2}>{emailAccount.name}</Text>
             </Flex>
         }
+        if (!editable) {
+            return <Flex gap={Flex.gaps.SMALL}>
+                <Text type={Text.types.TEXT2}>{from.email}</Text>
+            </Flex>
+        }
         return <Flex gap={Flex.gaps.SMALL}>
             <Icon icon={Email} iconSize={20}/>
             <Text type={Text.types.TEXT2}>Select sender account</Text>
@@ -137,6 +142,7 @@ export default function From({editable, from, updateFrom}) {
                 hideTrigger={[Dialog.hideShowTriggers.CLICK, Dialog.hideShowTriggers.CLICK_OUTSIDE, Dialog.hideShowTriggers.CONTENT_CLICK]}>
             <Button size={Button.sizes.SMALL}
                     kind={Button.kinds.TERTIARY}
+                    disabled={!editable}
                     rightIcon={isDialogOpen ? DropdownChevronUp : DropdownChevronDown}
                     active={isDialogOpen}>
                 {generateSender()}
