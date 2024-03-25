@@ -59,7 +59,7 @@ export class InsightNode extends TextNode {
     }
 
     static clone(node) {
-        return new InsightNode({
+        const newNode = new InsightNode({
             text: node.__text,
             func: node.__function,
             column: node.__column,
@@ -68,6 +68,11 @@ export class InsightNode extends TextNode {
             filters: node.__filters,
             breakdown: node.__breakdown
         });
+        newNode.setFormat(node.__format);
+        newNode.setDetail(node.__detail);
+        newNode.setMode(node.__mode);
+        newNode.setStyle(node.__style);
+        return newNode;
     }
 
     exportJSON() {
