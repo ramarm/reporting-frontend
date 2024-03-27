@@ -229,7 +229,7 @@ export default function InsightBuilder({editorElement}) {
                                                       setInsightNode={setInsightNode}
                                                       editorElement={editorElement}/>,
         <Modal key="modal" id="add-insight-modal"
-               classNames={{container: "insight-modal-container", modal: 'insight-modal'}}
+               classNames={{container: "insight-modal-container", overlay: "insight-modal-overlay-temp", modal: 'insight-modal'}}
                onClose={closeModal}
                show={isOpen}
                triggerElement={buttonRef.current}>
