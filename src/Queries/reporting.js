@@ -49,10 +49,10 @@ export async function deleteReport({reportId}) {
     });
 }
 
-export async function getAccountInsights({since}) {
+export async function getInsightsUsage({since}) {
     return await sendReportingRequest({
         method: "GET",
-        uri: `/api/v1/management/insights_count`,
+        uri: `/api/v1/management/insights_usage`,
         params: {since: since.toISOString()}
     });
 }
