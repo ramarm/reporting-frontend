@@ -7,7 +7,6 @@
     min-width: 700px;
     max-width: 1000px;
     min-height: 350px;
-    box-shadow: none;
 }
 
 #add-insight-button {
@@ -84,8 +83,4 @@
 
 .insight-editor-hover {
     width: fit-content;
-}
-
-.insight-modal-overlay-temp {
-    background: white;
 }
