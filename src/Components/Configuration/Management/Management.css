@@ -27,6 +27,6 @@
 }
 
 .management-card-value {
-    height: 28px;
+    padding-block: var(--spacing-small);
     font-size: 28px;
 }
