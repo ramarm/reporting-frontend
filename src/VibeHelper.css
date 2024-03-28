@@ -4,6 +4,10 @@
     inset-block-end: 24px;
 }
 
+.floating-icon {
+    background: white;
+}
+
 .floating-icon:hover {
     box-shadow: var(--box-shadow-small);
 }

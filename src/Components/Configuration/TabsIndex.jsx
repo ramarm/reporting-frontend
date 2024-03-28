@@ -4,6 +4,7 @@ import {Tab, TabList, TabPanel, TabPanels, TabsContext, Text, Flex, Icon} from "
 import {Dashboard, Edit, Help, Upgrade} from "monday-ui-react-core/icons";
 import PricingAndPlans from "./PricingAndPlan/PricingAndPlans.jsx";
 import Management from "./Management/Management.jsx";
+import HowToUse from "./HowToUse/HowToUse.jsx";
 
 
 export default function TabsIndex() {
@@ -28,7 +29,7 @@ export default function TabsIndex() {
                 <ReportsView/>
             </TabPanel>
             <TabPanel>
-                <h1>How to use</h1>
+                <HowToUse/>
             </TabPanel>
             <TabPanel>
                 <Management/>
