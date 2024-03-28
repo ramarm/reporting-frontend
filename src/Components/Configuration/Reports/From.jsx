@@ -114,9 +114,9 @@ export default function From({editable, from, updateFrom}) {
                 <Text type={Text.types.TEXT2}>{emailAccount.name}</Text>
             </Flex>
         }
-        if (!editable) {
+        if (from && !editable) {
             return <Flex gap={Flex.gaps.SMALL}>
-                <Text type={Text.types.TEXT2}>{from.email}</Text>
+                <Text type={Text.types.TEXT2}>{from?.email}</Text>
             </Flex>
         }
         return <Flex gap={Flex.gaps.SMALL}>
