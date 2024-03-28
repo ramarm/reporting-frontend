@@ -2,8 +2,8 @@ import {sendRequest} from "./requestService";
 
 const REPORTING_URL_BASE = import.meta.env.VITE_REPORTING_API;
 
-export async function sendReportingRequest({method, uri, data, headers}) {
-    return await sendRequest(REPORTING_URL_BASE, {method, uri, data, headers});
+export async function sendReportingRequest({method, uri, data, params, headers}) {
+    return await sendRequest(REPORTING_URL_BASE, {method, uri, data, params, headers});
 }
 
 export async function getReports({boardId}) {
@@ -46,5 +46,21 @@ export async function deleteReport({reportId}) {
     return await sendReportingRequest({
         method: "DELETE",
         uri: `/api/v1/report/${reportId}`
+    });
+}
+
+export async function getAccountInsights({since}) {
+    return await sendReportingRequest({
+        method: "GET",
+        uri: `/api/v1/management/insights_count`,
+        params: {since: since.toISOString()}
+    });
+}
+
+export async function getBoardInsights({boardId, since}) {
+    return await sendReportingRequest({
+        method: "GET",
+        uri: `/api/v1/management/${boardId}/insights_count`,
+        params: {since: since.toISOString()}
     });
 }
