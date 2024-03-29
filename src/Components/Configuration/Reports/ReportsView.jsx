@@ -110,7 +110,7 @@ export default function ReportsView() {
         </List>
         {activeReportId && <Report reportId={activeReportId} setReportId={setActiveReportId}
                                    openActivateModal={() => setIsActivateModalOpen(true)}/>}
-        {!isActivateModalOpen && <ActivateModal isOpen={!isActivateModalOpen}
+        {isActivateModalOpen && <ActivateModal isOpen={isActivateModalOpen}
                                                 closeModal={() => setIsActivateModalOpen(false)}/>}
     </Flex>
 }
