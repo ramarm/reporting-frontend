@@ -46,7 +46,7 @@ export default function Management() {
                   prefix={`${Math.round((accountInsightsUsage?.total / limit) * 100)}%`}
                   isLoading={isLoadingAccountInsightsUsage || isLoadingSubscriptionDate}/>,
             <Card key="renew-date" title="Renew date"
-                  value={subscription?.is_default ? "Free plan" : subscriptionDate?.add(1, "M").format("DD MMM, YYYY")}
+                  value={subscription?.is_default ? "Free plan" : subscriptionDate?.clone().add(1, "M").format("DD MMM, YYYY")}
                   isLoading={isLoadingSubscriptionDate}/>
         ]}/>
     </Flex>;
