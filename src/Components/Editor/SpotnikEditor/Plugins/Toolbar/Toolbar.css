@@ -1,0 +1,25 @@
+#toolbar-container {
+    width: 100%;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 5px;
+}
+
+.toolbar-divider {
+    height: 24px;
+}
+
+.toolbar-list {
+    max-height: 150px;
+}
+
+.toolbar-list-item {
+    height: auto !important;
+}
+
+.upload-image-tab-panel {
+    text-align: center;
+}
+
+.color-picker-dialog {
+    padding: 0 !important;
+}

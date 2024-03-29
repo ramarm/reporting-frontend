@@ -1,0 +1,86 @@
+#report-list {
+    width: 100%;
+}
+
+.report-list-divider {
+    margin: 0;
+}
+
+.report-modal-header-divider {
+    height: 32px;
+}
+
+.report-list-item {
+    height: 50px;
+}
+
+.report-modal-container {
+    height: 100%;
+    width: 100%;
+    align-items: end;
+}
+
+.report-modal {
+    width: 100% !important;
+    height: 100%;
+    max-height: 95vh;
+    border-bottom-left-radius: unset;
+    border-bottom-right-radius: unset;
+    padding: 0;
+}
+
+.report-modal-header {
+    margin: 0;
+    border-top-left-radius: var(--border-radius-big);
+    border-top-right-radius: var(--border-radius-big);
+    background-color: var(--allgrey-background-color);
+    height: 48px;
+    padding: var(--spacing-small) var(--spacing-medium);
+}
+
+.add-account-modal-container {
+    z-index: 20000;
+}
+
+.report-modal-content {
+    padding: 0 var(--spacing-medium);
+    height: 100%;
+}
+
+.recipient-dropdown {
+    border: none !important;
+    width: inherit;
+}
+
+.recipient-dropdown-menu {
+    margin-top: -4px !important;
+}
+
+.recipient-dropdown [class$="control"] {
+    box-shadow: none !important;
+}
+
+.monday-style-dialog-content-wrapper {
+    z-index: 50000
+}
+
+.subject-input {
+    padding: var(--spacing-small) 0 !important;
+    border: none !important;
+}
+
+.report-footer {
+    margin-block-start: 0;
+}
+
+.report-divider {
+    margin: 1px;
+}
+
+.form-input {
+    padding: var(--spacing-xs) 0;
+}
+
+.auto-save-toast {
+    width: 330px;
+}

@@ -1,0 +1,92 @@
+.close-modal-button {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+}
+
+.ol-center {
+    justify-content: center;
+}
+
+.insight-modal {
+    width: 60vw !important;
+    min-width: 700px;
+    max-width: 1000px;
+    min-height: 350px;
+}
+
+#add-insight-button {
+    background-color: #203460;
+}
+
+.insight-modal-header {
+    margin-block-start: 0;
+    margin-block-end: var(--spacing-medium)
+}
+
+.insight-modal-header-title {
+    display: none;
+}
+
+.insight-modal-footer {
+    margin-block-start: var(--spacing-medium);
+}
+
+.insight-steps-divider {
+    min-width: 30px !important;
+    max-width: 50px !important;
+}
+
+.insight-builder-footer {
+    width: 100%;
+}
+
+.insight-list {
+    max-height: 150px;
+}
+
+.insight-list-item {
+    height: auto !important;
+}
+
+.insight-select-text {
+    max-width: 250px;
+    text-decoration: underline;
+}
+
+.insight-modal-content {
+    display: flex;
+    justify-content: safe center;
+    align-items: safe center;
+}
+
+#insight-preview-box {
+    padding: 10px;
+    width: 300px;
+    min-height: 100px;
+    max-height: 200px;
+}
+
+#insight-preview-sentence {
+    max-width: calc(100% - 350px);
+}
+
+.preview-align-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-ul {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 25px;
+}
+
+.insight-modal-container {
+    z-index: 20000
+}
+
+.insight-editor-hover {
+    width: fit-content;
+}

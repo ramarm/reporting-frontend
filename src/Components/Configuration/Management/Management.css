@@ -1,0 +1,32 @@
+.management-tab {
+    padding-inline: var(--spacing-large)
+}
+
+.management-group-box {
+    width: 100%;
+}
+
+.management-group-body {
+    background: var(--grey-background-color);
+    padding-inline: var(--spacing-large);
+    padding-block: var(--spacing-large);
+}
+
+.management-widget-box {
+    height: 150px;
+    width: 100%;
+}
+
+.management-card-title {
+    padding-block-start: var(--spacing-small);
+    padding-inline-start: var(--spacing-medium);
+}
+
+.management-card-body {
+    padding: var(--spacing-medium);
+}
+
+.management-card-value {
+    padding-block: var(--spacing-small);
+    font-size: 28px;
+}
