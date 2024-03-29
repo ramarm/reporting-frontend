@@ -15,7 +15,8 @@ import {
     TextField,
     Divider,
     Button,
-    Toast
+    Toast,
+    Text,
 } from "monday-ui-react-core";
 import {CloseSmall} from "monday-ui-react-core/icons";
 import Owner from "./Owner.jsx";
@@ -69,6 +70,11 @@ export default function Report({setReportId, reportId, openActivateModal}) {
         setReportId();
     }
 
+    function countInsights() {
+        const insightsCount = (report.body?.match(/<insight\s.*?>/g) || []).length;
+        return <Text key="Insight count" type={Text.types.TEXT2}>Insights count - {insightsCount}</Text>;
+    }
+
     return <Modal id="report-modal"
                   classNames={{container: "report-modal-container", modal: 'report-modal'}}
                   show={reportId}
@@ -83,6 +89,8 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                               value={report.name}
                               onChange={setReportName}/>
                 <Flex gap={Flex.gaps.SMALL}>
+                    {countInsights()}
+                    <Divider className="report-modal-header-divider" direction={Divider.directions.VERTICAL}/>
                     <Owner reportId={reportId}/>
                     {!editable && <TakeOwnership reportId={reportId}/>}
                     {editable && <DeleteReport reportId={reportId} onClick={closeModal}/>}

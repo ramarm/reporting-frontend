@@ -6,6 +6,10 @@
     margin: 0;
 }
 
+.report-modal-header-divider {
+    height: 32px;
+}
+
 .report-list-item {
     height: 50px;
 }
