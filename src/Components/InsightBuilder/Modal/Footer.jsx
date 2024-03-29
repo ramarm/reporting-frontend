@@ -13,8 +13,8 @@ export default function Footer({step, resetInsight}) {
                     onClick={() => {
                         monday.execute("openAppFeatureModal", {
                             url: "https://www.spot-nik.com/how-to-use-insights",
-                            height: "750px",
-                            width: "750px"
+                            height: "1000px",
+                            width: "1500px"
                         })
                     }}
                     leftIcon={LearnMore}>
