@@ -5,7 +5,8 @@ import {
     ModalFooter,
     Button,
     Flex,
-    MultiStepIndicator
+    MultiStepIndicator,
+    IconButton
 } from 'monday-ui-react-core';
 import {useRef, useState} from "react";
 import "./InsightBuilder.css";
@@ -19,7 +20,7 @@ import {getClosestElementNode} from "../Editor/SpotnikEditor/Plugins/KeyboardPlu
 import {$createDivParagraphNode} from "../Editor/SpotnikEditor/Nodes/DivParagraphNode.jsx";
 import {useLexicalComposerContext} from "@lexical/react/LexicalComposerContext";
 import {$createInsightNode, $isInsightNode} from "./InsightNode.jsx";
-import {NavigationChevronLeft, NavigationChevronRight, Check} from "monday-ui-react-core/icons";
+import {NavigationChevronLeft, NavigationChevronRight, Check, CloseSmall} from "monday-ui-react-core/icons";
 import Lottie from "lottie-react";
 import InsightAnimation from "./InsightAnimation.json";
 import FloatingInsightEditorPlugin from "./FloatingInsightEditor.jsx";
@@ -235,6 +236,7 @@ export default function InsightBuilder({editorElement}) {
                triggerElement={buttonRef.current}>
             <ModalHeader className="insight-modal-header" title="" titleClassName="insight-modal-header-title">
                 <Steps steps={steps}/>
+                <IconButton className="close-modal-button" size={IconButton.sizes.SMALL} icon={CloseSmall} onClick={closeModal}/>
             </ModalHeader>
             <ModalContent className="insight-modal-content">
                 <MainContent insightData={insightData} setInsight={setInsight} currentStep={currentStep()}/>

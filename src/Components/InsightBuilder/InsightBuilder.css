@@ -1,3 +1,9 @@
+.close-modal-button {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+}
+
 .ol-center {
     justify-content: center;
 }
