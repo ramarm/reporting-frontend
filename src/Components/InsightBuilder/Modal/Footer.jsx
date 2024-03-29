@@ -1,11 +1,22 @@
 import {Flex, Button} from "monday-ui-react-core";
 import {LearnMore, Broom} from "monday-ui-react-core/icons";
+import mondaySdk from "monday-sdk-js";
+
+const monday = mondaySdk();
+
 
 export default function Footer({step, resetInsight}) {
     return <Flex className="insight-builder-footer"
                  justify={Flex.justify.SPACE_BETWEEN}>
         <Flex gap={Flex.gaps.SMALL}>
             <Button kind={Button.kinds.SECONDARY}
+                    onClick={() => {
+                        monday.execute("openAppFeatureModal", {
+                            url: "https://www.spot-nik.com/how-to-use-insights",
+                            height: "750px",
+                            width: "750px"
+                        })
+                    }}
                     leftIcon={LearnMore}>
                 Help
             </Button>
