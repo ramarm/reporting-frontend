@@ -1,6 +1,7 @@
 import {useQueryClient} from "@tanstack/react-query";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {
+    Divider,
     Flex,
     Text
 } from "monday-ui-react-core";
@@ -14,19 +15,26 @@ export default function ReportHeader({reportId}) {
     const editable = report.owner === Number(user.id);
 
     function generateMenu() {
-        const buttons = [];
-        buttons.push(<Owner key="report-owner" reportId={reportId}/>);
+        const parts = [];
+        parts.push(countInsights())
+        parts.push(<Divider className="report-modal-header-divider" direction={Divider.directions.VERTICAL}/>)
+        parts.push(<Owner key="report-owner" reportId={reportId}/>);
 
         if (!editable) {
-            buttons.push(<TakeOwnership key="report-takeowner" reportId={reportId}/>);
+            parts.push(<TakeOwnership key="report-takeowner" reportId={reportId}/>);
         }
 
-        buttons.push(<DuplicateReport key="report-duplicate" reportId={reportId}/>);
+        parts.push(<DuplicateReport key="report-duplicate" reportId={reportId}/>);
 
         if (editable) {
-            buttons.push(<DeleteReport key="delete-report" reportId={reportId}/>);
+            parts.push(<DeleteReport key="delete-report" reportId={reportId}/>);
         }
-        return buttons
+        return parts
+    }
+
+    function countInsights() {
+        const insightsCount = (report.body?.match(/<insight\s.*?>/g) || []).length;
+        return <Text key="Insight count" type={Text.types.TEXT2}>Insights count - {insightsCount}</Text>;
     }
 
     return <Flex justify={Flex.justify.SPACE_BETWEEN} style={{width: "100%"}}>
