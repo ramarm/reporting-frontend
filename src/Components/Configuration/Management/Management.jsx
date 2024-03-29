@@ -33,20 +33,20 @@ export default function Management() {
                  style={{width: "100%"}}>
         <CardGroup title="Usage" cards={[
             <Card key="integration-insights-count" title="Integration Insights"
-                  description={subscription?.is_default ? "last 30 days" : `since ${subscriptionDate.format("DD MMM, YYYY")}`}
+                  description={subscription?.is_default ? "last 30 days" : `since ${subscriptionDate?.format("DD MMM, YYYY")}`}
                   value={accountInsightsUsage?.integration}
-                  isLoading={isLoadingAccountInsightsUsage}/>,
+                  isLoading={isLoadingAccountInsightsUsage || isLoadingSubscriptionDate}/>,
             <Card key="report-insights-count" title="Email Insights"
-                  description={subscription?.is_default ? "last 30 days" : `since ${subscriptionDate.format("DD MMM, YYYY")}`}
+                  description={subscription?.is_default ? "last 30 days" : `since ${subscriptionDate?.format("DD MMM, YYYY")}`}
                   value={accountInsightsUsage?.report}
-                  isLoading={isLoadingAccountInsightsUsage}/>,
+                  isLoading={isLoadingAccountInsightsUsage || isLoadingSubscriptionDate}/>,
             <Card key="account-insights-count" title="Total Insights"
-                  description={subscription?.is_default ? "last 30 days" : `since ${subscriptionDate.format("DD MMM, YYYY")}`}
+                  description={subscription?.is_default ? "last 30 days" : `since ${subscriptionDate?.format("DD MMM, YYYY")}`}
                   value={`${accountInsightsUsage?.total}/${limit}`}
                   prefix={`${Math.round((accountInsightsUsage?.total / limit) * 100)}%`}
                   isLoading={isLoadingAccountInsightsUsage || isLoadingSubscriptionDate}/>,
             <Card key="renew-date" title="Renew date"
-                  value={subscription?.is_default ? "Free plan" : subscriptionDate.add(1, "M").format("DD MMM, YYYY")}
+                  value={subscription?.is_default ? "Free plan" : subscriptionDate?.add(1, "M").format("DD MMM, YYYY")}
                   isLoading={isLoadingSubscriptionDate}/>
         ]}/>
     </Flex>;
