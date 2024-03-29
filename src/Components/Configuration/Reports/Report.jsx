@@ -132,7 +132,7 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                                     onClick={() => {
                                         if (localStorage.getItem("dontShowActivateModal")?.toUpperCase() === "TRUE") closeModal();
                                         else {
-                                            openActivateModal();
+                                            // openActivateModal();
                                             closeModal();
                                         }
                                     }}>
