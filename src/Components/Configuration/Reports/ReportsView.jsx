@@ -26,10 +26,14 @@ import Lottie from "lottie-react";
 function ActivateModal({isOpen, closeModal}) {
     return <Modal key="activate-modal"
                   show={isOpen}
+                  width={"1000px"}
                   onClose={closeModal}>
-        <ModalHeader title="Activate your template"/>
+        <ModalHeader title=""/>
         <ModalContent>
-            <Text type={Text.types.TEXT2}>Bla bla bla</Text>
+            <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.LARGE}>
+                <Heading type={Heading.types.H1}>How to activate your template?</Heading>
+                <img width="800px" src="/activate-your-template.gif" alt="Activate your template"/>
+            </Flex>
         </ModalContent>
         <ModalFooter>
             <Flex justify={Flex.justify.END} gap={Flex.gaps.SMALL}>
@@ -106,7 +110,7 @@ export default function ReportsView() {
         </List>
         {activeReportId && <Report reportId={activeReportId} setReportId={setActiveReportId}
                                    openActivateModal={() => setIsActivateModalOpen(true)}/>}
-        {isActivateModalOpen && <ActivateModal isOpen={isActivateModalOpen}
-                                               closeModal={() => setIsActivateModalOpen(false)}/>}
+        {!isActivateModalOpen && <ActivateModal isOpen={!isActivateModalOpen}
+                                                closeModal={() => setIsActivateModalOpen(false)}/>}
     </Flex>
 }
