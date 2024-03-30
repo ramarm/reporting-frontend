@@ -12,7 +12,7 @@ import {
     updateUserInformation
 } from "./Queries/management.js";
 import {AlertBanner, AlertBannerButton, AlertBannerText, IconButton} from "monday-ui-react-core";
-import {Upgrade, Help, Email} from "monday-ui-react-core/icons";
+import {Upgrade, Help, Forum} from "monday-ui-react-core/icons";
 import TabsIndex from "./Components/Configuration/TabsIndex.jsx";
 import "./VibeBug.css";
 
@@ -192,7 +192,7 @@ function Reporting() {
                 </div>}
             <TabsIndex/>
             <div id="floating-icon-container" className="horizontal-space">
-                <IconButton icon={Email} className="floating-icon"
+                <IconButton icon={Forum} className="floating-icon"
                             kind={IconButton.kinds.SECONDARY}
                             tooltipContent="Support"
                             onClick={() => monday.execute("openLinkInTab", {url: "mailto:rnd@spot-nik.com"})}/>
