@@ -58,9 +58,10 @@ export class InsightNode extends TextNode {
         return "insight";
     }
 
-    static clone(node) {
+    static clone(node, duplicate) {
+        const newText = duplicate ? `{${node.getTitle()} (Duplicate)}` : node.__text;
         const newNode = new InsightNode({
-            text: node.__text,
+            text: newText,
             func: node.__function,
             column: node.__column,
             value: node.__value,
