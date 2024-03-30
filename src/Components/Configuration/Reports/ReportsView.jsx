@@ -1,8 +1,8 @@
 import {useState} from "react";
 import Loader from "../../Loader/Loader.jsx";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
-import {createReport, getReports} from "../../../Queries/reporting.js";
+import {createReport, getReports, patchReport} from "../../../Queries/reporting.js";
 import {
     Flex,
     Button,
@@ -31,7 +31,9 @@ function ActivateModal({isOpen, closeModal}) {
         <ModalHeader title=""/>
         <ModalContent>
             <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.LARGE}>
-                <Heading type={Heading.types.H1}>How to activate your template?</Heading>
+                <Heading type={Heading.types.H2}>Almost done - You need to trigger your report to be sent!</Heading>
+                <Text type={Text.types.TEXT1}>Go to the integration center, search &apos;Email Insights&apos; and choose
+                    the time period of sending the report</Text>
                 <img width="800px" src="/activate-your-template.gif" alt="Activate your template"/>
             </Flex>
         </ModalContent>
@@ -64,6 +66,28 @@ export default function ReportsView() {
             console.error("error -", error);
         }
     });
+
+    const {mutate: patchReportMutation} = useMutation({
+        mutationFn: ({reportId, key, value}) => patchReport({reportId, key, value}),
+        onSuccess: ({reportId, key, value}) => {
+            updateReport(reportId, key, value);
+        }
+    });
+
+    function setReport(reportId, key, value) {
+        patchReportMutation({reportId, key, value});
+    }
+
+    function updateReport(reportId, key, value) {
+        queryClient.setQueryData(["reports"], (oldData) => {
+            const newData = [...oldData];
+            const reportIndex = newData.findIndex((report) => report.id === reportId);
+            const newReport = {...newData[reportIndex]};
+            newReport[key] = value;
+            newData[reportIndex] = newReport;
+            return newData;
+        });
+    }
 
     async function createNewReport() {
         const newReport = await createReport({boardId: context.boardId});
@@ -103,14 +127,18 @@ export default function ReportsView() {
                 .map(report => {
                     return <ListItem key={report.id}
                                      className="report-list-item"
-                                     onClick={() => setActiveReportId(report.id)}>
-                        <ReportHeader reportId={report.id}/>
+                                     onClick={(e) => {
+                                         if (!(e instanceof KeyboardEvent)) setActiveReportId(report.id);
+                                     }}>
+                        <ReportHeader reportId={report.id}
+                                      setReport={(key, value) => setReport(report.id, key, value)}/>
                     </ListItem>
                 })}
         </List>
         {activeReportId && <Report reportId={activeReportId} setReportId={setActiveReportId}
+                                   setReport={(key, value) => setReport(activeReportId, key, value)}
                                    openActivateModal={() => setIsActivateModalOpen(true)}/>}
         {isActivateModalOpen && <ActivateModal isOpen={isActivateModalOpen}
-                                                closeModal={() => setIsActivateModalOpen(false)}/>}
+                                               closeModal={() => setIsActivateModalOpen(false)}/>}
     </Flex>
 }

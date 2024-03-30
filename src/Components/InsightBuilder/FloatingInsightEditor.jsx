@@ -48,7 +48,7 @@ function FloatingInsightEditor({editor, openModal, title, setTitle, getSentence,
 
     function duplicateInsight() {
         editor.update(() => {
-            const newInsight = InsightNode.clone(insightNode);
+            const newInsight = InsightNode.clone(insightNode, true);
             insightNode.insertAfter(newInsight);
         });
     }
