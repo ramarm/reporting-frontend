@@ -5,6 +5,8 @@ import Recipients from "./Recipients.jsx";
 import ReportingEditor from "../../Editor/ReportingEditor.jsx";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {
+    Box,
+    Icon,
     Flex,
     Modal,
     ModalContent,
@@ -18,7 +20,7 @@ import {
     Toast,
     Text,
 } from "monday-ui-react-core";
-import {CloseSmall} from "monday-ui-react-core/icons";
+import {MoveArrowLeft, CloseSmall} from "monday-ui-react-core/icons";
 import Owner from "./Owner.jsx";
 import {DeleteReport, TakeOwnership} from "./ReportActionButtons.jsx";
 import {useState} from "react";
@@ -83,11 +85,24 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                      title=""
                      icon={null}>
             <Flex style={{height: "100%"}} justify={Flex.justify.SPACE_BETWEEN}>
-                <EditableText type={EditableText.types.TEXT1}
-                              readOnly={!editable}
-                              placeholder="Report name"
-                              value={report.name}
-                              onChange={setReportName}/>
+                <Flex style={{width: "100%"}}>
+                    <EditableText type={EditableText.types.TEXT1}
+                                  readOnly={!editable}
+                                  placeholder="Report name"
+                                  value={report.name}
+                                  onChange={setReportName}/>
+                    {report.name === "New report" && <Box className="report-name-change-me"
+                                                          backgroundColor={Box.backgroundColors.INVERTED_COLOR_BACKGROUND}
+                                                          textColor={Box.textColors.TEXT_COLOR_ON_INVERTED}
+                                                          rounded={Box.roundeds.SMALL}
+                                                          padding={Box.paddings.XS}>
+                        <Flex gap={Flex.gaps.SMALL}>
+                            <Icon icon={MoveArrowLeft}/>
+                            <Text type={Text.types.TEXT1}
+                                  color={Text.colors.ON_INVERTED}>Change me</Text>
+                        </Flex>
+                    </Box>}
+                </Flex>
                 <Flex gap={Flex.gaps.SMALL}>
                     {countInsights()}
                     <Divider className="report-modal-header-divider" direction={Divider.directions.VERTICAL}/>
