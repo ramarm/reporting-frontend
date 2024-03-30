@@ -89,7 +89,7 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                     <EditableText type={EditableText.types.TEXT1}
                                   readOnly={!editable}
                                   placeholder="Report name"
-                                  value={report.name}
+                                  value={report.name || ""}
                                   onChange={setReportName}/>
                     {report.name === "New report" && <Box className="report-name-change-me"
                                                           backgroundColor={Box.backgroundColors.INVERTED_COLOR_BACKGROUND}
@@ -129,7 +129,7 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                            debounceRate={500}
                            size={TextField.sizes.MEDIUM}
                            disabled={!editable}
-                           value={report.subject}
+                           value={report.subject || ""}
                            onChange={setReportSubject}/>
                 <Divider key="divider" className="report-divider"/>
                 <ReportingEditor initialValue={report.body} disabled={!editable}
