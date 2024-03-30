@@ -31,7 +31,10 @@ function ActivateModal({isOpen, closeModal}) {
         <ModalHeader title=""/>
         <ModalContent>
             <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.LARGE}>
-                <Heading type={Heading.types.H1}>How to activate your template?</Heading>
+                <Heading type={Heading.types.H2}>Almost done - You need to trigger your report to be sent!</Heading>
+                <Text type={Text.types.TEXT1}>Go to the integration center, search &apos;Email Insights&apos; and choose
+                    the time
+                    period of sending the report</Text>
                 <img width="800px" src="/activate-your-template.gif" alt="Activate your template"/>
             </Flex>
         </ModalContent>
@@ -111,6 +114,6 @@ export default function ReportsView() {
         {activeReportId && <Report reportId={activeReportId} setReportId={setActiveReportId}
                                    openActivateModal={() => setIsActivateModalOpen(true)}/>}
         {isActivateModalOpen && <ActivateModal isOpen={isActivateModalOpen}
-                                                closeModal={() => setIsActivateModalOpen(false)}/>}
+                                               closeModal={() => setIsActivateModalOpen(false)}/>}
     </Flex>
 }
