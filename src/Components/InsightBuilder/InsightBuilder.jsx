@@ -60,7 +60,7 @@ export default function InsightBuilder({editorElement}) {
             key: "preview",
             titleText: "Preview",
             status: previewStepStatus(),
-            onBack: () => setIsFilterDone(false),
+            onBack: functionHasFilterStep() ? () => setIsFilterDone(false) : null,
             backIcon: NavigationChevronLeft,
             onNext: insertInsight,
             nextText: "Confirm",
@@ -236,7 +236,8 @@ export default function InsightBuilder({editorElement}) {
                triggerElement={buttonRef.current}>
             <ModalHeader className="insight-modal-header" title="" titleClassName="insight-modal-header-title">
                 <Steps steps={steps}/>
-                <IconButton className="close-modal-button" size={IconButton.sizes.SMALL} icon={CloseSmall} onClick={closeModal}/>
+                <IconButton className="close-modal-button" size={IconButton.sizes.SMALL} icon={CloseSmall}
+                            onClick={closeModal}/>
             </ModalHeader>
             <ModalContent className="insight-modal-content">
                 <MainContent insightData={insightData} setInsight={setInsight} currentStep={currentStep()}/>
