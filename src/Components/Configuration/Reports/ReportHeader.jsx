@@ -1,6 +1,7 @@
 import {useQueryClient} from "@tanstack/react-query";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {
+    EditableText,
     Divider,
     Flex,
     Text
@@ -8,7 +9,7 @@ import {
 import Owner from "./Owner.jsx";
 import {DeleteReport, DuplicateReport, TakeOwnership} from "./ReportActionButtons.jsx";
 
-export default function ReportHeader({reportId}) {
+export default function ReportHeader({reportId, setReport}) {
     const queryClient = useQueryClient();
     const {user} = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
@@ -17,7 +18,8 @@ export default function ReportHeader({reportId}) {
     function generateMenu() {
         const parts = [];
         parts.push(countInsights())
-        parts.push(<Divider className="report-modal-header-divider" direction={Divider.directions.VERTICAL}/>)
+        parts.push(<Divider key="header-divider-owner" className="report-modal-header-divider"
+                            direction={Divider.directions.VERTICAL}/>)
         parts.push(<Owner key="report-owner" reportId={reportId}/>);
 
         if (!editable) {
@@ -34,13 +36,15 @@ export default function ReportHeader({reportId}) {
 
     function countInsights() {
         const insightsCount = (report.body?.match(/<insight\s.*?>/g) || []).length;
-        return <Text key="Insight count" type={Text.types.TEXT2}>Insights count - {insightsCount}</Text>;
+        return <Text key="Insight count" type={Text.types.TEXT2}>Insights count: {insightsCount}</Text>;
     }
 
     return <Flex justify={Flex.justify.SPACE_BETWEEN} style={{width: "100%"}}>
-        <Text type={Text.types.TEXT1}>
-            {report.name || "New report"}
-        </Text>
+        <EditableText type={EditableText.types.TEXT1}
+                      placeholder="New report"
+                      value={report.name || ""}
+                      onChange={(value) => setReport("name", value)}
+                      onClick={(e) => e.stopPropagation()}/>
         <Flex gap={Flex.gaps.XS}>
             {generateMenu()}
         </Flex>

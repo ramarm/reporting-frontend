@@ -25,7 +25,7 @@ import Owner from "./Owner.jsx";
 import {DeleteReport, TakeOwnership} from "./ReportActionButtons.jsx";
 import {useState} from "react";
 
-export default function Report({setReportId, reportId, openActivateModal}) {
+export default function Report({setReportId, reportId, setReport, openActivateModal}) {
     const queryClient = useQueryClient();
     const [didSaveNotified, setDidSaveNotified] = useState(false);
     const [isSaveNotifyOpen, setIsSaveNotifyOpen] = useState(false);
@@ -33,39 +33,20 @@ export default function Report({setReportId, reportId, openActivateModal}) {
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
     const editable = report.owner === Number(context.user.id);
 
-
-    const {mutate: patchReportMutation} = useMutation({
-        mutationFn: ({reportId, key, value}) => patchReport({reportId, key, value}),
-        onSuccess: ({key, value}) => {
-            updateReport(key, value);
-        }
-    });
-
-    function setReport(key, value) {
+    function _setReport(key, value) {
         if (!didSaveNotified) {
             setIsSaveNotifyOpen(true);
             setDidSaveNotified(true);
         }
-        patchReportMutation({reportId, key, value});
-    }
-
-    function updateReport(key, value) {
-        queryClient.setQueryData(["reports"], (oldData) => {
-            const newData = [...oldData];
-            const reportIndex = newData.findIndex((report) => report.id === reportId);
-            const newReport = {...newData[reportIndex]};
-            newReport[key] = value;
-            newData[reportIndex] = newReport;
-            return newData;
-        });
+        setReport(key, value);
     }
 
     function setReportName(name) {
-        setReport("name", name);
+        _setReport("name", name);
     }
 
     function setReportSubject(subject) {
-        setReport("subject", subject);
+        _setReport("subject", subject);
     }
 
     function closeModal() {
@@ -74,7 +55,7 @@ export default function Report({setReportId, reportId, openActivateModal}) {
 
     function countInsights() {
         const insightsCount = (report.body?.match(/<insight\s.*?>/g) || []).length;
-        return <Text key="Insight count" type={Text.types.TEXT2}>Insights count - {insightsCount}</Text>;
+        return <Text key="Insight count" type={Text.types.TEXT2}>Insights count: {insightsCount}</Text>;
     }
 
     return <Modal id="report-modal"
@@ -119,10 +100,10 @@ export default function Report({setReportId, reportId, openActivateModal}) {
             <Flex direction={Flex.directions.COLUMN} style={{height: "100%"}}>
                 <From editable={editable}
                       from={report.sender}
-                      updateFrom={(from) => setReport("sender", from)}/>
+                      updateFrom={(from) => _setReport("sender", from)}/>
                 <Divider className="report-divider"/>
                 <Recipients reportId={reportId}
-                            setReport={setReport}
+                            setReport={_setReport}
                             editable={editable}/>
                 <TextField placeholder="Subject"
                            className="subject-input"
@@ -133,7 +114,7 @@ export default function Report({setReportId, reportId, openActivateModal}) {
                            onChange={setReportSubject}/>
                 <Divider key="divider" className="report-divider"/>
                 <ReportingEditor initialValue={report.body} disabled={!editable}
-                                 onChange={(value) => setReport("body", value)}
+                                 onChange={(value) => _setReport("body", value)}
                                  containerSelector="#report-modal"/>
                 <Toast open={isSaveNotifyOpen} className="auto-save-toast" autoHideDuration={5000}
                        onClose={() => setIsSaveNotifyOpen(false)}>
