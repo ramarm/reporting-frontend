@@ -33,8 +33,7 @@ function ActivateModal({isOpen, closeModal}) {
             <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.LARGE}>
                 <Heading type={Heading.types.H2}>Almost done - You need to trigger your report to be sent!</Heading>
                 <Text type={Text.types.TEXT1}>Go to the integration center, search &apos;Email Insights&apos; and choose
-                    the time
-                    period of sending the report</Text>
+                    the time period of sending the report</Text>
                 <img width="800px" src="/activate-your-template.gif" alt="Activate your template"/>
             </Flex>
         </ModalContent>

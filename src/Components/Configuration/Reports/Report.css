@@ -85,11 +85,6 @@
     width: 330px;
 }
 
-.report-name-change-me {
-    position: relative;
-    -webkit-animation: bounce 1s infinite;
-}
-
 @-webkit-keyframes bounce {
     0% {
         left: 5px;
