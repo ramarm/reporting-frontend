@@ -41,6 +41,7 @@ export default function ReportHeader({reportId, setReport}) {
 
     return <Flex justify={Flex.justify.SPACE_BETWEEN} style={{width: "100%"}}>
         <EditableText type={EditableText.types.TEXT1}
+                      readOnly={!editable}
                       placeholder="New report"
                       value={report.name || ""}
                       onChange={(value) => setReport("name", value)}
