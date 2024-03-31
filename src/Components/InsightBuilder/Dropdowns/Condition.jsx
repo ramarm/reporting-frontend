@@ -19,8 +19,8 @@ const CONDITION_MAP = {
     date: [
         {label: "is", value: "any_of"},
         {label: "is not", value: "not_any_of"},
-        {label: "is before", value: "greater_than_or_equals"},
-        {label: "is after", value: "lower_than_or_equal"},
+        {label: "is before", value: "lower_than"},
+        {label: "is after", value: "greater_than"},
     ]
 }
 
