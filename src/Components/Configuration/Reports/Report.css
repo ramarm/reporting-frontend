@@ -82,5 +82,9 @@
 }
 
 .auto-save-toast {
-    width: 330px;
+    width: fit-content;
+}
+
+.send-now-toast {
+    width: fit-content;
 }

@@ -1,6 +1,7 @@
 import {useQueryClient} from "@tanstack/react-query";
 import {STORAGE_MONDAY_CONTEXT_KEY} from "../../../consts.js";
 import {
+    Button,
     EditableText,
     Divider,
     Flex,
@@ -8,6 +9,7 @@ import {
 } from "monday-ui-react-core";
 import Owner from "./Owner.jsx";
 import {DeleteReport, DuplicateReport, TakeOwnership} from "./ReportActionButtons.jsx";
+import SendNowButton from "./SendNow.jsx";
 
 export default function ReportHeader({reportId, setReport}) {
     const queryClient = useQueryClient();
@@ -30,6 +32,7 @@ export default function ReportHeader({reportId, setReport}) {
 
         if (editable) {
             parts.push(<DeleteReport key="delete-report" reportId={reportId}/>);
+            parts.push(<SendNowButton key="send-now" size={Button.sizes.SMALL} report={report}/>)
         }
         return parts
     }

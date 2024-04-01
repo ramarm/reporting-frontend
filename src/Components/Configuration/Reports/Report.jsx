@@ -21,6 +21,7 @@ import {CloseSmall} from "monday-ui-react-core/icons";
 import Owner from "./Owner.jsx";
 import {DeleteReport, TakeOwnership} from "./ReportActionButtons.jsx";
 import {useState} from "react";
+import SendNowButton from "./SendNow.jsx";
 
 export default function Report({setReportId, reportId, setReport, openActivateModal}) {
     const queryClient = useQueryClient();
@@ -108,16 +109,19 @@ export default function Report({setReportId, reportId, setReport, openActivateMo
         </ModalContent>
         <ModalFooter className="report-footer">
             <Flex justify={Flex.justify.END} style={{padding: "0 15px 10px 15px"}}>
-                {editable ? <Button size={Button.sizes.LARGE}
-                                    onClick={() => {
-                                        if (localStorage.getItem("dontShowActivateModal")?.toUpperCase() === "TRUE") closeModal();
-                                        else {
-                                            openActivateModal();
-                                            closeModal();
-                                        }
-                                    }}>
-                        Done
-                    </Button>
+                {editable ? <Flex gap={Flex.gaps.SMALL}>
+                        <SendNowButton size={Button.sizes.LARGE} report={report}/>
+                        <Button size={Button.sizes.LARGE}
+                                onClick={() => {
+                                    if (localStorage.getItem("dontShowActivateModal")?.toUpperCase() === "TRUE") closeModal();
+                                    else {
+                                        openActivateModal();
+                                        closeModal();
+                                    }
+                                }}>
+                            Done
+                        </Button>
+                    </Flex>
                     : <Button kind={Button.kinds.SECONDARY}
                               size={Button.sizes.LARGE}
                               onClick={closeModal}>
