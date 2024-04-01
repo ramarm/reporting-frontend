@@ -57,10 +57,10 @@ export async function getInsightsUsage({since}) {
     });
 }
 
-export async function getBoardInsights({boardId, since}) {
+
+export async function sendReport({reportId}) {
     return await sendReportingRequest({
-        method: "GET",
-        uri: `/api/v1/management/${boardId}/insights_count`,
-        params: {since: since.toISOString()}
+        method: "POST",
+        uri: `/api/v1/report/${reportId}/send`
     });
 }
