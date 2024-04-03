@@ -10,7 +10,7 @@ function styleListNode(domNode) {
         listType = "bullet";
     }
     if (listType) {
-        const node = $createExtendedListNode("bullet", start);
+        const node = $createExtendedListNode(listType, start);
         node.setFormat(domNode.style.textAlign);
         return {node};
     }
