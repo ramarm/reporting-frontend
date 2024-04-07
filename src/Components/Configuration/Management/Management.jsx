@@ -34,16 +34,16 @@ export default function Management() {
         <CardGroup title="Usage" cards={[
             <Card key="integration-insights-count" title="Integration Insights"
                   description={subscription?.is_default ? "last 30 days" : `since ${subscriptionDate?.format("DD MMM, YYYY")}`}
-                  value={accountInsightsUsage?.integration}
+                  value={accountInsightsUsage?.total_insights-accountInsightsUsage?.report_insights}
                   isLoading={isLoadingAccountInsightsUsage || isLoadingSubscriptionDate}/>,
             <Card key="report-insights-count" title="Email Insights"
                   description={subscription?.is_default ? "last 30 days" : `since ${subscriptionDate?.format("DD MMM, YYYY")}`}
-                  value={accountInsightsUsage?.report}
+                  value={accountInsightsUsage?.report_insights}
                   isLoading={isLoadingAccountInsightsUsage || isLoadingSubscriptionDate}/>,
             <Card key="account-insights-count" title="Total Insights"
                   description={subscription?.is_default ? "last 30 days" : `since ${subscriptionDate?.format("DD MMM, YYYY")}`}
-                  value={`${accountInsightsUsage?.total}/${limit}`}
-                  prefix={`${Math.round((accountInsightsUsage?.total / limit) * 100)}%`}
+                  value={`${accountInsightsUsage?.total_insights}/${limit}`}
+                  prefix={`${Math.round((accountInsightsUsage?.total_insights / limit) * 100)}%`}
                   isLoading={isLoadingAccountInsightsUsage || isLoadingSubscriptionDate}/>,
             <Card key="renew-date" title="Renewal Date"
                   value={subscription?.is_default ? "Free plan" : subscriptionDate?.clone().add(1, "M").format("DD MMM, YYYY")}
