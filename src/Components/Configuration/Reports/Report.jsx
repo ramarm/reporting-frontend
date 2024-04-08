@@ -30,6 +30,7 @@ export default function Report({setReportId, reportId, setReport, openActivateMo
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
     const editable = report.owner === Number(context.user.id);
+    const [tempSubject, setTempSubject] = useState(report.subject || "");
 
     function _setReport(key, value) {
         if (!didSaveNotified) {
@@ -44,6 +45,7 @@ export default function Report({setReportId, reportId, setReport, openActivateMo
     }
 
     function setReportSubject(subject) {
+        setTempSubject(subject);
         _setReport("subject", subject);
     }
 
@@ -95,7 +97,7 @@ export default function Report({setReportId, reportId, setReport, openActivateMo
                            debounceRate={500}
                            size={TextField.sizes.MEDIUM}
                            disabled={!editable}
-                           value={report.subject || ""}
+                           value={tempSubject}
                            onChange={setReportSubject}/>
                 <Divider key="divider" className="report-divider"/>
                 <ReportingEditor initialValue={report.body} disabled={!editable}
