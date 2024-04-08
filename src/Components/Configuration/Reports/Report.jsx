@@ -30,6 +30,7 @@ export default function Report({setReportId, reportId, setReport, openActivateMo
     const context = JSON.parse(sessionStorage.getItem(STORAGE_MONDAY_CONTEXT_KEY));
     const report = queryClient.getQueryData(["reports"]).find((report) => report.id === reportId);
     const editable = report.owner === Number(context.user.id);
+    const [subjectUpdateTimeoutId, setSubjectUpdateTimeoutId] = useState();
     const [tempSubject, setTempSubject] = useState(report.subject || "");
 
     function _setReport(key, value) {
@@ -46,7 +47,8 @@ export default function Report({setReportId, reportId, setReport, openActivateMo
 
     function setReportSubject(subject) {
         setTempSubject(subject);
-        _setReport("subject", subject);
+        if (subjectUpdateTimeoutId) window.clearTimeout(subjectUpdateTimeoutId);
+        setSubjectUpdateTimeoutId(window.setTimeout(() => _setReport("subject", subject), 500))
     }
 
     function closeModal() {
@@ -94,7 +96,6 @@ export default function Report({setReportId, reportId, setReport, openActivateMo
                             editable={editable}/>
                 <TextField placeholder="Subject"
                            className="subject-input"
-                           debounceRate={500}
                            size={TextField.sizes.MEDIUM}
                            disabled={!editable}
                            value={tempSubject}
