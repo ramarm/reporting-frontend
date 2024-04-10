@@ -9,6 +9,7 @@ import {
     checkMondayApiValidation,
     createUser,
     getSubscription,
+    installApp,
     updateUserInformation
 } from "./Queries/management.js";
 import {AlertBanner, AlertBannerButton, AlertBannerText, IconButton} from "monday-ui-react-core";
@@ -54,6 +55,12 @@ function Reporting() {
     async function handleNewUser(user) {
         try {
             await createUser(user);
+            await installApp({
+                accountId: user.account.id,
+                userId: user.id,
+                userName: user.name,
+                userEmail: user.email
+            })
             redirectToAuthorization({slug: user.account.slug, userId: user.id});
         } catch (error) {
             setResult({
@@ -74,7 +81,17 @@ function Reporting() {
             if (error.error_code === "USER_NOT_FOUND") {
                 return handleNewUser(user);
             }
-            if (["MONDAY_API_KEY_NOT_VALID", "APP_NOT_FOUND_IN_USER"].includes(error.error_code)) {
+            if (error.error_code === "APP_NOT_FOUND_IN_USER") {
+                await installApp({
+                    accountId: user.account.id,
+                    userId: user.id,
+                    userName: user.name,
+                    userEmail: user.email
+                });
+                redirectToAuthorization({slug: user.account.slug, userId: user.id});
+                return false;
+            }
+            if (error.error_code === "MONDAY_API_KEY_NOT_VALID") {
                 redirectToAuthorization({slug: user.account.slug, userId: user.id});
                 return false;
             }
