@@ -46,6 +46,19 @@ export async function createUser(user) {
     }
 }
 
+export async function installApp({accountId, userId, userName, userEmail}) {
+    try {
+        const url = new URL(`/api/v1/user/${userId}/app/${import.meta.env.VITE_MONDAY_APP_ID}/install`, MANAGEMENT_URL_BASE).href;
+        await axios.put(url, {
+            account_id: accountId.toString(),
+            user_name: userName,
+            user_email: userEmail,
+        });
+    } catch (error) {
+        handleAxiosError(error);
+    }
+}
+
 export async function sendManagementRequest({method, uri, data, headers}) {
     return await sendRequest(MANAGEMENT_URL_BASE, {method, uri, data, headers});
 }
