@@ -211,7 +211,7 @@ function Reporting() {
 
     return (
         <div>
-            {planUsage() > 90 &&
+            {planUsage() >= 90 ?
                 <div style={{
                     textAlign: "center",
                     lineHeight: "40px",
@@ -227,8 +227,7 @@ function Reporting() {
                                                monday.execute('openPlanSelection');
                                            }}>Upgrade plan</AlertBannerButton>
                     </AlertBanner>
-                </div>}
-            {subscription.is_default &&
+                </div> : subscription.is_default &&
                 <div style={{
                     textAlign: "center",
                     lineHeight: "40px",
@@ -244,7 +243,8 @@ function Reporting() {
                                                monday.execute('openPlanSelection');
                                            }}>Change plan</AlertBannerButton>
                     </AlertBanner>
-                </div>}
+                </div>
+            }
             <TabsIndex/>
             <div id="floating-icon-container" className="horizontal-space">
                 <IconButton icon={Forum} className="floating-icon"
