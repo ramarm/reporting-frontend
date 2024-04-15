@@ -221,7 +221,7 @@ function Reporting() {
                 }}>
                     <AlertBanner isCloseHidden={true}
                                  backgroundColor={planUsage() === 100 ? AlertBanner.backgroundColors.NEGATIVE : AlertBanner.backgroundColors.WARNING}>
-                        <AlertBannerText text={`You have used ${planUsage()}% of your plan`}/>
+                        <AlertBannerText text={`You have used ${planUsage()}% of your Insights plan`}/>
                         <AlertBannerButton leftIcon={Upgrade}
                                            onClick={() => {
                                                monday.execute('openPlanSelection');
