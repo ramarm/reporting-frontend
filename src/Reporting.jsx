@@ -181,7 +181,7 @@ function Reporting() {
     }
 
     if (initialized === 3) {
-        return <ResultPage status="error" title="Failed to load Insights"/>
+        return <ResultPage status="error" title="Failed to load Reporting"/>
     }
 
     if (isLoading()) {

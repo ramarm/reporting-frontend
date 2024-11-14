@@ -106,7 +106,7 @@ export default function ReportsView() {
 
     if (reports.length === 0) {
         return <Flex direction={Flex.directions.COLUMN} gap={Flex.gaps.LARGE}>
-            <Heading type={Heading.types.H1}>Welcome to insights</Heading>
+            <Heading type={Heading.types.H1}>Welcome to Reporting</Heading>
             <Text type={Text.types.TEXT1}>First create you report</Text>
             <Lottie animationData={NoReportsAnimation} loop={true}/>
             <Text type={Text.types.TEXT1}>You can do that by clicking this button</Text>
